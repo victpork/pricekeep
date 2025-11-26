@@ -1,0 +1,263 @@
+{
+  "products": {
+    "items": [
+      {
+        "type": "Product",
+        "name": "woolworths nz chicken breast skinless boneless",
+        "barcode": "9400597055734",
+        "variety": "skinless boneless",
+        "brand": "woolworths nz",
+        "slug": "woolworths-nz-chicken-breast-skinless-boneless",
+        "sku": "73034",
+        "unit": "Kg",
+        "selectedPurchasingUnit": null,
+        "price": {
+          "originalPrice": 14.99,
+          "salePrice": 13.6,
+          "savePrice": 1.39,
+          "savePercentage": 0.0,
+          "canShowSavings": true,
+          "hasBonusPoints": false,
+          "isClubPrice": false,
+          "isSpecial": true,
+          "isNew": false,
+          "canShowOriginalPrice": true,
+          "discount": null,
+          "total": null,
+          "isTargetedOffer": false,
+          "averagePricePerSingleUnit": 13.60,
+          "isBoostOffer": false,
+          "purchasingUnitPrice": null,
+          "orderedPrice": null,
+          "isUsingOrderedPrice": false,
+          "currentPricingMatchesOrderedPricing": null,
+          "extendedListPrice": null,
+          "originalAveragePricePerSingleUnit": null,
+          "promotionStartDate": null,
+          "promotionEndDate": null
+        },
+        "images": {
+          "small": "https://assets.woolworths.com.au/images/2010/73034.jpg?impolicy=wowcdxwbjbx&w=65&h=65",
+          "big": "https://assets.woolworths.com.au/images/2010/73034.jpg?impolicy=wowcdxwbjbx&w=200&h=200"
+        },
+        "quantity": {
+          "min": 1.000,
+          "max": 100.0,
+          "increment": 0.100,
+          "value": null,
+          "quantityInOrder": null,
+          "purchasingQuantityString": null
+        },
+        "stockLevel": 3,
+        "eachUnitQuantity": null,
+        "averageWeightPerUnit": 1.00000,
+        "size": {
+          "cupListPrice": 14.99,
+          "cupPrice": 13.6,
+          "cupMeasure": "1kg",
+          "packageType": "large tray",
+          "volumeSize": "min order 1kg"
+        },
+        "hasShopperNotes": null,
+        "productTag": {
+          "tagType": "IsSpecial",
+          "multiBuy": null,
+          "bonusPoints": null,
+          "additionalTag": null,
+          "targetedOffer": null,
+          "boostOffer": null
+        },
+        "departments": [
+          {
+            "id": 2,
+            "name": "Meat & Poultry"
+          }
+        ],
+        "subsAllowed": false,
+        "supportsBothEachAndKgPricing": true,
+        "adId": null,
+        "brandSuggestionId": null,
+        "brandSuggestionName": null,
+        "priceUnitLabel": null,
+        "availabilityStatus": "In Stock",
+        "onlineSample": null,
+        "onlineSampleRealProductMapId": 0,
+        "isAgeRestricted": false
+      },
+      {
+        "type": "Product",
+        "name": "woolworths pork & beef mince ",
+        "barcode": "9400597064514",
+        "variety": null,
+        "brand": "woolworths",
+        "slug": "woolworths-pork-beef-mince",
+        "sku": "6006007",
+        "unit": "Each",
+        "selectedPurchasingUnit": null,
+        "price": {
+          "originalPrice": 8.5,
+          "salePrice": 8.5,
+          "savePrice": 0.0,
+          "savePercentage": 0.0,
+          "canShowSavings": true,
+          "hasBonusPoints": false,
+          "isClubPrice": false,
+          "isSpecial": false,
+          "isNew": false,
+          "canShowOriginalPrice": true,
+          "discount": null,
+          "total": null,
+          "isTargetedOffer": false,
+          "averagePricePerSingleUnit": null,
+          "isBoostOffer": false,
+          "purchasingUnitPrice": null,
+          "orderedPrice": null,
+          "isUsingOrderedPrice": false,
+          "currentPricingMatchesOrderedPricing": null,
+          "extendedListPrice": null,
+          "originalAveragePricePerSingleUnit": null,
+          "promotionStartDate": null,
+          "promotionEndDate": null
+        },
+        "images": {
+          "small": "https://assets.woolworths.com.au/images/2010/6006007.jpg?impolicy=wowcdxwbjbx&w=65&h=65",
+          "big": "https://assets.woolworths.com.au/images/2010/6006007.jpg?impolicy=wowcdxwbjbx&w=200&h=200"
+        },
+        "quantity": {
+          "min": 1.0,
+          "max": 100.0,
+          "increment": 1.0,
+          "value": null,
+          "quantityInOrder": null,
+          "purchasingQuantityString": null
+        },
+        "stockLevel": 3,
+        "eachUnitQuantity": null,
+        "averageWeightPerUnit": null,
+        "size": {
+          "cupListPrice": 28.33,
+          "cupPrice": 28.33,
+          "cupMeasure": "1kg",
+          "packageType": "prepacked",
+          "volumeSize": "300g"
+        },
+        "hasShopperNotes": null,
+        "productTag": {
+          "tagType": "IsGreatPriceMultiBuy",
+          "multiBuy": {
+            "quantity": 3.0,
+            "value": 20.000,
+            "link": "/shop/productgroup/189827",
+            "multiCupValue": 22.222
+          },
+          "bonusPoints": null,
+          "additionalTag": null,
+          "targetedOffer": null,
+          "boostOffer": null
+        },
+        "departments": [
+          {
+            "id": 2,
+            "name": "Meat & Poultry"
+          }
+        ],
+        "subsAllowed": false,
+        "supportsBothEachAndKgPricing": false,
+        "adId": null,
+        "brandSuggestionId": null,
+        "brandSuggestionName": null,
+        "priceUnitLabel": null,
+        "availabilityStatus": "In Stock",
+        "onlineSample": null,
+        "onlineSampleRealProductMapId": 0,
+        "isAgeRestricted": false
+      },
+      {
+        "type": "Product",
+        "name": "woolworths nz chicken drumsticks ",
+        "barcode": "9400597055772",
+        "variety": null,
+        "brand": "woolworths nz",
+        "slug": "woolworths-nz-chicken-drumsticks",
+        "sku": "261233",
+        "unit": "Kg",
+        "selectedPurchasingUnit": null,
+        "price": {
+          "originalPrice": 8.0,
+          "salePrice": 4.8,
+          "savePrice": 3.2,
+          "savePercentage": 40.0,
+          "canShowSavings": true,
+          "hasBonusPoints": false,
+          "isClubPrice": false,
+          "isSpecial": true,
+          "isNew": false,
+          "canShowOriginalPrice": true,
+          "discount": null,
+          "total": null,
+          "isTargetedOffer": false,
+          "averagePricePerSingleUnit": 5.76,
+          "isBoostOffer": false,
+          "purchasingUnitPrice": null,
+          "orderedPrice": null,
+          "isUsingOrderedPrice": false,
+          "currentPricingMatchesOrderedPricing": null,
+          "extendedListPrice": null,
+          "originalAveragePricePerSingleUnit": null,
+          "promotionStartDate": null,
+          "promotionEndDate": null
+        },
+        "images": {
+          "small": "https://assets.woolworths.com.au/images/2010/261233.jpg?impolicy=wowcdxwbjbx&w=65&h=65",
+          "big": "https://assets.woolworths.com.au/images/2010/261233.jpg?impolicy=wowcdxwbjbx&w=200&h=200"
+        },
+        "quantity": {
+          "min": 1.200,
+          "max": 100.0,
+          "increment": 0.100,
+          "value": null,
+          "quantityInOrder": null,
+          "purchasingQuantityString": null
+        },
+        "stockLevel": 3,
+        "eachUnitQuantity": null,
+        "averageWeightPerUnit": 1.20000,
+        "size": {
+          "cupListPrice": 8.0,
+          "cupPrice": 4.8,
+          "cupMeasure": "1kg",
+          "packageType": "tray",
+          "volumeSize": "0.9-1.5kg 7-11pc"
+        },
+        "hasShopperNotes": null,
+        "productTag": {
+          "tagType": "IsSpecial",
+          "multiBuy": null,
+          "bonusPoints": null,
+          "additionalTag": null,
+          "targetedOffer": null,
+          "boostOffer": null
+        },
+        "departments": [
+          {
+            "id": 2,
+            "name": "Meat & Poultry"
+          }
+        ],
+        "subsAllowed": false,
+        "supportsBothEachAndKgPricing": true,
+        "adId": null,
+        "brandSuggestionId": null,
+        "brandSuggestionName": null,
+        "priceUnitLabel": null,
+        "availabilityStatus": "In Stock",
+        "onlineSample": null,
+        "onlineSampleRealProductMapId": 0,
+        "isAgeRestricted": false
+      }
+    ],
+    "totalItems": 3
+  },
+  "currentPageSize": 48,
+  "isSuccessful": true
+}

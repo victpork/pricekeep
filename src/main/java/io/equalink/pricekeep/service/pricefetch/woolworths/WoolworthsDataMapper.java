@@ -1,0 +1,129 @@
+package io.equalink.pricekeep.service.pricefetch.woolworths;
+
+
+import io.equalink.pricekeep.data.*;
+import org.mapstruct.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Mapper(componentModel = "cdi")
+public interface WoolworthsDataMapper {
+
+    Pattern itemCountPattern = Pattern.compile("([0-9]+)");
+
+    Pattern unitNumberPattern = Pattern.compile("(?<number>\\d+(?:\\.\\d+)?)\\s*(?<unit>ml|l|cm|m|g|kg|ea)");
+
+    @Mapping(target = "priceStats", ignore = true)
+    @Mapping(target = "priceQuotes", ignore = true)
+    @Mapping(target = "packageSize", ignore = true)
+    @Mapping(target = "itemPerPackage", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "gtin", source = "pq.barcode")
+    @Mapping(target = "groupSKU", ignore = true)
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "name", expression = "java(generateName(pq))")
+    @Mapping(target = "unit", expression = "java(toUnitOfMeasurement(pq))")
+    Product toProduct(WoolworthsProductQuote pq);
+
+    @Mapping(target = "quoteStore", ignore = true)
+    @Mapping(target = "quoteSource", constant = "SYSTEM")
+    @Mapping(target = "quoteDate", expression = "java(java.time.LocalDate.now())")
+    @Mapping(target = "product", source = "pq")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "discount", source = "pq")
+    @Mapping(target = "price", source = "pq.price.originalPrice")
+    @Mapping(target = "unitPrice", source = "pq.size.cupListPrice")
+    @Mapping(target = "discountedUnitPrice", source = "pq.size.cupPrice")
+    Quote toQuote(WoolworthsProductQuote pq);
+
+    default String generateName(WoolworthsProductQuote pq) {
+        String packageType = Optional.ofNullable(pq.getSize().getPackageType()).orElse("");
+        String volumeSize = Optional.ofNullable(pq.getSize().getVolumeSize()).orElse("");
+        return String.join(" ", pq.getName().trim(), packageType, volumeSize);
+    }
+
+    default GroupProductCode generateInternalProductCodeLinkage(WoolworthsProductQuote pq) {
+        return GroupProductCode.builder().internalCode(pq.getSku()).build();
+    }
+
+    default Product.Unit toUnitOfMeasurement(WoolworthsProductQuote pq) {
+        String unitOfMeasureStr = pq.getSize().getCupMeasure();
+        Matcher m = unitNumberPattern.matcher(unitOfMeasureStr);
+        if (m.find()) {
+            String unit = m.group("unit");
+            return switch (unit.toLowerCase()) {
+                case "ea" -> Product.Unit.PER_ITEM;
+                case "kg" -> Product.Unit.PER_KG;
+                case "m" -> Product.Unit.PER_METRE;
+                case "ml" -> Product.Unit.PER_LITRE;
+                case "g" -> m.group("number").equals("1") ? Product.Unit.PER_G : Product.Unit.PER_100G;
+                default -> null;
+            };
+        } else {
+            return Product.Unit.PER_ITEM;
+        }
+    }
+
+    default Discount toDiscount(WoolworthsProductQuote pq) {
+        Discount res = new Discount();
+        if (pq.getMultibuy() != null) {
+            res.setType(Discount.Type.BUNDLE);
+            res.setMultiBuyQuantity(pq.getMultibuy().getQuantity().intValue());
+            res.setSaveValue(pq.getMultibuy().getValue());
+            res.setSalePrice(pq.getMultibuy().getValue().divide(pq.getMultibuy().getQuantity(), 2, RoundingMode.HALF_EVEN));
+        } else {
+            var priceStruct = pq.getPrice();
+            if (BigDecimal.ZERO.compareTo(priceStruct.getSavePercentage()) < 0) {
+                res.setType(Discount.Type.PERCENTAGE);
+                res.setSaveValue(pq.getPrice().getSavePercentage());
+            } else if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) < 0){
+                res.setType(Discount.Type.FIXED_AMOUNT);
+                res.setSaveValue(pq.getPrice().getSavePrice());
+            }
+        }
+        return res;
+    }
+
+    @AfterMapping
+    default void afterMappingQuote(@MappingTarget Quote q, WoolworthsProductQuote pq) {
+        if (q.getDiscount() != null) {
+            q.getDiscount().setQuote(q);
+        }
+    }
+    @AfterMapping
+    default void afterMappingProduct(@MappingTarget Product p, WoolworthsProductQuote pq, Store store) {
+        // Determine product size and items in package
+        if (pq.getSize().getVolumeSize() != null) {
+
+        }
+        if (pq.getSize().getPackageType() != null) {
+
+        }
+        var intPrdCode = generateInternalProductCodeLinkage(pq);
+        intPrdCode.setProduct(p);
+        intPrdCode.setStoreGroup(store.getGroup());
+        p.addSKUMapping(intPrdCode);
+    }
+
+    @Mapping(target = "geoPoint", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "internalId", source = "id")
+    @Mapping(target = "url", ignore = true)
+    @Mapping(target = "name", expression = "java(addr.getName().trim())")
+    @Mapping(target = "address", expression = "java(addr.getAddress().trim())")
+    @Mapping(target = "group", expression = "java(getWWStoreGroup())")
+    Store toStore(WoolworthsStoreAddress addr);
+
+    default StoreGroup getWWStoreGroup() {
+        var wwSG = new StoreGroup();
+        wwSG.setId(1L);
+        wwSG.setName("Woolworths");
+        return wwSG;
+    }
+}

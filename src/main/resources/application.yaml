@@ -1,0 +1,54 @@
+quarkus:
+  quinoa:
+    package-manager: pnpm
+    package-manager-install:
+      ~: false
+      pnpm-version: 10.20.0
+    dev-server:
+      port: 3000
+      logs: true
+    source-dir: src/main/webui
+    build-dir: dist
+    ignored-path-prefixes: /api
+    enable-spa-routing: true
+
+  smallrye-openapi:
+    store-schema-directory: src/main/webui/
+
+  rest:
+    path: /api
+
+  datasource:
+    db-kind: postgresql
+    devservices:
+      image-name: postgis/postgis:17-3.5
+      port: 5432
+
+  hibernate-orm:
+    log:
+      sql: true
+
+  http:
+    filter:
+      others:
+        header:
+          Cache-Control: no-cache
+        matches: /.*
+        methods: GET
+        order: 0
+      static:
+        header:
+          Cache-Control: max-age=31536000
+        matches: /static/.+
+        methods: GET
+        order: 1
+
+"%dev":
+  quarkus:
+    hibernate-orm:
+      dev-ui:
+        allow-hql: true
+
+proxyAddr: localhost:3041
+
+fetchImgPath: D:/storeImg

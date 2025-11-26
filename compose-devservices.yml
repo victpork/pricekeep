@@ -1,0 +1,5 @@
+services:
+  proxy:
+    image: ghcr.io/victpork/pineproxy:latest
+    ports:
+      - '3041:8080'
