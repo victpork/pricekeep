@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useForm } from '@tanstack/vue-form'
 import { toast } from 'vue-sonner'
-import { z } from 'zod'
+import { unknown, z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -30,6 +30,9 @@ import { usePostApiProductNew } from '@/apiClient'
 import { Unit } from '@/model/unit'
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogDescription } from '@/components/ui/dialog'
 import { TagsInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText, TagsInputInput } from '@/components/ui/tags-input'
+
+const { mutateAsync: postNewProduct } = usePostApiProductNew()
+
 const formSchema = z.object({
     name: z
         .string()
@@ -40,32 +43,36 @@ const formSchema = z.object({
         .string()
         .max(100, 'Description must be at most 100 characters.')
         .default(''),
-    gtin: z
-        .string()
-        .regex(/^^[0-9]{8}$|^[0-9]{12,14}$/, 'Must be valid barcode')
-        .optional(),
+    gtin: z.union([
+        z.string().length(0),
+        z.string()
+            .regex(/^[0-9]{8}$|^[0-9]{12,14}$/, 'Must be valid barcode')
+    ])
+        .optional()
+        .transform(e => e === "" ? undefined : e),
     unit: z.enum(Unit),
     quantityPerItem: z
-        .coerce.number()
+        .number()
         .min(1),
     itemPerBundle: z
-        .coerce.number()
+        .number()
         .min(1),
     tags: z.array(z.string()),
 })
-const { mutateAsync: postNewProduct } = usePostApiProductNew()
+
+const defaultValues: z.input<typeof formSchema> = {
+    name: '',
+    desc: '',
+    gtin: undefined,
+    unit: Unit.EA,
+    quantityPerItem: 1,
+    itemPerBundle: 1,
+    tags: [],
+}
 
 const tags = ref<string[]>([])
 const form = useForm({
-    defaultValues: {
-        name: '',
-        desc: '',
-        gtin: '',
-        unit: '',
-        quantityPerItem: 1,
-        itemPerBundle: 1,
-        tags: tags,
-    },
+    defaultValues,
     validators: {
         onSubmit: formSchema,
     },
@@ -73,13 +80,13 @@ const form = useForm({
         console.log(value)
         await postNewProduct({
             data: {
-                name: value.name,
-                desc: value.desc.trim().length == 0 ? undefined : value.desc.trim(),
+                name: value.name ?? '',
+                desc: value.desc?.trim() || undefined,
                 gtin: value.gtin,
-                unit: value.unit as Unit,
+                unit: value.unit,
                 quantityPerItem: value.quantityPerItem,
                 itemPerBundle: value.itemPerBundle,
-                tags: value.tags.value.length == 0 ? undefined : value.tags.value,
+                tags: tags.value.length == 0 ? undefined : tags.value,
             }
         }).then((p) => {
             console.log('Posted', p.status)
@@ -163,7 +170,7 @@ const emit = defineEmits(['success'])
                             <Field>
                                 <FieldLabel :for="field.name">Quantity per item</FieldLabel>
                                 <Input :id="field.name" :name="field.name" :model-value="field.state.value"
-                                    type="number" @input="field.handleChange($event.target.value)" />
+                                    type="number" @input="field.handleChange($event.target.valueAsNumber)" />
                                 <FieldDescription>Quantity per item of the product</FieldDescription>
                                 <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                             </Field>
@@ -176,7 +183,7 @@ const emit = defineEmits(['success'])
                             <Field>
                                 <FieldLabel for="new-product-select-unit">Unit</FieldLabel>
                                 <Select :name="field.name" :model-value="field.state.value"
-                                    @update:model-value="(v) => field.handleChange(v as string)">
+                                    @update:model-value="(v) => field.handleChange(v as any)">
                                     <SelectTrigger id="new-product-select-unit" :aria-invalid="isInvalid(field)"
                                         class="min-w-[120px]">
                                         <SelectValue placeholder="Select" />
@@ -201,7 +208,7 @@ const emit = defineEmits(['success'])
                     <Field>
                         <FieldLabel :for="field.name">Item per bundle</FieldLabel>
                         <Input :id="field.name" :name="field.name" :model-value="field.state.value" type="number"
-                            @input="field.handleChange($event.target.value)" />
+                            @input="field.handleChange($event.target.valueAsNumber)" />
                         <FieldDescription>Item per bundle of the product</FieldDescription>
                         <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                     </Field>

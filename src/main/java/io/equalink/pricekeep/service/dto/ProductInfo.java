@@ -25,7 +25,7 @@ public record ProductInfo(
     String imgUrl,
     String desc,
     @Schema(maxLength = 14, minLength = 8)
-    @Pattern(regexp = "^([0-9]d{8}|[0-9]{12}|[0-9]{13}|[0-9]{14})$", message = "GTIN must be numeric and must be either having 8, 12, 13 or 14 digits")
+    @Pattern(regexp = "^([0-9]{8}|[0-9]{12,14})$", message = "GTIN must be numeric and must be either having 8, 12, 13 or 14 digits")
     String gtin,
 
     @Schema(required = true, defaultValue = "PER_UNIT")
