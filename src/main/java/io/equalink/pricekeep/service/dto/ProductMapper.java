@@ -12,6 +12,8 @@ public interface ProductMapper {
     @Mapping(target = "stats", source = "priceStats")
     @Mapping(target = "imgUrl", ignore = true)
     @Mapping(target = "latestQuotes", source = "priceQuotes")
+    @Mapping(target = "quantityPerItem", source = "packageSize")
+    @Mapping(target = "itemPerBundle", source = "itemPerPackage")
     public ProductInfo toDTO(Product p);
 
     @Mapping(target = "description", source = "desc")
@@ -19,6 +21,8 @@ public interface ProductMapper {
     @Mapping(target = "groupSKU", ignore = true)
     @Mapping(target = "unit", source = "unit")
     @Mapping(target = "priceStats", ignore = true)
+    @Mapping(target = "packageSize", source = "quantityPerItem")
+    @Mapping(target = "itemPerPackage", source = "itemPerBundle")
     public Product toEntity(ProductInfo pDTO);
 
     @Mapping(target = "id", source = "id")

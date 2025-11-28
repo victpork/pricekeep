@@ -8,6 +8,7 @@ import io.equalink.pricekeep.service.quote.ProductService;
 import io.equalink.pricekeep.service.quote.QuoteService;
 import io.smallrye.common.annotation.NonBlocking;
 import io.smallrye.mutiny.Multi;
+import jakarta.data.exceptions.DataException;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
@@ -15,6 +16,10 @@ import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
 import java.time.Period;
@@ -78,6 +83,16 @@ public class ProductResource {
 
     @POST
     @Path("/new")
+    @APIResponse(
+        responseCode = "201",
+        description = "Successfully created",
+        content = @Content(mediaType = "application/json")
+    )
+    @APIResponse(
+        responseCode = "400",
+        description = "Data conflict",
+        content = @Content(mediaType = "application/json")
+    )
     public Response createProduct(@Valid ProductInfo product) {
 
         Set<ConstraintViolation<ProductInfo>> violations = validator.validate(product);
@@ -88,7 +103,11 @@ public class ProductResource {
         }
 
         var eProduct = pMapper.toEntity(product);
-        productService.persist(eProduct);
+        try {
+            productService.persist(eProduct);
+        } catch (DataException e) {
+            throw new BadRequestException(e);
+        }
         return Response.created(UriBuilder.fromResource(ProductResource.class).path("/{id}").build(eProduct.getId())).entity(eProduct).build();
     }
 

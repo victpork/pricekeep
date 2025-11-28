@@ -15,6 +15,8 @@ public interface QuoteMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "discount", ignore = true)
     @Mapping(target = "product", ignore = true)
+    @Mapping(target = "unitPrice", ignore = true)
+    @Mapping(target = "discountedUnitPrice", ignore = true)
     Quote toEntity(QuoteDTO qInfo);
 
     @Mapping(target = "index", source = "quoteDate")

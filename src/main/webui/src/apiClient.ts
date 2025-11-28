@@ -552,26 +552,16 @@ export function useGetApiProductGtinGtin<
 /**
  * @summary Create Product
  */
-export type postApiProductNewResponse200 = {
+export type postApiProductNewResponseDefault = {
   data: unknown;
-  status: 200;
+  status: number;
 };
+export type postApiProductNewResponseError =
+  postApiProductNewResponseDefault & {
+    headers: Headers;
+  };
 
-export type postApiProductNewResponse400 = {
-  data: void;
-  status: 400;
-};
-
-export type postApiProductNewResponseSuccess = postApiProductNewResponse200 & {
-  headers: Headers;
-};
-export type postApiProductNewResponseError = postApiProductNewResponse400 & {
-  headers: Headers;
-};
-
-export type postApiProductNewResponse =
-  | postApiProductNewResponseSuccess
-  | postApiProductNewResponseError;
+export type postApiProductNewResponse = postApiProductNewResponseError;
 
 export const getPostApiProductNewUrl = () => {
   return `/api/product/new`;
@@ -599,7 +589,7 @@ export const postApiProductNew = async (
 };
 
 export const getPostApiProductNewMutationOptions = <
-  TError = void,
+  TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -640,12 +630,12 @@ export type PostApiProductNewMutationResult = NonNullable<
   Awaited<ReturnType<typeof postApiProductNew>>
 >;
 export type PostApiProductNewMutationBody = NonReadonly<ProductInfo>;
-export type PostApiProductNewMutationError = void;
+export type PostApiProductNewMutationError = unknown;
 
 /**
  * @summary Create Product
  */
-export const usePostApiProductNew = <TError = void, TContext = unknown>(
+export const usePostApiProductNew = <TError = unknown, TContext = unknown>(
   options?: {
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postApiProductNew>>,

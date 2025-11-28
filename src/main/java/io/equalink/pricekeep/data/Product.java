@@ -1,7 +1,9 @@
 package io.equalink.pricekeep.data;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -23,6 +25,7 @@ import jakarta.persistence.MapKeyEnumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Parameter;
@@ -46,6 +49,7 @@ import java.util.*;
 @Builder
 public class Product {
 
+    @Schema(enumeration = {"EA", "KG", "HG", "G", "L", "M"})
     public enum Unit {
         @JsonEnumDefaultValue
         PER_ITEM("EA"),
@@ -56,10 +60,21 @@ public class Product {
         PER_METRE("M");
 
         @EnumeratedValue
+        @JsonValue
         final String code;
 
         Unit(String code) {
             this.code = code;
+        }
+
+        @JsonCreator
+        public static Unit fromCode(String code) {
+            for (Unit unit : Unit.values()) {
+                if (unit.code.equals(code)) {
+                    return unit;
+                }
+            }
+            throw new IllegalArgumentException("Unknown unit code: " + code);
         }
     }
 

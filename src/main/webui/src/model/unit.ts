@@ -9,10 +9,10 @@ export type Unit = (typeof Unit)[keyof typeof Unit];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Unit = {
-  PER_ITEM: "PER_ITEM",
-  PER_KG: "PER_KG",
-  PER_100G: "PER_100G",
-  PER_G: "PER_G",
-  PER_LITRE: "PER_LITRE",
-  PER_METRE: "PER_METRE",
+  EA: "EA",
+  KG: "KG",
+  HG: "HG",
+  G: "G",
+  L: "L",
+  M: "M",
 } as const;

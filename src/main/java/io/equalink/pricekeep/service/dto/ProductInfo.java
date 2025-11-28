@@ -39,7 +39,7 @@ public record ProductInfo(
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Map<String, BigDecimal> stats,
 
-    Integer quantityPerItem,
+    BigDecimal quantityPerItem,
 
     Integer itemPerBundle,
 

@@ -67,8 +67,7 @@ components:
             type: number
           readOnly: true
         quantityPerItem:
-          type: integer
-          format: int32
+          type: number
         itemPerBundle:
           type: integer
           format: int32
@@ -164,12 +163,12 @@ components:
     Unit:
       type: string
       enum:
-      - PER_ITEM
-      - PER_KG
-      - PER_100G
-      - PER_G
-      - PER_LITRE
-      - PER_METRE
+      - EA
+      - KG
+      - HG
+      - G
+      - L
+      - M
     WithId:
       required:
       - id
@@ -254,13 +253,14 @@ paths:
               $ref: "#/components/schemas/ProductInfo"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Successfully created
           content:
-            application/json:
-              schema: {}
+            application/json: {}
         "400":
-          description: Bad Request
+          description: Data conflict
+          content:
+            application/json: {}
       summary: Create Product
       tags:
       - Product Resource

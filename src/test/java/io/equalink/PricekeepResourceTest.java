@@ -52,12 +52,12 @@ public class PricekeepResourceTest {
     @Test
     void testInsertProduct() {
         // Test product with invalid GTIN
-        ProductInfo pInfo = new ProductInfo(null, "Test Product", null, "Test product insertion", "412412144241266", Product.Unit.PER_ITEM, null, null, 1, 1,Set.of("test"));
+        ProductInfo pInfo = new ProductInfo(null, "Test Product", null, "Test product insertion", "412412144241266", Product.Unit.PER_ITEM, null, null, new BigDecimal("1"), 1,Set.of("test"));
         given().contentType(ContentType.JSON).body(pInfo).when().post("/new")
                 .then().statusCode(RestResponse.StatusCode.BAD_REQUEST).body("violations[0].message", containsString("GTIN"));
 
         // Test valid product insertion
-        ProductInfo pInfo2 = new ProductInfo(null, "Test Product", null, "Test product insertion", "4124121442412", Product.Unit.PER_ITEM, null, null,  1,1,Set.of("test"));
+        ProductInfo pInfo2 = new ProductInfo(null, "Test Product", null, "Test product insertion", "4124121442412", Product.Unit.PER_ITEM, null, null, new BigDecimal("1"),1,Set.of("test"));
         given().contentType(ContentType.JSON).body(pInfo2).when().post("/new")
                 .then().statusCode(RestResponse.StatusCode.CREATED).body("id", notNullValue());
     }

@@ -97,7 +97,11 @@ export const getGetApiCommonLatestDealsResponseMock = (
             undefined,
           ]),
           quantityPerItem: faker.helpers.arrayElement([
-            faker.number.int({ min: undefined, max: undefined }),
+            faker.number.float({
+              min: undefined,
+              max: undefined,
+              fractionDigits: 2,
+            }),
             undefined,
           ]),
           itemPerBundle: faker.helpers.arrayElement([
@@ -230,7 +234,11 @@ export const getGetApiProductAlertsResponseMock = (): QuoteDTO[] =>
           undefined,
         ]),
         quantityPerItem: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
+          faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
           undefined,
         ]),
         itemPerBundle: faker.helpers.arrayElement([
@@ -354,7 +362,7 @@ export const getGetApiProductGtinGtinResponseMock = (
     undefined,
   ]),
   quantityPerItem: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
+    faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
     undefined,
   ]),
   itemPerBundle: faker.helpers.arrayElement([
@@ -445,7 +453,7 @@ export const getGetApiProductSearchResponseMock = (): ProductInfo[] =>
       undefined,
     ]),
     quantityPerItem: faker.helpers.arrayElement([
-      faker.number.int({ min: undefined, max: undefined }),
+      faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
       undefined,
     ]),
     itemPerBundle: faker.helpers.arrayElement([
@@ -543,7 +551,11 @@ export const getPostApiProductSearchExtResponseMock = (): QuoteDTO[] =>
           undefined,
         ]),
         quantityPerItem: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
+          faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
           undefined,
         ]),
         itemPerBundle: faker.helpers.arrayElement([
@@ -667,7 +679,7 @@ export const getGetApiProductProductIdResponseMock = (
     undefined,
   ]),
   quantityPerItem: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
+    faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
     undefined,
   ]),
   itemPerBundle: faker.helpers.arrayElement([
@@ -775,7 +787,11 @@ export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
           undefined,
         ]),
         quantityPerItem: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
+          faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
           undefined,
         ]),
         itemPerBundle: faker.helpers.arrayElement([
