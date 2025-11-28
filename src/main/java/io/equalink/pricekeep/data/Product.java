@@ -5,30 +5,11 @@ import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumeratedValue;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapKeyClass;
-import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.MapKeyEnumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
@@ -112,7 +93,7 @@ public class Product {
     /**
      * Global Trade Item Number (GTIN) or GS1
      */
-    @Column(unique = true, nullable = true, length = 14)
+    @Column(unique = true, length = 14)
     private String gtin;
 
     /**

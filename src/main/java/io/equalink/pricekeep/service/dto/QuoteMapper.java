@@ -1,11 +1,8 @@
 package io.equalink.pricekeep.service.dto;
 
-import io.equalink.pricekeep.data.Product;
 import io.equalink.pricekeep.data.Quote;
-import io.equalink.pricekeep.data.Store;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.SubclassMapping;
 
 @Mapper(componentModel = "cdi", uses={StoreMapper.class})
 public interface QuoteMapper {
