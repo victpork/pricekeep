@@ -19,12 +19,6 @@ public class DataFetchTest {
     @Inject
     ProductFetchService fetchService;
 
-    @InjectMock
-    ProductQuoteFetchService service1;
-
-    @InjectMock
-    ProductQuoteFetchService service2;
-
     @Test
     void testProductFetchService() {
         var serviceList = fetchService.getListOfAvailableServices();

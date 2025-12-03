@@ -230,7 +230,7 @@ public class WoolworthsDataProviderTest {
     @Test
     @Disabled
     void testFetchandInsertToDB() {
-        proxy.fetchProductQuote("cheese").subscribe();
+        proxy.fetchProductQuote("cheese").subscribe().with( q -> productRepo.persist(q));
     }
 
     @Test

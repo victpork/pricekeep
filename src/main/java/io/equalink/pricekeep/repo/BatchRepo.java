@@ -1,6 +1,6 @@
 package io.equalink.pricekeep.repo;
 
-import io.equalink.pricekeep.data.Batch;
+import io.equalink.pricekeep.data.BaseBatch;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Repository;
@@ -12,14 +12,14 @@ import java.util.List;
 public interface BatchRepo {
 
     @Find
-    List<Batch> findAll();
+    List<BaseBatch> findAll();
 
     @Find
-    Batch findById(Long id);
+    BaseBatch findById(Long id);
 
     @Save
-    void persist(Batch batch);
+    void persist(BaseBatch batch);
 
     @Delete
-    void delete(Batch batch);
+    void delete(BaseBatch batch);
 }

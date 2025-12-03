@@ -25,6 +25,7 @@ quarkus:
       port: 5432
 
   hibernate-orm:
+    dialect: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect
     log:
       sql: true
 
@@ -42,6 +43,9 @@ quarkus:
         matches: /static/.+
         methods: GET
         order: 1
+
+  scheduler:
+    start-mode: FORCED
 
 "%dev":
   quarkus:

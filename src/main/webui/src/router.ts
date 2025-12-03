@@ -9,14 +9,12 @@ const routes = [
     path: '/',
     component: layout,
     children: [
-      {
-        path: 'dashboard',
-        component: Dashboard
-      }
+      { path: '', redirect: { name: 'dashboard' } },
+      { path: 'dashboard', name: 'dashboard', component: Dashboard },
+      { path: '/products/:id(\\d+)', component: SingleProduct },
+      { path: '/products/tags/:tag', component: ProductColleciton },
     ]
   },
-  { path: '/products/:id(\\d+)', component: SingleProduct },
-  { path: '/products/tags/:tag', component: ProductColleciton },
 
 ]
 

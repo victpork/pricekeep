@@ -59,6 +59,17 @@ public interface ProductRepo {
         """)
     List<Product> find(@Pattern String name, Sort<Product> sort, PageRequest pageRequest);
 
+    @Query("""
+        select p from Product p
+         left join fetch p.priceQuotes q
+         left join fetch q.quoteStore s
+         left join fetch q.discount qd
+         left join fetch p.priceStats ps
+         where q.id is null or q.id in (select q2.id from Quote q2 where q2.product.id = p.id
+         and (q2.quoteStore, q2.quoteDate) in (select q3.quoteStore, max(q3.quoteDate) from Quote q3 where q3.product.id = p.id group by q3.quoteStore))
+        """)
+    List<Product> findAll(Sort<Product> sort, PageRequest pageRequest);
+
     @SQL("""
         select distinct e from (
             select p.name as e from Product p

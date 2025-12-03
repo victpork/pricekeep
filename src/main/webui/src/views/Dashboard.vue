@@ -7,6 +7,7 @@ import { PlusCircleIcon, LayoutGridIcon, SheetIcon } from 'lucide-vue-next';
 import { ButtonGroup } from '@/components/ui/button-group';
 import {
   useGetApiCommonLatestDeals,
+  useGetApiProductAll,
 } from '@/apiClient';
 import ProductColleciton from './ProductColleciton.vue';
 import { computed, ref } from 'vue';
@@ -14,15 +15,21 @@ import {
   Dialog,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import NewProductForm from '@/views/NewProductForm.vue'
+import ProductForm from '@/views/ProductForm.vue'
+import DataTable from '@/components/product/DataTable.vue';
+import { defaultColumns } from '@/components/product/column';
 const { data: latestDeals } = useGetApiCommonLatestDeals()
 const flatDeals = computed(() => (latestDeals.value?.data.results ?? []))
-const isDialogOpen = ref(false)
+const isProductDialogOpen = ref(false)
+const isQuoteDialogOpen = ref(false)
+
+const { data: results, isLoading } = useGetApiProductAll()
+
 </script>
 <template>
   <div class="col-span-3 lg:col-span-4 lg:border-l">
     <div class="h-full px-4 py-6 lg:px-8">
-      <Tabs default-value="music" class="h-full space-y-6">
+      <Tabs default-value="at-a-glance" class="h-full space-y-6">
         <div class="space-between flex items-center">
           <TabsList>
             <TabsTrigger value="at-a-glance" class="relative px-5">
@@ -33,15 +40,25 @@ const isDialogOpen = ref(false)
             </TabsTrigger>
           </TabsList>
           <div class="ml-auto mr-4">
-            <Dialog v-model:open="isDialogOpen">
-              <DialogTrigger as-child>
-                <Button variant="outline">
-                  <PlusCircleIcon class="mr-2 h-4 w-4" />
-                  Add Product
-                </Button>
-              </DialogTrigger>
-              <NewProductForm @success="isDialogOpen = false" />
-            </Dialog>
+            <ButtonGroup>
+              <Dialog v-model:open="isProductDialogOpen">
+                <DialogTrigger as-child>
+                  <Button variant="outline">
+                    <PlusCircleIcon class="mr-2 h-4 w-4" />
+                    Add Product
+                  </Button>
+                </DialogTrigger>
+                <ProductForm @success="isProductDialogOpen = false" />
+              </Dialog>
+              <Dialog v-model:open="isQuoteDialogOpen">
+                <DialogTrigger as-child>
+                  <Button variant="outline">
+                    <PlusCircleIcon class="mr-2 h-4 w-4" />
+                    Quote
+                  </Button>
+                </DialogTrigger>
+              </Dialog>
+            </ButtonGroup>
           </div>
         </div>
         <TabsContent value="at-a-glance" class="border-none p-0 outline-none">
@@ -86,16 +103,15 @@ const isDialogOpen = ref(false)
           <div class="flex items-center justify-between">
             <div class="space-y-1">
               <h2 class="text-2xl font-semibold tracking-tight">
-                New Episodes
+                Table view
               </h2>
               <p class="text-sm text-muted-foreground">
-                Your favorite podcasts. Updated daily.
+                Table goes here
               </p>
-              <!-- ProductTable / -->
+              <DataTable :columns="defaultColumns" :data="results?.data || []" />
             </div>
           </div>
           <Separator class="my-4" />
-
         </TabsContent>
       </Tabs>
     </div>

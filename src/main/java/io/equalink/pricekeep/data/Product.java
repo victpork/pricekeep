@@ -21,7 +21,7 @@ import java.util.*;
 @Table(
     name = "product",
     indexes = {
-        @Index(columnList = "gtin"),
+        @Index(columnList = "gtin", unique = true),
         @Index(columnList = "name"),
         @Index(columnList = "tags")
     })

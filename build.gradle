@@ -24,6 +24,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-jdbc-h2'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'io.quarkus:quarkus-flyway'
+    implementation 'io.quarkus:quarkus-quartz'
     implementation 'org.hibernate.orm:hibernate-spatial:7.1.4.Final'
     implementation 'com.microsoft.playwright:playwright:1.54.0'
     implementation 'org.mapstruct:mapstruct:1.6.3'

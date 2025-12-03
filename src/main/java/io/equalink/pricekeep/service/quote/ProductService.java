@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 
 import io.equalink.pricekeep.data.Quote;
+import io.equalink.pricekeep.data._Product;
 import io.equalink.pricekeep.service.dto.ProductMapper;
 import io.equalink.pricekeep.service.dto.QuoteDTO;
 import jakarta.data.page.PageRequest;
@@ -55,14 +56,18 @@ public class ProductService {
         return productRepo.findByKeyword(keyword);
     }
 
+    public List<Product> getAllProduct(Integer page) {
+        return productRepo.findAll(_Product.name.ascIgnoreCase(), PageRequest.ofPage(page));
+    }
+
     void initSearchTrie() {
         LOG.info("Initialising autocomplete index trie");
         TreeMap<String, String> indexMap = new TreeMap<>();
         productRepo.getKeywordList().forEach(s -> indexMap.put(s.toLowerCase(), s));
-        
+
         suggestWordList = new PatriciaTrie<>(indexMap);
         LOG.infov("{0} words has been inserted to the trie", suggestWordList.size());
-        
+
     }
 
     public List<String> getProductListName() {

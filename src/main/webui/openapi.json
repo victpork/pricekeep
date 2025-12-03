@@ -258,6 +258,35 @@
         "tags" : [ "Product Resource" ]
       }
     },
+    "/api/product/all" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ProductInfo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary" : "Get All Product",
+        "tags" : [ "Product Resource" ]
+      }
+    },
     "/api/product/extSources" : {
       "get" : {
         "responses" : {
@@ -321,7 +350,11 @@
           "201" : {
             "description" : "Successfully created",
             "content" : {
-              "application/json" : { }
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductInfo"
+                }
+              }
             }
           },
           "400" : {

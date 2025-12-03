@@ -16,7 +16,9 @@ import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
@@ -59,6 +61,13 @@ public class ProductResource {
     }
 
     @GET
+    @Path("/all")
+    public List<ProductInfo> getAllProduct(@QueryParam("page") Integer page) {
+        if (page == null) page = 1;
+        return productService.getAllProduct(page).stream().map(p -> pMapper.toDTO(p)).toList();
+    }
+
+    @GET
     @Path("/gtin/{gtin}")
     public ProductInfo getProductByGtin(@PathParam("gtin") @NotNull String gtin) {
         var product = productService.getProductByGTIN(gtin).stream().findFirst().orElseThrow();
@@ -84,7 +93,13 @@ public class ProductResource {
     @APIResponse(
         responseCode = "201",
         description = "Successfully created",
-        content = @Content(mediaType = "application/json")
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                ref = "#/components/schemas/ProductInfo"
+            )
+        )
+
     )
     @APIResponse(
         responseCode = "400",
@@ -106,7 +121,7 @@ public class ProductResource {
         } catch (DataException e) {
             throw new BadRequestException(e);
         }
-        return Response.created(UriBuilder.fromResource(ProductResource.class).path("/{id}").build(eProduct.getId())).entity(eProduct).build();
+        return Response.created(UriBuilder.fromResource(ProductResource.class).path("/{id}").build(eProduct.getId())).entity(pMapper.toDTO(eProduct)).build();
     }
 
     @GET

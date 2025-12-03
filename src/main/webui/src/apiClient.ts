@@ -24,6 +24,7 @@ import type {
   ChartNode,
   ExternalProductQueryMessage,
   GetApiCommonLatestDealsParams,
+  GetApiProductAllParams,
   GetApiProductProductIdChartParams,
   GetApiProductProductIdQuoteHistParams,
   GetApiProductSearchParams,
@@ -311,6 +312,136 @@ export function useGetApiProductAlerts<
 }
 
 /**
+ * @summary Get All Product
+ */
+export type getApiProductAllResponse200 = {
+  data: ProductInfo[];
+  status: 200;
+};
+
+export type getApiProductAllResponseSuccess = getApiProductAllResponse200 & {
+  headers: Headers;
+};
+export type getApiProductAllResponse = getApiProductAllResponseSuccess;
+
+export const getGetApiProductAllUrl = (params?: GetApiProductAllParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/product/all?${stringifiedParams}`
+    : `/api/product/all`;
+};
+
+export const getApiProductAll = async (
+  params?: GetApiProductAllParams,
+  options?: RequestInit,
+): Promise<getApiProductAllResponse> => {
+  const res = await fetch(getGetApiProductAllUrl(params), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiProductAllResponse["data"] = body ? JSON.parse(body) : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as getApiProductAllResponse;
+};
+
+export const getGetApiProductAllQueryKey = (
+  params?: MaybeRef<GetApiProductAllParams>,
+) => {
+  return ["api", "product", "all", ...(params ? [params] : [])] as const;
+};
+
+export const getGetApiProductAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiProductAll>>,
+  TError = unknown,
+>(
+  params?: MaybeRef<GetApiProductAllParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiProductAll>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = getGetApiProductAllQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiProductAll>>
+  > = ({ signal }) =>
+    getApiProductAll(unref(params), { signal, ...fetchOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiProductAll>>,
+    TError,
+    TData
+  >;
+};
+
+export type GetApiProductAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiProductAll>>
+>;
+export type GetApiProductAllQueryError = unknown;
+
+/**
+ * @summary Get All Product
+ */
+
+export function useGetApiProductAll<
+  TData = Awaited<ReturnType<typeof getApiProductAll>>,
+  TError = unknown,
+>(
+  params?: MaybeRef<GetApiProductAllParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiProductAll>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseQueryReturnType<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiProductAllQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<
+    QueryKey,
+    TData,
+    TError
+  >;
+
+  return query;
+}
+
+/**
  * @summary Get Available Ext Sources
  */
 export type getApiProductExtSourcesResponse200 = {
@@ -552,16 +683,15 @@ export function useGetApiProductGtinGtin<
 /**
  * @summary Create Product
  */
-export type postApiProductNewResponseDefault = {
-  data: unknown;
-  status: number;
+export type postApiProductNewResponse201 = {
+  data: ProductInfo;
+  status: 201;
 };
-export type postApiProductNewResponseError =
-  postApiProductNewResponseDefault & {
-    headers: Headers;
-  };
 
-export type postApiProductNewResponse = postApiProductNewResponseError;
+export type postApiProductNewResponseSuccess = postApiProductNewResponse201 & {
+  headers: Headers;
+};
+export type postApiProductNewResponse = postApiProductNewResponseSuccess;
 
 export const getPostApiProductNewUrl = () => {
   return `/api/product/new`;

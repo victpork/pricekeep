@@ -17,7 +17,7 @@ export interface ProductInfo {
   /**
    * @minLength 8
    * @maxLength 14
-   * @pattern ^([0-9]d{8}|[0-9]{12}|[0-9]{13}|[0-9]{14})$
+   * @pattern ^([0-9]{8}|[0-9]{12,14})$
    */
   gtin?: string;
   unit: Unit;
