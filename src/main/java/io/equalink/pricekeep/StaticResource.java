@@ -17,6 +17,6 @@ public class StaticResource {
     void installRoute(@Observes Router router) {
         // Configure the route to serve static files from a specific path
         router.route("/static/assets/img/*")
-            .handler(StaticHandler.create(FileSystemAccess.ROOT, imgDir)); // The absolute path to your external directory
+            .handler(StaticHandler.create(FileSystemAccess.ROOT, imgDir).setCachingEnabled(true)); // The absolute path to your external directory
     }
 }

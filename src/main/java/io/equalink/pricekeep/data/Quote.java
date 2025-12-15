@@ -13,6 +13,7 @@ import java.time.LocalDate;
     name = "quote",
     indexes = { @Index(columnList = "product_id, store_id, quote_date DESC") }
 )
+@IdClass(QuoteID.class)
 @Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +21,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Quote {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id; 
 
     public enum Source {
         USER("U"),
@@ -39,12 +36,15 @@ public class Quote {
 
     @ManyToOne(cascade = { CascadeType.MERGE }, optional = false)
     @JoinColumn(name = "store_id")
+    @Id
     private Store quoteStore;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+    @Id
     private Product product;
 
     @Column(name = "quote_date")
+    @Id
     private LocalDate quoteDate;
 
     /**
@@ -57,7 +57,8 @@ public class Quote {
     /**
      * Discount info, null if there are no sale/promotion
      */
-    @OneToOne(mappedBy = "quote", orphanRemoval = true, cascade = {CascadeType.ALL})
+    @OneToOne
+    @JoinColumn(name = "discount_id")
     private Discount discount;
 
     @Enumerated(EnumType.STRING)
@@ -73,7 +74,7 @@ public class Quote {
     /**
      * Retrieve unit price from package data
      * @param useDiscount include discount
-     * @return
+     * @return Unit price
      */
     public BigDecimal getUnitPriceFromPackage(boolean useDiscount) {
         BigDecimal basePrice = price;

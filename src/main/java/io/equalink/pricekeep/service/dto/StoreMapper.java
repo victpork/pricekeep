@@ -12,6 +12,7 @@ public interface StoreMapper {
 
     @Mapping(target = "geoPoint", ignore = true)
     @Mapping(target = "internalId", ignore = true)
+    @Mapping(target = "group", ignore = true)
     Store toEntity(StoreInfo sDTO);
 
     default BaseEntity<StoreInfo> toBaseEntity(Store s) {

@@ -95,7 +95,7 @@ const form = useForm({
                 toast.success('Product created', {
                     description: h('span', { class: 'text-sm' }, [
                         'Product ',
-                        h('RouterLink', { to: `/product/${p.data.id}` }, p.data.name),
+                        h('RouterLink', { to: `/product/${p.data.id}`, class: 'font-medium underline' }, p.data.name),
                         ' created successfully'
                     ])
                 })
@@ -115,7 +115,7 @@ function isInvalid(field: any) {
 }
 
 const unitSelect = Object.values(Unit).map(v => ({
-    label: v === 'HG' ? '100g' : v.toLowerCase(),
+    label: v.toLowerCase(),
     value: v
 }));
 
@@ -180,7 +180,8 @@ const emit = defineEmits(['success'])
                             <Field>
                                 <FieldLabel :for="field.name">Quantity per item</FieldLabel>
                                 <Input :id="field.name" :name="field.name" :model-value="field.state.value"
-                                    type="number" @input="field.handleChange($event.target.valueAsNumber)" />
+                                    type="number" @input="field.handleChange($event.target.valueAsNumber)"
+                                    step=".001" />
                                 <FieldDescription>Quantity per item of the product</FieldDescription>
                                 <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                             </Field>

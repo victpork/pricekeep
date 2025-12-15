@@ -194,7 +194,7 @@
       },
       "Unit" : {
         "type" : "string",
-        "enum" : [ "EA", "KG", "HG", "G", "L", "M" ]
+        "enum" : [ "EA", "KG", "ML", "G", "L", "M" ]
       },
       "WithId" : {
         "required" : [ "id" ],
@@ -617,7 +617,7 @@
             "format" : "int64"
           }
         }, {
-          "name" : "id",
+          "name" : "discount",
           "in" : "query",
           "schema" : {
             "type" : "boolean"

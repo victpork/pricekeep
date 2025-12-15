@@ -2,6 +2,7 @@ package io.equalink.pricekeep.service.pricefetch.woolworths;
 
 
 import io.equalink.pricekeep.data.*;
+import lombok.extern.jbosslog.JBossLog;
 import org.mapstruct.*;
 
 import java.math.BigDecimal;
@@ -29,18 +30,27 @@ public interface WoolworthsDataMapper {
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "name", expression = "java(generateName(pq))")
     @Mapping(target = "unit", expression = "java(toUnitOfMeasurement(pq))")
+    @Mapping(target = "imgPath", ignore = true)
     Product toProduct(WoolworthsProductQuote pq);
 
     @Mapping(target = "quoteStore", ignore = true)
     @Mapping(target = "quoteSource", constant = "SYSTEM")
     @Mapping(target = "quoteDate", expression = "java(java.time.LocalDate.now())")
     @Mapping(target = "product", source = "pq")
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "discount", source = "pq")
     @Mapping(target = "price", source = "pq.price.originalPrice")
     @Mapping(target = "unitPrice", source = "pq.size.cupListPrice")
     @Mapping(target = "discountedUnitPrice", source = "pq.size.cupPrice")
     Quote toQuote(WoolworthsProductQuote pq);
+
+    @Mapping(target = "geoPoint", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "internalId", source = "id")
+    @Mapping(target = "url", ignore = true)
+    @Mapping(target = "name", expression = "java(addr.getName().trim())")
+    @Mapping(target = "address", expression = "java(addr.getAddress().trim())")
+    @Mapping(target = "group", expression = "java(getWWStoreGroup())")
+    Store toStore(WoolworthsStoreAddress addr);
 
     default String generateName(WoolworthsProductQuote pq) {
         String packageType = Optional.ofNullable(pq.getSize().getPackageType()).orElse("");
@@ -54,23 +64,26 @@ public interface WoolworthsDataMapper {
 
     default Product.Unit toUnitOfMeasurement(WoolworthsProductQuote pq) {
         String unitOfMeasureStr = pq.getSize().getCupMeasure();
-        Matcher m = unitNumberPattern.matcher(unitOfMeasureStr);
-        if (m.find()) {
-            String unit = m.group("unit");
-            return switch (unit.toLowerCase()) {
-                case "ea" -> Product.Unit.PER_ITEM;
-                case "kg" -> Product.Unit.PER_KG;
-                case "m" -> Product.Unit.PER_METRE;
-                case "ml" -> Product.Unit.PER_LITRE;
-                case "g" -> m.group("number").equals("1") ? Product.Unit.PER_G : Product.Unit.PER_100G;
-                default -> null;
-            };
-        } else {
-            return Product.Unit.PER_ITEM;
+        if (unitOfMeasureStr != null) {
+            Matcher m = unitNumberPattern.matcher(unitOfMeasureStr);
+            if (m.find()) {
+                String unit = m.group("unit");
+                return switch (unit.toLowerCase()) {
+                    case "ea" -> Product.Unit.PER_ITEM;
+                    case "kg" -> Product.Unit.PER_KG;
+                    case "m" -> Product.Unit.PER_METRE;
+                    case "ml" -> Product.Unit.PER_MILLILITRE;
+                    case "l" -> Product.Unit.PER_LITRE;
+                    case "g" -> Product.Unit.PER_G;
+                    default -> null;
+                };
+            }
         }
+        return Product.Unit.PER_ITEM;
     }
 
     default Discount toDiscount(WoolworthsProductQuote pq) {
+        if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) == 0) return null;
         Discount res = new Discount();
         if (pq.getMultibuy() != null) {
             res.setType(Discount.Type.BUNDLE);
@@ -110,15 +123,6 @@ public interface WoolworthsDataMapper {
         intPrdCode.setStoreGroup(store.getGroup());
         p.addSKUMapping(intPrdCode);
     }
-
-    @Mapping(target = "geoPoint", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "internalId", source = "id")
-    @Mapping(target = "url", ignore = true)
-    @Mapping(target = "name", expression = "java(addr.getName().trim())")
-    @Mapping(target = "address", expression = "java(addr.getAddress().trim())")
-    @Mapping(target = "group", expression = "java(getWWStoreGroup())")
-    Store toStore(WoolworthsStoreAddress addr);
 
     default StoreGroup getWWStoreGroup() {
         var wwSG = new StoreGroup();

@@ -3,7 +3,9 @@ package io.equalink.pricekeep.service.pricefetch.paknsave;
 import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data.Store;
 import io.equalink.pricekeep.service.pricefetch.BaseScraper;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.groups.GeneratorEmitter;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class PaknSaveDataProvider extends BaseScraper<PakNSaveProductQuote> {
     }
 
     @Override
-    protected void initSearch(String keyword) {
+    protected void initSearch(String keyword, GeneratorEmitter<? super List<PakNSaveProductQuote>> em) {
 
     }
 
@@ -28,17 +30,22 @@ public class PaknSaveDataProvider extends BaseScraper<PakNSaveProductQuote> {
     }
 
     @Override
-    protected List<PakNSaveProductQuote> fetchItem() throws IOException {
+    protected List<PakNSaveProductQuote> fetchNext() throws IOException {
         return List.of();
     }
 
     @Override
-    public Uni<Void> setStore(Store store) {
-        return Uni.createFrom().nullItem();
+    public Uni<Void> setStore(String storeInternalCode) {
+        return null;
     }
 
     @Override
-    public Uni<List<Store>> getStoreList() {
-        return Uni.createFrom().item(List.of());
+    public Multi<Store> fetchStore() {
+        return null;
+    }
+
+    @Override
+    public Multi<Quote> fetchProductQuote(Store store, String keyword) {
+        return null;
     }
 }

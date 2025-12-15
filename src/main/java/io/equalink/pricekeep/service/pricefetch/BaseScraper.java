@@ -1,64 +1,72 @@
 package io.equalink.pricekeep.service.pricefetch;
 
 
-import io.equalink.pricekeep.data.Product;
 import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data.Store;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.groups.GeneratorEmitter;
-import lombok.SneakyThrows;
+import lombok.extern.jbosslog.JBossLog;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 
-public abstract class BaseScraper<T> implements ProductQuoteFetchService {
+@JBossLog
+public abstract class BaseScraper<T> implements ProductQuoteFetchService, StoreFetchService {
 
-    private static final Logger LOG = Logger.getLogger(BaseScraper.class);
-
-    protected abstract void initSearch(String keyword);
+    protected abstract void initSearch(String keyword, GeneratorEmitter<? super List<T>> em);
 
     protected abstract Quote mapperFunction(T item);
 
-    protected abstract List<T> fetchItem() throws IOException;
+    protected abstract List<T> fetchNext() throws IOException;
 
     protected int expectedTotal;
 
-    public abstract Uni<Void> setStore(Store store);
+    public abstract Uni<Void> setStore(String storeInternalCode);
 
-    public abstract Uni<List<Store>> getStoreList();
+    public abstract Multi<Store> fetchStore();
 
     @ConfigProperty(name = "fetchImgPath")
     protected Path imgPath;
 
-    @Override
-    public Multi<Quote> fetchProductQuote(String keyword) {
-        return Multi.createFrom().<Integer, List<T>>generator(() -> {
-                initSearch(keyword);
-                return 0;
-            }, this::fetchHelper)
+    public Multi<Quote> fetchProductQuote(Store store, String keyword) {
+        return this.fetchProductQuoteWithoutTransform(store.getInternalId(), keyword)
                    .onItem().<T>disjoint()
-                   .onItem().transform(this::mapperFunction);
+                   .onItem().transform(item -> {
+                Quote q = mapperFunction(item);
+                q.setQuoteStore(store);
+                return q;
+            });
     }
 
-    public Multi<T> fetchProductQuoteWithoutTransform(String keyword) {
-        return Multi.createFrom().<Integer, List<T>>generator(() -> {
-                initSearch(keyword);
-                return 0;
-            }, this::fetchHelper)
-                   .onItem().disjoint();
+
+    public Multi<List<T>> fetchProductQuoteWithoutTransform(String storeInternalCode, String keyword) {
+        return Multi.createFrom().generator(() -> 0, (prevCnt, em) -> {
+            if (prevCnt == 0) {
+                log.infov("Initialising routes setup");
+                if (storeInternalCode != null) {
+                    setStore(storeInternalCode).await().atMost(Duration.ofMinutes(1));
+                }
+                initSearch(keyword, em);
+            }
+            log.infov("Running fetchHelper with {0} prev records", prevCnt);
+            int res = fetchHelper(prevCnt, em);
+            log.infov("Going to next stage with statenumber: {0}", res);
+            return res;
+        });
     }
 
     protected int fetchHelper(int prevFetchCnt, GeneratorEmitter<? super List<T>> emitter) {
         try {
-            List<T> lastRes = fetchItem();
+            List<T> lastRes = fetchNext();
             emitter.emit(lastRes);
-            LOG.infov("Current fetch size: {0}; accumulate size: {1}; expected total: {2}", lastRes.size(), prevFetchCnt + lastRes.size(), this.expectedTotal);
+            log.infov("Current fetch size: {0}; accumulate size: {1}; expected total: {2}", lastRes.size(), prevFetchCnt + lastRes.size(), this.expectedTotal);
             if (prevFetchCnt + lastRes.size() >= expectedTotal || lastRes.isEmpty()) {
+                log.infov("Completed loading with size {0}", prevFetchCnt + lastRes.size());
                 emitter.complete();
             }
             return prevFetchCnt + lastRes.size();
@@ -69,20 +77,19 @@ public abstract class BaseScraper<T> implements ProductQuoteFetchService {
         return prevFetchCnt;
     }
 
-    @SneakyThrows
-    protected void writeToPath(String fileName, byte[] fileContent) {
+    protected void writeToPath(String fileName, byte[] fileContent) throws IOException {
         if (imgPath == null) {
-            LOG.warn("`imgPath` is not configured; skipping write for: " + fileName);
+            log.warn("`imgPath` is not configured; skipping write for: " + fileName);
             throw new IOException("imgPath empty");
         }
         if (fileName == null || fileName.trim().isEmpty() || fileContent == null) {
-            LOG.warn("Invalid fileName or fileContent; skipping write");
+            log.warn("Invalid fileName or fileContent; skipping write");
             throw new IOException("fileName empty or content is null");
         }
         Files.createDirectories(imgPath);
         Path target = imgPath.resolve(fileName);
         Files.write(target, fileContent);
-        LOG.debugf("Wrote file to `%s`", target.toString());
+        log.debugf("Wrote file to `%s`", target.toString());
 
     }
 }

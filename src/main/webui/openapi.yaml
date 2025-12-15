@@ -165,7 +165,7 @@ components:
       enum:
       - EA
       - KG
-      - HG
+      - ML
       - G
       - L
       - M
@@ -458,7 +458,7 @@ paths:
         schema:
           type: integer
           format: int64
-      - name: id
+      - name: discount
         in: query
         schema:
           type: boolean

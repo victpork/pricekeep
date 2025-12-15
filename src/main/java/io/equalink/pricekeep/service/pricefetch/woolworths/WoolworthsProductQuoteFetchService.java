@@ -10,9 +10,12 @@ import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data.Store;
 import io.equalink.pricekeep.service.pricefetch.BaseScraper;
 import io.smallrye.common.annotation.Identifier;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.groups.GeneratorEmitter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.SneakyThrows;
 import org.jboss.logging.Logger;
 
@@ -21,7 +24,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ApplicationScoped
-public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote> {
+@Identifier("woolworths")
+public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsProductQuote> {
 
     private static final String SEARCH_URL = "https://www.woolworths.co.nz/shop/searchproducts?search=";
     private static final String API_URL = "https://www.woolworths.co.nz/api/v1/product**";
@@ -30,7 +34,7 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
     private static final String GET_STORE_URL = "https://www.woolworths.co.nz/api/v1/addresses/pickup-addresses";
     private static final String SET_STORE_URL = "https://www.woolworths.co.nz/api/v1/fulfilment/my/pickup-addresses";
     private static final String IMAGE_FILTER = "**/*.{png,jpg,jpeg,gif,svg,webp}";
-    private static final Logger LOG = Logger.getLogger(WoolworthsPageItemProxy.class);
+    private static final Logger LOG = Logger.getLogger(WoolworthsProductQuoteFetchService.class);
 
     private static final int ITEM_PER_PAGE = 120;
 
@@ -38,7 +42,7 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
     ObjectMapper objMapper;
 
     @Inject
-    @Identifier("withProxy")
+    @Named("withProxy")
     Page page;
 
     @Inject
@@ -64,7 +68,7 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
         // Collect images for items
         items.forEach(p -> {
             imageMapping.put(p.getImages().get("big"), p.getBarcode());
-            LOG.infov("Putting {0}:{1}", p.getImages().get("big"), p.getBarcode());
+            LOG.debugv("Image {0} is associated with product barcode {1}", p.getImages().get("big"), p.getBarcode());
         });
 
         expectedTotal = searchResult.getProducts().getTotalItems();
@@ -76,19 +80,22 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
     }
 
     @Override
-    protected void initSearch(String keyword) {
+    protected void initSearch(String keyword, GeneratorEmitter<? super List<WoolworthsProductQuote>> em) {
         page.unrouteAll();
         page.route(API_URL, this::handleRoute);
 
         page.route(ASSET_URL, route -> {
-            if (route.request().resourceType().equals("image")) {
-                LOG.infov("Path: {0}", route.request().url());
-            }
             if (route.request().resourceType().equals("image") && imageMapping.containsKey(route.request().url())) {
                 APIResponse response = route.fetch();
+                String contentType = response.headers().get("Content-Type");
+                String fileExt = contentType.substring(contentType.indexOf("/") + 1);
                 String gtin = imageMapping.get(route.request().url());
-                LOG.infov("Writing image to {0}", super.imgPath);
-                super.writeToPath(gtin + ".jpg", response.body());
+                imageMapping.put(gtin, fileExt);
+                try {
+                    super.writeToPath(gtin + "." + fileExt, response.body());
+                } catch (IOException e) {
+                    em.fail(e);
+                }
                 route.fulfill();
             }
         });
@@ -100,11 +107,17 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
 
     @Override
     protected Quote mapperFunction(WoolworthsProductQuote item) {
-        return dataMapper.toQuote(item);
+        Quote q = dataMapper.toQuote(item);
+        if (q.getProduct() != null) {
+            q.getProduct().setImgPath(String.format("/assets/img/%s.%s", q.getProduct().getGtin(), imageMapping.get(q.getProduct().getGtin())));
+        }
+        return q;
     }
 
     @Override
-    protected List<WoolworthsProductQuote> fetchItem() throws RuntimeException {
+    protected List<WoolworthsProductQuote> fetchNext() throws RuntimeException {
+        LOG.infov("Entering fetchNext()");
+        LOG.infov("Collected array size: {0}", collected.size());
         if (collected.isEmpty()) {
             Locator nextPage = nextPageRef.get();
             LOG.info("Loading next page");
@@ -117,8 +130,8 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
     }
 
     @Override
-    public Uni<List<Store>> getStoreList() {
-        return Uni.createFrom().emitter( emitter -> {
+    public Multi<Store> fetchStore() {
+        return Multi.createFrom().emitter(emitter -> {
             page.unrouteAll();
             page.route(IMAGE_FILTER, Route::abort);
             page.route(GET_STORE_URL, route -> {
@@ -127,10 +140,12 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
                     var storeList = rsp.getStoreAreas().getStoreAddresses();
                     LOG.infov("Getting results from {0}, count {1}", GET_STORE_URL, storeList.size());
 
-                    emitter.complete(storeList.stream()
-                                        .map(dataMapper::toStore)
-                                        .filter(addr -> addr.getName().startsWith("Woolworths"))
-                                        .toList());
+                    storeList.stream()
+                        .map(dataMapper::toStore)
+                        .filter(addr -> addr.getName().startsWith("Woolworths"))
+                            .forEach(emitter::emit);
+
+                    emitter.complete();
                 } catch (IOException e) {
                     emitter.fail(e);
                 }
@@ -139,18 +154,18 @@ public class WoolworthsPageItemProxy extends BaseScraper<WoolworthsProductQuote>
             page.navigate(CHANGE_ADDR_URL);
             page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up")).check();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Change store")).click();
-            LOG.info("Triggering API call now");
+            LOG.info("Triggering getStore API call now");
         });
     }
 
     @Override
-    public Uni<Void> setStore(Store store) {
+    public Uni<Void> setStore(String storeInternalCode) {
         return Uni.createFrom().emitter(emitter -> {
             page.unrouteAll();
             page.route(IMAGE_FILTER, Route::abort);
             page.route(SET_STORE_URL, route -> {
                 LOG.infov("Postdata: {0}", route.request().postData());
-                String newPostBody = String.format("{\"addressId\": %s}", store.getInternalId());
+                String newPostBody = String.format("{\"addressId\": %s}", storeInternalCode);
                 LOG.infov("Replace with: {0}", newPostBody);
                 APIResponse rsp = route.fetch(new Route.FetchOptions().setPostData(newPostBody).setMethod("put"));
                 //LOG.infov("Response code: {0}, response body {1}", rsp.status(), rsp.text());

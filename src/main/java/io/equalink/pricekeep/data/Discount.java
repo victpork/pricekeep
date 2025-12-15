@@ -34,12 +34,10 @@ public class Discount {
     }
 
     @Id
-    @Column(name = "quote_id")
+    @Column(name = "discount_id")
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "quote_id")
+    @OneToOne(mappedBy = "discount", cascade = {CascadeType.ALL})
     private Quote quote;
 
     @Enumerated(EnumType.STRING)

@@ -23,7 +23,7 @@ const flatDeals = computed(() => (latestDeals.value?.data.results ?? []))
 const isProductDialogOpen = ref(false)
 const isQuoteDialogOpen = ref(false)
 
-const { data: results, isLoading } = useGetApiProductAll()
+const { data: results, refetch } = useGetApiProductAll()
 
 </script>
 <template>
@@ -48,7 +48,7 @@ const { data: results, isLoading } = useGetApiProductAll()
                     Add Product
                   </Button>
                 </DialogTrigger>
-                <ProductForm @success="isProductDialogOpen = false" />
+                <ProductForm @success="() => { isProductDialogOpen = false; refetch() }" />
               </Dialog>
               <Dialog v-model:open="isQuoteDialogOpen">
                 <DialogTrigger as-child>

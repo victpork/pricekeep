@@ -2,6 +2,7 @@ package io.equalink.pricekeep.repo;
 
 import io.equalink.pricekeep.data.Product;
 import io.equalink.pricekeep.data.Quote;
+import io.quarkus.logging.Log;
 import jakarta.annotation.Nullable;
 import jakarta.data.Limit;
 import jakarta.data.Sort;
@@ -94,6 +95,10 @@ public interface ProductRepo {
         session().insert(q);
         if (q.getDiscount() != null) {
             q.getDiscount().setQuote(q);
+            var dct = q.getDiscount();
+            if (dct.getSaveValue() == null) {
+                Log.infov("Dct Type: {0}, Product {1}", dct.getType(), q.getProduct().getName());
+            }
             session().insert(q.getDiscount());
         }
     }

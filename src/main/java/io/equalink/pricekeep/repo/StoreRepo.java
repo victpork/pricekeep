@@ -23,8 +23,6 @@ public interface StoreRepo {
     @Find
     Optional<Store> findById(Long id);
 
-
-
     @Save
     void persist(Store store);
 

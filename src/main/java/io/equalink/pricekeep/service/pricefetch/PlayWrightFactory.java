@@ -4,6 +4,8 @@ package io.equalink.pricekeep.service.pricefetch;
 
 import io.quarkus.logging.Log;
 import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.microsoft.playwright.Browser;
@@ -43,23 +45,23 @@ public class PlayWrightFactory {
     }
 
     @Produces
-    @RequestScoped
-    Page getBrowserPageInstance() {
+    public Page getBrowserPageInstance() {
         return browser.newPage();
     }
 
     @Produces
-    @RequestScoped
-    BrowserContext getBrowserContext() {
+    public BrowserContext getBrowserContext() {
         return browser.newContext();
     }
 
+    @ConfigProperty(name = "proxyAddr")
+    String proxyAddr;
+
     @Produces
-    @RequestScoped
-    @Identifier("withProxy")
-    Page getBrowserPageInstanceWithProxy(@ConfigProperty(name = "proxyAddr") String serverAddr) {
-        Log.infov("Creating new instance with proxy @ {0}", serverAddr);
-        Proxy proxy = new Proxy(serverAddr);
+    @Named("withProxy")
+    public Page getBrowserPageInstanceWithProxy() {
+        Log.infov("Creating new instance with proxy @ {0}", proxyAddr);
+        Proxy proxy = new Proxy(proxyAddr);
         NewPageOptions options = new NewPageOptions().setProxy(proxy).setIgnoreHTTPSErrors(true);
         return browser.newPage(options);
     }

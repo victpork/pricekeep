@@ -11,7 +11,7 @@ export type Unit = (typeof Unit)[keyof typeof Unit];
 export const Unit = {
   EA: "EA",
   KG: "KG",
-  HG: "HG",
+  ML: "ML",
   G: "G",
   L: "L",
   M: "M",

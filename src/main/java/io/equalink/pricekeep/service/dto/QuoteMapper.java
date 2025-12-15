@@ -9,7 +9,6 @@ public interface QuoteMapper {
 
     @Mapping(target = "quoteStore", ignore = true)
     @Mapping(target = "quoteSource", constant = "USER")
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "discount", ignore = true)
     @Mapping(target = "product", ignore = true)
     @Mapping(target = "unitPrice", ignore = true)

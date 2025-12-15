@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.eclipse.microprofile.openapi.annotations.extensions.Extension;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -30,13 +31,13 @@ import java.util.*;
 @Builder
 public class Product {
 
-    @Schema(enumeration = {"EA", "KG", "HG", "G", "L", "M"})
+    @Schema(enumeration = {"EA", "KG", "ML", "G", "L", "M"})
     public enum Unit {
         @JsonEnumDefaultValue
         PER_ITEM("EA"),
         PER_KG("KG"),
-        PER_100G("HG"),
         PER_G("G"),
+        PER_MILLILITRE("ML"),
         PER_LITRE("L"),
         PER_METRE("M");
 
@@ -147,6 +148,8 @@ public class Product {
     @Builder.Default
     private Map<ProductStatType, BigDecimal> priceStats = new HashMap<>();
 
+
+    private String imgPath;
 
     public void updateStats(Map<ProductStatType, BigDecimal> newMetrics) {
         if (this.priceStats == null) {

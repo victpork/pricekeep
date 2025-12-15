@@ -6,17 +6,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.equalink.pricekeep.service.dto.BaseEntity;
 import io.equalink.pricekeep.service.dto.QuoteDTO;
 import io.equalink.pricekeep.service.dto.StoreInfo;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.groups.GeneratorEmitter;
+import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.page.PageRequest;
+import lombok.extern.jbosslog.JBossLog;
 import org.junit.jupiter.api.Test;
 
 import io.equalink.pricekeep.data.Product;
@@ -33,6 +40,7 @@ import jakarta.inject.Inject;
 import org.mockito.internal.hamcrest.HamcrestArgumentMatcher;
 
 @QuarkusTest
+@JBossLog
 public class EntityTest {
 
     @Inject
@@ -111,5 +119,50 @@ public class EntityTest {
                     hasProperty("price", is(new BigDecimal("5.59")))
                 )
         ));
+    }
+
+    @Test
+    void multiTest() {
+        Multi<String> multi = Multi.createFrom().generator(() -> 0, (i, em) -> {
+            if (i > 5) {
+                em.complete();
+            } else {
+                em.emit(List.of("i=" + i, "i=" + i));
+            }
+
+            return i+1;
+        }).onItem().<String>disjoint().onItem().transform(i -> i);
+        AssertSubscriber<String> subscriber = multi.subscribe().withSubscriber(AssertSubscriber.create(10));
+        subscriber.assertCompleted().assertItems("i=0","i=0","i=1","i=1","i=2","i=2","i=3","i=3");
+    }
+
+    @Test
+    void multiTestWithoutAssertComplete() {
+        Multi<String> multi = Multi.createFrom().generator(() -> 0, (i, em) -> {
+            if (i > 5) {
+                em.complete();
+            } else {
+                em.emit(List.of("i=" + i, "i=" + i));
+            }
+
+            return i+1;
+        }).onItem().disjoint();
+        CompletableFuture<Void> syncFlag = new CompletableFuture<>();
+        List<String> results = new ArrayList<>();
+        multi.subscribe().with(results::add, () -> syncFlag.complete(null));
+        syncFlag.join();
+        assertThat(results, hasSize(12));
+        assertThat(results, hasItems("i=0","i=0","i=1","i=1","i=2","i=2","i=3","i=3"));
+    }
+
+    @Test
+    void testMultiSample() {
+        Multi<Integer> multi = Multi.createFrom().range(1, 5)
+                                   .onItem().transform(n -> n * 10);
+
+        AssertSubscriber<Integer> subscriber = multi.subscribe().withSubscriber(AssertSubscriber.create(10));
+
+        subscriber.assertCompleted()
+            .assertItems(10, 20, 30, 40);
     }
 }

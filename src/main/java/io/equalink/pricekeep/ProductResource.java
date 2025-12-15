@@ -3,7 +3,7 @@ package io.equalink.pricekeep;
 import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.service.PeriodLength;
 import io.equalink.pricekeep.service.dto.*;
-import io.equalink.pricekeep.service.pricefetch.ProductFetchService;
+import io.equalink.pricekeep.service.pricefetch.ExternalImportController;
 import io.equalink.pricekeep.service.quote.ProductService;
 import io.equalink.pricekeep.service.quote.QuoteService;
 import io.smallrye.common.annotation.NonBlocking;
@@ -16,7 +16,6 @@ import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -25,7 +24,6 @@ import org.jboss.logging.Logger;
 import java.time.Period;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/product")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,7 +41,7 @@ public class ProductResource {
     QuoteMapper quoteMapper;
 
     @Inject
-    ProductFetchService fetchService;
+    ExternalImportController fetchService;
 
     @Context
     UriInfo uriInfo;
@@ -135,9 +133,10 @@ public class ProductResource {
     @Path("/searchExt")
     public Multi<QuoteDTO> findExternalProduct(ExternalProductQueryMessage request) {
         //Context context = Vertx.currentContext();
-        AtomicLong idGen = new AtomicLong(1);
-        return fetchService.getProductQuoteFromExternalServices(request.keyword(), request.sources())
-                   .onItem().transform(pMapper::toQuoteDTO);
+
+        /*return fetchService.getProductQuoteFromExternalServices(request.keyword(), request.sources())
+                   .onItem().transform(pMapper::toQuoteDTO);*/
+        return Multi.createFrom().empty();
     }
 
     @POST
@@ -153,7 +152,7 @@ public class ProductResource {
 
     @GET
     @Path("/{productId}/quoteHist")
-    public List<QuoteDTO> getPriceHistory(@PathParam("productId") Long productId, @QueryParam("l") PeriodLength length, @QueryParam("id") boolean includeDiscount) {
+    public List<QuoteDTO> getPriceHistory(@PathParam("productId") Long productId, @QueryParam("l") PeriodLength length, @QueryParam("discount") boolean includeDiscount) {
 
         Period p = switch (length) {
             case PeriodLength.WEEK -> Period.ofWeeks(1);

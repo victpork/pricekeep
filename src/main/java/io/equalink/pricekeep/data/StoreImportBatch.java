@@ -1,13 +1,15 @@
 package io.equalink.pricekeep.data;
 
+import io.equalink.pricekeep.batch.ProductQuoteImportJob;
+import io.equalink.pricekeep.batch.StoreImportJob;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.jbosslog.JBossLog;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.JobDataMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -24,8 +26,7 @@ public class StoreImportBatch extends BaseBatch {
     private List<StoreGroup> storeGroup;
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.infov("Job {0} started", this.getName());
-
+    protected String defaultJobType() {
+        return StoreImportJob.TYPE;
     }
 }

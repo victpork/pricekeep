@@ -10,7 +10,7 @@ import io.equalink.pricekeep.data.Product;
 public interface ProductMapper {
     @Mapping(target = "desc", source = "description")
     @Mapping(target = "stats", source = "priceStats")
-    @Mapping(target = "imgUrl", ignore = true)
+    @Mapping(target = "imgUrl", source = "imgPath")
     @Mapping(target = "latestQuotes", source = "priceQuotes")
     @Mapping(target = "quantityPerItem", source = "packageSize")
     @Mapping(target = "itemPerBundle", source = "itemPerPackage")
@@ -23,20 +23,21 @@ public interface ProductMapper {
     @Mapping(target = "priceStats", ignore = true)
     @Mapping(target = "packageSize", source = "quantityPerItem")
     @Mapping(target = "itemPerPackage", source = "itemPerBundle")
+    @Mapping(target = "imgPath", source = "imgUrl")
     public Product toEntity(ProductInfo pDTO);
 
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "productInfo", source = "product")
     @Mapping(target = "storeInfo", source = "quoteStore")
     @Mapping(target = "quoteDate", source = "quoteDate")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "discountType", source = "discount.type")
+    @Mapping(target = "id", ignore = true)
     public QuoteDTO toQuoteDTO(Quote q);
 
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "storeInfo", source = "quoteStore")
     @Mapping(target = "quoteDate", source = "quoteDate")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "discountType", source = "discount.type")
+    @Mapping(target = "id", ignore = true)
     public SimpleQuoteDTO toSimpleQuoteDTO(Quote q);
 }

@@ -1,11 +1,12 @@
 package io.equalink.pricekeep.data;
 
+import io.equalink.pricekeep.batch.ProductQuoteImportJob;
 import jakarta.persistence.*;
 import lombok.*;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.JobDataMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -25,9 +26,8 @@ public class ProductQuoteImportBatch extends BaseBatch {
 
     private String keyword;
 
-
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-
+    protected String defaultJobType() {
+        return ProductQuoteImportJob.TYPE;
     }
 }

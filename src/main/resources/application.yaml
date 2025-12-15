@@ -9,7 +9,9 @@ quarkus:
       logs: true
     source-dir: src/main/webui
     build-dir: dist
-    ignored-path-prefixes: /api
+    ignored-path-prefixes:
+      - /api
+      - /static
     enable-spa-routing: true
 
   smallrye-openapi:

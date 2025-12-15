@@ -7,6 +7,6 @@
 import type { PeriodLength } from "./periodLength";
 
 export type GetApiProductProductIdQuoteHistParams = {
-  id?: boolean;
+  discount?: boolean;
   l?: PeriodLength;
 };

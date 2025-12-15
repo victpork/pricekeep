@@ -13,6 +13,7 @@ import io.equalink.pricekeep.repo.StoreRepo;
 import io.equalink.pricekeep.service.pricefetch.woolworths.*;
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.common.annotation.Identifier;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
@@ -57,7 +58,8 @@ public class WoolworthsDataProviderTest {
     ObjectMapper objMapper;
 
     @Inject
-    WoolworthsPageItemProxy proxy;
+    @Identifier("woolworths")
+    WoolworthsProductQuoteFetchService proxy;
 
     @Inject
     ProductRepo productRepo;
@@ -163,12 +165,6 @@ public class WoolworthsDataProviderTest {
     }
 
     @Test
-    void testFetchProductNoTransform() {
-        Multi<WoolworthsProductQuote> m = proxy.fetchProductQuoteWithoutTransform("cheese");
-        m.subscribe().asStream().forEach(item -> LOG.infov("{0}:[{1}] - ${2,number,#.##}", item.getName(), item.getBarcode(), item.getPrice().getOriginalPrice()));
-    }
-
-    @Test
     @Transactional
     void testDataConversion() throws IOException {
         try (InputStream inputStream = wwSaleTestData.openStream()) {
@@ -228,12 +224,6 @@ public class WoolworthsDataProviderTest {
     }
 
     @Test
-    @Disabled
-    void testFetchandInsertToDB() {
-        proxy.fetchProductQuote("cheese").subscribe().with( q -> productRepo.persist(q));
-    }
-
-    @Test
     void testParseAddresses() throws IOException {
         try (InputStream inputStream = wwAddressData.openStream()) {
             var addressRsp = objMapper.readValue(inputStream, WoolworthsAddressResponse.class);
@@ -248,11 +238,8 @@ public class WoolworthsDataProviderTest {
 
     @Test
     void testFetchStore() {
-        Uni<List<Store>> storeListResult = proxy.getStoreList();
-        storeListResult.subscribe().with(storeList -> {
-            storeList.forEach(storeRepo::persist);
-            proxy.setStore(storeList.getFirst());
-        }, Assertions::fail);
+        Multi<Store> storeListResult = proxy.fetchStore();
+        storeListResult.subscribe().with(storeRepo::persist, e -> fail(e));
         //storeListResult.chain(l -> proxy.setStore(l.getFirst())).subscribe().with(_ -> {}, Assertions::fail);
     }
 }
