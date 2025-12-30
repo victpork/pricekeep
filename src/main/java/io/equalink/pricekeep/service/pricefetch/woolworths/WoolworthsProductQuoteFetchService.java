@@ -17,6 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
+import lombok.extern.jbosslog.JBossLog;
 import org.jboss.logging.Logger;
 
 import java.io.IOException;
@@ -24,7 +25,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ApplicationScoped
-@Identifier("woolworths")
+@Named("woolworths")
+@JBossLog
 public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsProductQuote> {
 
     private static final String SEARCH_URL = "https://www.woolworths.co.nz/shop/searchproducts?search=";
@@ -87,7 +89,13 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
         page.route(ASSET_URL, route -> {
             if (route.request().resourceType().equals("image") && imageMapping.containsKey(route.request().url())) {
                 APIResponse response = route.fetch();
-                String contentType = response.headers().get("Content-Type");
+                String contentType = response.headers().get("content-type");
+                if (contentType == null) {
+                    log.warnv("Content-Type is null for image {0}", route.request().url());
+                    response.headers().forEach((k, v) -> log.warnv("{0}: {1}", k, v));
+                    route.fulfill();
+                    return;
+                }
                 String fileExt = contentType.substring(contentType.indexOf("/") + 1);
                 String gtin = imageMapping.get(route.request().url());
                 imageMapping.put(gtin, fileExt);

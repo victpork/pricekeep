@@ -12,6 +12,7 @@ import io.smallrye.mutiny.Multi;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.ActivateRequestContext;
+import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.jbosslog.JBossLog;
@@ -33,6 +34,12 @@ public class ExternalImportController {
     @Inject
     private StoreRepo storeRepo;
 
+    @Inject
+    Instance<ProductQuoteFetchService> pqFetchServiceInstance;
+
+    @Inject
+    Instance<StoreFetchService> sFetchServiceInstance;
+
     private Map<String, ProductQuoteFetchService> quoteProviders;
 
     private Map<String, StoreFetchService> storeProviders;
@@ -50,6 +57,7 @@ public class ExternalImportController {
                                       this::<ProductQuoteFetchService>extractName,
                                       InstanceHandle::get
                                   ));
+
         this.storeProviders = Arc.container()
                                   .listAll(StoreFetchService.class)
                                   .stream()
@@ -89,6 +97,7 @@ public class ExternalImportController {
 
     @ActivateRequestContext
     public Multi<Quote> getProductQuoteFromExternalServices(String keyword, List<Store> sources) {
+        log.infov("Content of storeProviders: {0}", storeProviders);
         // Step 1: Group stores by group name
         // Step 2: Transform each group into a Multi by finding the matching service provider
         // Step 3: Merge all Multi streams into a single Multi
@@ -112,8 +121,8 @@ public class ExternalImportController {
         return quoteProviders.keySet().stream().toList();
     }
 
-    @ActivateRequestContext
     public Multi<Store> getStoreListFromExternalServices(List<StoreGroup> storeGroup) {
+        log.infov("Content of storeProviders: {0}", storeProviders);
         return Multi.createFrom().iterable(storeGroup).onItem()
                    .transform(sg -> storeProviders.get(sg.getName())
                                         .fetchStore()

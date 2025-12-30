@@ -24,19 +24,11 @@ public abstract class BaseBatch {
 
     private boolean enabled;
 
-    @Column(name = "job_type", length = 13)
+    @Column(name = "job_type", length = 30)
     protected String jobType;
 
     @Column(name = "cron_trigger", length = 50)
     private String cronTrigger;
 
     private LocalDateTime lastRunTime;
-
-    @PrePersist
-    protected void ensureJobType() {
-        if (this.jobType == null) {
-            this.jobType = defaultJobType();
-        }
-    }
-    protected abstract String defaultJobType();
 }

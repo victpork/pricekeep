@@ -13,7 +13,7 @@ import org.locationtech.jts.geom.Point;
     name = "store",
     indexes = {
         @Index(name = "nameIdx", columnList = "name"),
-        @Index(name = "geoLocIdx", columnList = "geoPoint"),
+        //@Index(name = "geoLocIdx", columnList = "geoPoint"),
         @Index(name = "group_index", columnList = "group_id,int_id")
     }
 )
@@ -28,7 +28,7 @@ public class Store {
 
     private String url;
 
-    private Point geoPoint;
+    //private Point geoPoint;
     private String address;
 
     @Column(name = "int_id")

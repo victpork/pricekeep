@@ -21,14 +21,13 @@ import { computed, unref } from "vue";
 import type { MaybeRef } from "vue";
 
 import type {
-  ChartNode,
   ExternalProductQueryMessage,
   GetApiCommonLatestDealsParams,
   GetApiProductAllParams,
-  GetApiProductProductIdChartParams,
   GetApiProductProductIdQuoteHistParams,
   GetApiProductSearchParams,
   GetApiProductSuggestParams,
+  JobInfo,
   ProductInfo,
   QuoteDTO,
   QuoteResult,
@@ -61,6 +60,547 @@ type NonReadonly<T> = [T] extends [UnionToIntersection<T>]
         : T[P];
     }
   : DistributeReadOnlyOverUnions<T>;
+
+/**
+ * @summary Create Alert
+ */
+export type postApiAdminAlertNewResponse201 = {
+  data: void;
+  status: 201;
+};
+
+export type postApiAdminAlertNewResponseSuccess =
+  postApiAdminAlertNewResponse201 & {
+    headers: Headers;
+  };
+export type postApiAdminAlertNewResponse = postApiAdminAlertNewResponseSuccess;
+
+export const getPostApiAdminAlertNewUrl = () => {
+  return `/api/admin/alert/new`;
+};
+
+export const postApiAdminAlertNew = async (
+  options?: RequestInit,
+): Promise<postApiAdminAlertNewResponse> => {
+  const res = await fetch(getPostApiAdminAlertNewUrl(), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminAlertNewResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminAlertNewResponse;
+};
+
+export const getPostApiAdminAlertNewMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminAlertNew>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminAlertNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postApiAdminAlertNew"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminAlertNew>>,
+    void
+  > = () => {
+    return postApiAdminAlertNew(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminAlertNewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminAlertNew>>
+>;
+
+export type PostApiAdminAlertNewMutationError = unknown;
+
+/**
+ * @summary Create Alert
+ */
+export const usePostApiAdminAlertNew = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminAlertNew>>,
+      TError,
+      void,
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminAlertNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getPostApiAdminAlertNewMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Get All Jobs
+ */
+export type getApiAdminBatchAllResponse200 = {
+  data: JobInfo[];
+  status: 200;
+};
+
+export type getApiAdminBatchAllResponseSuccess =
+  getApiAdminBatchAllResponse200 & {
+    headers: Headers;
+  };
+export type getApiAdminBatchAllResponse = getApiAdminBatchAllResponseSuccess;
+
+export const getGetApiAdminBatchAllUrl = () => {
+  return `/api/admin/batch/all`;
+};
+
+export const getApiAdminBatchAll = async (
+  options?: RequestInit,
+): Promise<getApiAdminBatchAllResponse> => {
+  const res = await fetch(getGetApiAdminBatchAllUrl(), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiAdminBatchAllResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as getApiAdminBatchAllResponse;
+};
+
+export const getGetApiAdminBatchAllQueryKey = () => {
+  return ["api", "admin", "batch", "all"] as const;
+};
+
+export const getGetApiAdminBatchAllQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiAdminBatchAll>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getApiAdminBatchAll>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = getGetApiAdminBatchAllQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiAdminBatchAll>>
+  > = ({ signal }) => getApiAdminBatchAll({ signal, ...fetchOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiAdminBatchAll>>,
+    TError,
+    TData
+  >;
+};
+
+export type GetApiAdminBatchAllQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiAdminBatchAll>>
+>;
+export type GetApiAdminBatchAllQueryError = unknown;
+
+/**
+ * @summary Get All Jobs
+ */
+
+export function useGetApiAdminBatchAll<
+  TData = Awaited<ReturnType<typeof getApiAdminBatchAll>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiAdminBatchAll>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseQueryReturnType<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiAdminBatchAllQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<
+    QueryKey,
+    TData,
+    TError
+  >;
+
+  return query;
+}
+
+/**
+ * @summary Create Delete
+ */
+export type postApiAdminBatchNewResponse201 = {
+  data: void;
+  status: 201;
+};
+
+export type postApiAdminBatchNewResponseSuccess =
+  postApiAdminBatchNewResponse201 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchNewResponse = postApiAdminBatchNewResponseSuccess;
+
+export const getPostApiAdminBatchNewUrl = () => {
+  return `/api/admin/batch/new`;
+};
+
+export const postApiAdminBatchNew = async (
+  options?: RequestInit,
+): Promise<postApiAdminBatchNewResponse> => {
+  const res = await fetch(getPostApiAdminBatchNewUrl(), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminBatchNewResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminBatchNewResponse;
+};
+
+export const getPostApiAdminBatchNewMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postApiAdminBatchNew"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+    void
+  > = () => {
+    return postApiAdminBatchNew(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminBatchNewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchNew>>
+>;
+
+export type PostApiAdminBatchNewMutationError = unknown;
+
+/**
+ * @summary Create Delete
+ */
+export const usePostApiAdminBatchNew = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+      TError,
+      void,
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getPostApiAdminBatchNewMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Run Batch
+ */
+export type postApiAdminBatchRunBatchIdResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type postApiAdminBatchRunBatchIdResponseSuccess =
+  postApiAdminBatchRunBatchIdResponse200 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchRunBatchIdResponse =
+  postApiAdminBatchRunBatchIdResponseSuccess;
+
+export const getPostApiAdminBatchRunBatchIdUrl = (batchId: number) => {
+  return `/api/admin/batch/run/${batchId}`;
+};
+
+export const postApiAdminBatchRunBatchId = async (
+  batchId: number,
+  options?: RequestInit,
+): Promise<postApiAdminBatchRunBatchIdResponse> => {
+  const res = await fetch(getPostApiAdminBatchRunBatchIdUrl(batchId), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminBatchRunBatchIdResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminBatchRunBatchIdResponse;
+};
+
+export const getPostApiAdminBatchRunBatchIdMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+    TError,
+    { batchId: number },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+  TError,
+  { batchId: number },
+  TContext
+> => {
+  const mutationKey = ["postApiAdminBatchRunBatchId"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+    { batchId: number }
+  > = (props) => {
+    const { batchId } = props ?? {};
+
+    return postApiAdminBatchRunBatchId(batchId, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminBatchRunBatchIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>
+>;
+
+export type PostApiAdminBatchRunBatchIdMutationError = unknown;
+
+/**
+ * @summary Run Batch
+ */
+export const usePostApiAdminBatchRunBatchId = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+      TError,
+      { batchId: number },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+  TError,
+  { batchId: number },
+  TContext
+> => {
+  const mutationOptions =
+    getPostApiAdminBatchRunBatchIdMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Create Store
+ */
+export type postApiAdminStoreNewResponse201 = {
+  data: void;
+  status: 201;
+};
+
+export type postApiAdminStoreNewResponseSuccess =
+  postApiAdminStoreNewResponse201 & {
+    headers: Headers;
+  };
+export type postApiAdminStoreNewResponse = postApiAdminStoreNewResponseSuccess;
+
+export const getPostApiAdminStoreNewUrl = () => {
+  return `/api/admin/store/new`;
+};
+
+export const postApiAdminStoreNew = async (
+  options?: RequestInit,
+): Promise<postApiAdminStoreNewResponse> => {
+  const res = await fetch(getPostApiAdminStoreNewUrl(), {
+    ...options,
+    method: "POST",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminStoreNewResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminStoreNewResponse;
+};
+
+export const getPostApiAdminStoreNewMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminStoreNew>>,
+    TError,
+    void,
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminStoreNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["postApiAdminStoreNew"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminStoreNew>>,
+    void
+  > = () => {
+    return postApiAdminStoreNew(fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminStoreNewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminStoreNew>>
+>;
+
+export type PostApiAdminStoreNewMutationError = unknown;
+
+/**
+ * @summary Create Store
+ */
+export const usePostApiAdminStoreNew = <TError = unknown, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminStoreNew>>,
+      TError,
+      void,
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminStoreNew>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions = getPostApiAdminStoreNewMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 /**
  * @summary Get Recent Discount
@@ -1310,168 +1850,6 @@ export function useGetApiProductProductId<
 }
 
 /**
- * @summary Get Chart Data
- */
-export type getApiProductProductIdChartResponse200 = {
-  data: ChartNode[];
-  status: 200;
-};
-
-export type getApiProductProductIdChartResponseSuccess =
-  getApiProductProductIdChartResponse200 & {
-    headers: Headers;
-  };
-export type getApiProductProductIdChartResponse =
-  getApiProductProductIdChartResponseSuccess;
-
-export const getGetApiProductProductIdChartUrl = (
-  productId: number,
-  params: GetApiProductProductIdChartParams,
-) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? "null" : value.toString());
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0
-    ? `/api/product/${productId}/chart?${stringifiedParams}`
-    : `/api/product/${productId}/chart`;
-};
-
-export const getApiProductProductIdChart = async (
-  productId: number,
-  params: GetApiProductProductIdChartParams,
-  options?: RequestInit,
-): Promise<getApiProductProductIdChartResponse> => {
-  const res = await fetch(
-    getGetApiProductProductIdChartUrl(productId, params),
-    {
-      ...options,
-      method: "GET",
-    },
-  );
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: getApiProductProductIdChartResponse["data"] = body
-    ? JSON.parse(body)
-    : {};
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as getApiProductProductIdChartResponse;
-};
-
-export const getGetApiProductProductIdChartQueryKey = (
-  productId?: MaybeRef<number>,
-  params?: MaybeRef<GetApiProductProductIdChartParams>,
-) => {
-  return [
-    "api",
-    "product",
-    productId,
-    "chart",
-    ...(params ? [params] : []),
-  ] as const;
-};
-
-export const getGetApiProductProductIdChartQueryOptions = <
-  TData = Awaited<ReturnType<typeof getApiProductProductIdChart>>,
-  TError = unknown,
->(
-  productId: MaybeRef<number>,
-  params: MaybeRef<GetApiProductProductIdChartParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getApiProductProductIdChart>>,
-        TError,
-        TData
-      >
-    >;
-    fetch?: RequestInit;
-  },
-) => {
-  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
-
-  const queryKey = getGetApiProductProductIdChartQueryKey(productId, params);
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getApiProductProductIdChart>>
-  > = ({ signal }) =>
-    getApiProductProductIdChart(unref(productId), unref(params), {
-      signal,
-      ...fetchOptions,
-    });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(productId)),
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getApiProductProductIdChart>>,
-    TError,
-    TData
-  >;
-};
-
-export type GetApiProductProductIdChartQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getApiProductProductIdChart>>
->;
-export type GetApiProductProductIdChartQueryError = unknown;
-
-/**
- * @summary Get Chart Data
- */
-
-export function useGetApiProductProductIdChart<
-  TData = Awaited<ReturnType<typeof getApiProductProductIdChart>>,
-  TError = unknown,
->(
-  productId: MaybeRef<number>,
-  params: MaybeRef<GetApiProductProductIdChartParams>,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof getApiProductProductIdChart>>,
-        TError,
-        TData
-      >
-    >;
-    fetch?: RequestInit;
-  },
-  queryClient?: QueryClient,
-): UseQueryReturnType<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getGetApiProductProductIdChartQueryOptions(
-    productId,
-    params,
-    options,
-  );
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = unref(queryOptions).queryKey as DataTag<
-    QueryKey,
-    TData,
-    TError
-  >;
-
-  return query;
-}
-
-/**
  * @summary Edit Product
  */
 export type postApiProductProductIdEditResponse200 = {
@@ -1601,28 +1979,17 @@ export const usePostApiProductProductIdEdit = <
 /**
  * @summary Quote Price
  */
-export type postApiProductProductIdQuoteResponse200 = {
-  data: unknown;
-  status: 200;
-};
-
-export type postApiProductProductIdQuoteResponse400 = {
-  data: void;
-  status: 400;
+export type postApiProductProductIdQuoteResponse201 = {
+  data: QuoteDTO;
+  status: 201;
 };
 
 export type postApiProductProductIdQuoteResponseSuccess =
-  postApiProductProductIdQuoteResponse200 & {
+  postApiProductProductIdQuoteResponse201 & {
     headers: Headers;
   };
-export type postApiProductProductIdQuoteResponseError =
-  postApiProductProductIdQuoteResponse400 & {
-    headers: Headers;
-  };
-
 export type postApiProductProductIdQuoteResponse =
-  | postApiProductProductIdQuoteResponseSuccess
-  | postApiProductProductIdQuoteResponseError;
+  postApiProductProductIdQuoteResponseSuccess;
 
 export const getPostApiProductProductIdQuoteUrl = (productId: number) => {
   return `/api/product/${productId}/quote`;
@@ -1653,7 +2020,7 @@ export const postApiProductProductIdQuote = async (
 };
 
 export const getPostApiProductProductIdQuoteMutationOptions = <
-  TError = void,
+  TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -1694,13 +2061,13 @@ export type PostApiProductProductIdQuoteMutationResult = NonNullable<
   Awaited<ReturnType<typeof postApiProductProductIdQuote>>
 >;
 export type PostApiProductProductIdQuoteMutationBody = NonReadonly<QuoteDTO>;
-export type PostApiProductProductIdQuoteMutationError = void;
+export type PostApiProductProductIdQuoteMutationError = unknown;
 
 /**
  * @summary Quote Price
  */
 export const usePostApiProductProductIdQuote = <
-  TError = void,
+  TError = unknown,
   TContext = unknown,
 >(
   options?: {

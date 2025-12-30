@@ -35,6 +35,7 @@ public class Discount {
 
     @Id
     @Column(name = "discount_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToOne(mappedBy = "discount", cascade = {CascadeType.ALL})

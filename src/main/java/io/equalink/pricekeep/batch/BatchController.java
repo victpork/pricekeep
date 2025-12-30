@@ -1,7 +1,8 @@
 package io.equalink.pricekeep.batch;
 
 import io.equalink.pricekeep.data.BaseBatch;
-import io.equalink.pricekeep.data.BatchExecDetail;
+import io.equalink.pricekeep.data.ProductQuoteImportBatch;
+import io.equalink.pricekeep.data.StoreImportBatch;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.service.dto.JobInfo;
 import io.quarkus.runtime.StartupEvent;
@@ -15,8 +16,6 @@ import org.quartz.impl.matchers.GroupMatcher;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @ApplicationScoped
 @JBossLog
@@ -31,33 +30,36 @@ public class BatchController {
     @Inject
     BatchRepo batchRepo;
 
-    void onStart(@Observes StartupEvent event) throws SchedulerException {
-        List<BatchExecDetail> batchList = batchRepo.getAllBatchesForExecution();
+    void onStart(@Observes StartupEvent ignoredEvent) throws SchedulerException {
+        List<BaseBatch> batchList = batchRepo.getAllBatchesForExecution();
 
-        for (BatchExecDetail b : batchList) {
-            JobBuilder jobBuilder = switch (b.jobType()) {
-                case ProductQuoteImportJob.TYPE -> JobBuilder.newJob(ProductQuoteImportJob.class);
-                case StoreImportJob.TYPE -> JobBuilder.newJob(StoreImportJob.class);
+        for (BaseBatch b : batchList) {
+            JobBuilder jobBuilder = switch (b) {
+                case ProductQuoteImportBatch _ -> JobBuilder.newJob(ProductQuoteImportJob.class);
+                case StoreImportBatch _ -> JobBuilder.newJob(StoreImportJob.class);
                 default -> {
-                    log.errorv("Invalid job type {0} for ID {1}", b.jobType(), b.id());
+                    log.errorv("Invalid job type {0} for ID {1}", b.getClass().getSimpleName(), b.getId());
                     yield null;
                 }
             };
             if (jobBuilder == null) continue;
             JobDetail job = jobBuilder
-                                .withIdentity(b.name())
-                                .usingJobData(JOB_TYPE, b.jobType())
-                                .usingJobData(JOB_ID, b.id())
+                                .withIdentity(b.getName())
+                                .usingJobData(JOB_TYPE, b.getClass().getSimpleName())
+                                .usingJobData(JOB_ID, b.getId())
                                 .storeDurably()
                                 .build();
 
             Trigger trigger = TriggerBuilder.newTrigger()
-                                  .forJob(b.name())
-                                  .withSchedule(CronScheduleBuilder.cronSchedule(b.cronTrigger()))
+                                  .forJob(b.getName())
+                                  .withSchedule(CronScheduleBuilder.cronSchedule(b.getCronTrigger()))
                                   .build();
 
             quartzScheduler.scheduleJob(job, trigger);
         }
+        quartzScheduler.start();
+        log.info(quartzScheduler.getMetaData().getSummary());
+        log.infov("Registered jobs: {0}", quartzScheduler.getJobKeys(GroupMatcher.anyJobGroup()).size());
     }
 
     public List<JobInfo> getAllJobs() {
@@ -82,10 +84,19 @@ public class BatchController {
         }).toList();
     }
 
-
     public void forceStart(BaseBatch batch) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(batch.getName());
+        log.infov("Triggering job {0}, exists: {1}", batch.getName(), quartzScheduler.checkExists(jobKey));
+        JobDetail jobDetail = quartzScheduler.getJobDetail(jobKey);
+        log.infov("Job class: {0}", jobDetail.getJobClass().getName());
+        try {
+            quartzScheduler.triggerJob(jobKey);
 
-        quartzScheduler.triggerJob(jobKey);
+        } catch (SchedulerException e) {
+            log.error(e);
+        }
+        log.infov("Job {0} triggered successfully", batch.getName());
+        log.info(quartzScheduler.getMetaData().getSummary());
+        log.info(quartzScheduler.getJobDetail(jobKey).isDurable());
     }
 }

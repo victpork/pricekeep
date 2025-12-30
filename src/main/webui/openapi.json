@@ -2,18 +2,6 @@
   "openapi" : "3.1.0",
   "components" : {
     "schemas" : {
-      "ChartNode" : {
-        "type" : "object",
-        "required" : [ "index", "value" ],
-        "properties" : {
-          "index" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
       "ExternalProductQueryMessage" : {
         "type" : "object",
         "properties" : {
@@ -28,10 +16,39 @@
           }
         }
       },
+      "JobInfo" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "lastRunTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime"
+          },
+          "nextExecTime" : {
+            "$ref" : "#/components/schemas/LocalDateTime"
+          }
+        }
+      },
       "LocalDate" : {
         "type" : "string",
         "format" : "date",
         "examples" : [ "2022-03-10" ]
+      },
+      "LocalDateTime" : {
+        "type" : "string",
+        "format" : "date-time",
+        "examples" : [ "2022-03-10T12:15:50" ]
       },
       "PeriodLength" : {
         "type" : "string",
@@ -184,10 +201,6 @@
         },
         "required" : [ "name" ]
       },
-      "TimeRange" : {
-        "type" : "string",
-        "enum" : [ "ONE_MONTH", "THREE_MONTH", "SIX_MONTH", "TWELVE_MONTH" ]
-      },
       "Type" : {
         "type" : "string",
         "enum" : [ "PERCENTAGE", "FIXED_AMOUNT", "BUNDLE", "NEAR_EXPIRY", "OTHER" ]
@@ -210,6 +223,85 @@
     }
   },
   "paths" : {
+    "/api/admin/alert/new" : {
+      "post" : {
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        },
+        "summary" : "Create Alert",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
+    "/api/admin/batch/all" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/JobInfo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary" : "Get All Jobs",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
+    "/api/admin/batch/new" : {
+      "post" : {
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        },
+        "summary" : "Create Delete",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
+    "/api/admin/batch/run/{batchId}" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "batchId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          }
+        },
+        "summary" : "Run Batch",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
+    "/api/admin/store/new" : {
+      "post" : {
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        },
+        "summary" : "Create Store",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
     "/api/common/latestDeals" : {
       "get" : {
         "parameters" : [ {
@@ -487,49 +579,6 @@
         "tags" : [ "Product Resource" ]
       }
     },
-    "/api/product/{productId}/chart" : {
-      "get" : {
-        "parameters" : [ {
-          "name" : "productId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }, {
-          "name" : "showDiscount",
-          "in" : "query",
-          "schema" : {
-            "type" : "boolean"
-          }
-        }, {
-          "name" : "tr",
-          "in" : "query",
-          "schema" : {
-            "$ref" : "#/components/schemas/TimeRange"
-          },
-          "required" : true
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/ChartNode"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary" : "Get Chart Data",
-        "tags" : [ "Product Resource" ]
-      }
-    },
     "/api/product/{productId}/edit" : {
       "post" : {
         "parameters" : [ {
@@ -590,16 +639,21 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK",
+          "201" : {
+            "description" : "New price quoted",
             "content" : {
               "application/json" : {
-                "schema" : { }
+                "schema" : {
+                  "$ref" : "#/components/schemas/QuoteDTO"
+                }
               }
             }
           },
           "400" : {
-            "description" : "Bad Request"
+            "description" : "Data conflict",
+            "content" : {
+              "application/json" : { }
+            }
           }
         },
         "summary" : "Quote Price",

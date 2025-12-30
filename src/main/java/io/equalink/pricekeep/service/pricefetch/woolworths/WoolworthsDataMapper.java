@@ -43,7 +43,7 @@ public interface WoolworthsDataMapper {
     @Mapping(target = "discountedUnitPrice", source = "pq.size.cupPrice")
     Quote toQuote(WoolworthsProductQuote pq);
 
-    @Mapping(target = "geoPoint", ignore = true)
+    //@Mapping(target = "geoPoint", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "internalId", source = "id")
     @Mapping(target = "url", ignore = true)
@@ -94,10 +94,12 @@ public interface WoolworthsDataMapper {
             var priceStruct = pq.getPrice();
             if (BigDecimal.ZERO.compareTo(priceStruct.getSavePercentage()) < 0) {
                 res.setType(Discount.Type.PERCENTAGE);
-                res.setSaveValue(pq.getPrice().getSavePercentage());
-            } else if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) < 0){
+                res.setSaveValue(priceStruct.getSavePercentage());
+                res.setSalePrice(priceStruct.getSalePrice());
+            } else if (BigDecimal.ZERO.compareTo(priceStruct.getSavePrice()) < 0){
                 res.setType(Discount.Type.FIXED_AMOUNT);
-                res.setSaveValue(pq.getPrice().getSavePrice());
+                res.setSaveValue(priceStruct.getSavePrice());
+                res.setSalePrice(priceStruct.getSalePrice());
             }
         }
         return res;

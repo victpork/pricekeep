@@ -10,10 +10,20 @@ public interface StoreMapper {
 
     StoreInfo toDTO(Store s);
 
-    @Mapping(target = "geoPoint", ignore = true)
+    //@Mapping(target = "geoPoint", ignore = true)
     @Mapping(target = "internalId", ignore = true)
     @Mapping(target = "group", ignore = true)
     Store toEntity(StoreInfo sDTO);
+
+    @Mapping(target = "id", source = "storeId")
+    @Mapping(target = "name", source = "storeName")
+    @Mapping(target = "url", ignore = true)
+    @Mapping(target = "address", ignore = true)
+    StoreInfo toDTO(CompactQuote q);
+
+    default BaseEntity<StoreInfo> toBaseEntity(CompactQuote cq) {
+        return new BaseEntity.WithDetail<>(toDTO(cq));
+    }
 
     default BaseEntity<StoreInfo> toBaseEntity(Store s) {
         return new BaseEntity.WithDetail<>(toDTO(s));

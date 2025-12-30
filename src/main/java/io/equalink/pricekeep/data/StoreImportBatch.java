@@ -24,9 +24,4 @@ public class StoreImportBatch extends BaseBatch {
         inverseJoinColumns = @JoinColumn(name = "batch_id")
     )
     private List<StoreGroup> storeGroup;
-
-    @Override
-    protected String defaultJobType() {
-        return StoreImportJob.TYPE;
-    }
 }

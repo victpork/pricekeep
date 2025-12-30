@@ -21,11 +21,17 @@ public interface StoreRepo {
     List<Store> findStoreByName(@Pattern String name);
 
     @Find
+    List<Store> findStoreByInternalId(String internalId);
+
+    @Query("select s.internalId from Store s where s.group.name = :storeGroupName")
+    List<String> findIntIDsStoreGroup(String storeGroupName);
+
+    @Find
     Optional<Store> findById(Long id);
 
     @Save
     void persist(Store store);
 
-    @Query("select s, geo_distance(s.geoPoint, geo_point(:latitude, :longitude)) as distance from Store s order by distance asc")
-    Store locateNearestStore(double latitude, double longitude);
+    //@Query("select s, geo_distance(s.geoPoint, geo_point(:latitude, :longitude)) as distance from Store s order by distance asc")
+    //Store locateNearestStore(double latitude, double longitude);
 }

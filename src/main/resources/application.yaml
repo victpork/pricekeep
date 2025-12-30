@@ -24,12 +24,6 @@ quarkus:
     db-kind: postgresql
     devservices:
       image-name: postgis/postgis:17-3.5
-      port: 5432
-
-  hibernate-orm:
-    dialect: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect
-    log:
-      sql: true
 
   http:
     filter:
@@ -54,6 +48,10 @@ quarkus:
     hibernate-orm:
       dev-ui:
         allow-hql: true
+      log:
+        sql: true
+      schema-management:
+        strategy: update
 
 proxyAddr: localhost:3041
 

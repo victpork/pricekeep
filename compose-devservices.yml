@@ -1,5 +1,24 @@
 services:
   proxy:
-    image: ghcr.io/victpork/pineproxy:latest
+    image: fluxzy/fluxzy:latest
     ports:
-      - '3041:8080'
+      - '3041:44344'
+    command: start
+  db:
+    image: postgis/postgis:17-3.5
+    healthcheck:
+      test: pg_isready -U pricekeep -d pricekeep
+      interval: 5s
+      timeout: 3s
+    restart: always
+    ports:
+      - '5432'
+    environment:
+      POSTGRES_USER: pricekeep
+      POSTGRES_PASSWORD: pricekeep-1234
+      POSTGRES_DB: pricekeep
+    volumes:
+      - '/mnt/d/pricekeepdata:/var/lib/postgresql/data:Z'
+volumes:
+  pgdata:
+    driver: local

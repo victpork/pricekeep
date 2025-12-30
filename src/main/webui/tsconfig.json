@@ -1,8 +1,12 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    },
   ],
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
@@ -10,9 +14,12 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "noUncheckedIndexedAccess": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   }
 }

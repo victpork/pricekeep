@@ -19,15 +19,10 @@ public class ProductQuoteImportBatch extends BaseBatch {
 
     @ManyToMany
     @JoinTable(name = "product_quote_batch_rel",
-        joinColumns = @JoinColumn(name = "store_id"),
-        inverseJoinColumns = @JoinColumn(name = "batch_id")
+        joinColumns = @JoinColumn(name = "batch_id"),
+        inverseJoinColumns = @JoinColumn(name = "store_id")
     )
     private List<Store> source;
 
     private String keyword;
-
-    @Override
-    protected String defaultJobType() {
-        return ProductQuoteImportJob.TYPE;
-    }
 }

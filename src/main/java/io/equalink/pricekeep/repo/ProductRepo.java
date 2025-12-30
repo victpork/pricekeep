@@ -10,9 +10,11 @@ import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.*;
 import jakarta.transaction.Transactional;
+import lombok.extern.jbosslog.JBossLog;
 import org.hibernate.StatelessSession;
 import org.hibernate.annotations.processing.Pattern;
 import org.hibernate.annotations.processing.SQL;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -87,12 +89,23 @@ public interface ProductRepo {
     @Transactional
     default void persist(Quote q) {
         if (q.getProduct() != null && q.getProduct().getId() == null) {
-            session().insert(q.getProduct());
+            try {
+                session().insert(q.getProduct());
+            } catch (ConstraintViolationException e) {
+                Log.infov("Product with GTIN {0} already exists in DB", q.getProduct().getGtin());
+            }
             if (q.getProduct().getGroupSKU() != null && !q.getProduct().getGroupSKU().isEmpty()) {
-                q.getProduct().getGroupSKU().forEach(k -> session().insert(k));
+
+                q.getProduct().getGroupSKU().forEach(k -> {
+                    try {
+                        session().insert(k);
+                    } catch (ConstraintViolationException e) {
+                        Log.infov("Product with GTIN {0} SKU {1} already exists in DB", q.getProduct().getGtin(), k.getInternalCode());
+                    }
+                });
+
             }
         }
-        session().insert(q);
         if (q.getDiscount() != null) {
             q.getDiscount().setQuote(q);
             var dct = q.getDiscount();
@@ -101,6 +114,8 @@ public interface ProductRepo {
             }
             session().insert(q.getDiscount());
         }
+        session().insert(q);
+
     }
 
     @Query("select q from Product p join p.priceQuotes q where p.id = :productId and q.quoteDate = (select max(q2.quoteDate) from p.Quote q2)")
@@ -151,7 +166,7 @@ public interface ProductRepo {
     """)
     Page<Quote> getLatestDeals(PageRequest pageRequest, LocalDate cutoffDate);
 
-    @Query("select q from Product p join p.priceQuotes q where " +
+    @Query("select q from Product p join fetch p.priceQuotes q where " +
                    "p.id = :productId and " +
                    "q.quoteDate >= :cutoffDate " +
                    "and (:includeDiscount = true or q.discount IS NULL) " +

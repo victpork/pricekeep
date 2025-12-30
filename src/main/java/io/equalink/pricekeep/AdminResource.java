@@ -8,11 +8,15 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Variant;
+import lombok.extern.jbosslog.JBossLog;
+import org.quartz.SchedulerException;
 
 import java.util.List;
 import java.util.Optional;
 
-@ApplicationPath("/admin")
+@JBossLog
+@Path("/admin")
 @Consumes(MediaType.APPLICATION_JSON)
 public class AdminResource {
 
@@ -43,8 +47,17 @@ public class AdminResource {
     @POST
     @Path("/batch/run/{batchId}")
     public Response runBatch(@PathParam("batchId") Long batchId) {
-        Optional<BaseBatch> batch = batchRepo.findById(batchId);
-        return Response.ok().build();
+        var batch = batchRepo.findById(batchId);
+        if (batch.isPresent()) {
+            try {
+                batchController.forceStart(batch.get());
+            } catch (SchedulerException e) {
+                log.errorv("Scheduler exception: {0}", e.getMessage());
+                return Response.serverError().build();
+            }
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET

@@ -1,9 +1,9 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter, type RouteLocationNormalized } from 'vue-router'
 import SingleProduct from '@/views/SingleProduct.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import layout from './layout/layout.vue'
 import ProductColleciton from '@/views/ProductColleciton.vue'
-
+import NotFound from '@/views/NotFound.vue'
 const routes = [
   {
     path: '/',
@@ -11,15 +11,20 @@ const routes = [
     children: [
       { path: '', redirect: { name: 'dashboard' } },
       { path: 'dashboard', name: 'dashboard', component: Dashboard },
-      { path: '/products/:id(\\d+)', component: SingleProduct },
-      { path: '/products/tags/:tag', component: ProductColleciton },
+      {
+        path: 'products/:id(\\d+)',
+        component: SingleProduct,
+        props: (route: RouteLocationNormalized) => ({ id: Number(route.params.id) })
+      },
+      { path: 'products/tags/:tag', component: ProductColleciton },
+      { path: ':pathMatch(.*)*', name: 'NotFound', component: NotFound },
     ]
   },
 
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 })
 

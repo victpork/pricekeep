@@ -9,6 +9,7 @@ import io.equalink.pricekeep.repo.ProductRepo;
 import io.equalink.pricekeep.repo.StoreRepo;
 import io.equalink.pricekeep.service.pricefetch.ExternalImportController;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.extern.jbosslog.JBossLog;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -29,6 +30,7 @@ public class ProductQuoteImportJob implements Job {
     private BatchRepo batchRepo;
 
     @Override
+    @Transactional
     public void execute(JobExecutionContext context) throws JobExecutionException {
         var contextDataMap = context.getJobDetail().getJobDataMap();
 

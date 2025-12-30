@@ -1,0 +1,2564 @@
+{
+  "tobaccoProducts": false,
+  "products": [
+    {
+      "productId": "5028110-EA-000",
+      "name": "Avocado",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 89
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Avocado"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 1
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046542-KGM-000",
+      "name": "Bananas",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Ecuador",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 190,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 349,
+        "comparativePrice": {
+          "pricePerUnit": 349,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Bananas"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 2
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039956-EA-000",
+      "name": "Broccoli",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 179
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Broccoli, Cabbage & Cauliflower"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 3
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5028889-EA-000",
+      "name": "Telegraph Cucumber",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 179
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 4
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046503-EA-000",
+      "name": "Red Capsicum",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 209
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 5
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039965-KGM-000",
+      "name": "Carrots",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 150,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 269,
+        "comparativePrice": {
+          "pricePerUnit": 269,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Carrots & Root Vegetables"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 6
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040098-KGM-000",
+      "name": "Loose Red Tomatoes",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 140,
+        "minOrderQuantity": 150,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 549,
+        "comparativePrice": {
+          "pricePerUnit": 549,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 7
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5045849-KGM-000",
+      "name": "White Washed Potatoes",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 180,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 399,
+        "comparativePrice": {
+          "pricePerUnit": 399,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Potato & Kumara"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 8
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040009-EA-000",
+      "name": "Spring Onions",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 199
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Onions, Leeks & Shallots"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 9
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5237500-KGM-000",
+      "name": "Red Kumara",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 350,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 449,
+        "comparativePrice": {
+          "pricePerUnit": 449,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Potato & Kumara"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 10
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5045841-KGM-000",
+      "name": "Yellow Agria Potatoes",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 200,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 399,
+        "comparativePrice": {
+          "pricePerUnit": 399,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Potato & Kumara"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 11
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046504-EA-000",
+      "name": "Yellow Capsicum",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 209
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 12
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046525-KGM-000",
+      "name": "Royal Gala Apples",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of USA",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 160,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 599,
+        "comparativePrice": {
+          "pricePerUnit": 599,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Apples & Pears"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 13
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046505-EA-000",
+      "name": "Green Capsicum",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 209
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 14
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040011-KGM-000",
+      "name": "Orange Kumara",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 360,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 449,
+        "comparativePrice": {
+          "pricePerUnit": 449,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Potato & Kumara"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 15
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039966-EA-000",
+      "name": "Cauliflower",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 329
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Broccoli, Cabbage & Cauliflower"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 16
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046549-KGM-000",
+      "name": "Navel Oranges",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 240,
+        "minOrderQuantity": 250,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 449,
+        "comparativePrice": {
+          "pricePerUnit": 449,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Oranges & Citrus Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 17
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046611-KGM-000",
+      "name": "Navel Oranges",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Australia",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 230,
+        "minOrderQuantity": 250,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 449,
+        "comparativePrice": {
+          "pricePerUnit": 449,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Oranges & Citrus Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 18
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039972-EA-000",
+      "name": "Eggplant (Aubergine)",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 299
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Courgettes & Eggplant"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 19
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046917-KGM-000",
+      "name": "Mandarins Imported",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Australia",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 110,
+        "minOrderQuantity": 150,
+        "stepSize": 50,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 549,
+        "comparativePrice": {
+          "pricePerUnit": 549,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Oranges & Citrus Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 20
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046440-EA-000",
+      "name": "Fresh Cut Lettuce",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 189
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 21
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039960-EA-000",
+      "name": "Green Cabbage",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 499
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Broccoli, Cabbage & Cauliflower"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 22
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039996-EA-000",
+      "name": "Mango",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Australia",
+      "singlePrice": {
+        "price": 500
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Peaches, Nectarines & Stone Fruit"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 23
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039985-EA-000",
+      "name": "Leeks",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 349
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Onions, Leeks & Shallots"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 24
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5264168-EA-000",
+      "brand": "Value",
+      "name": "Brown Onions",
+      "displayName": "2kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 349,
+        "comparativePrice": {
+          "pricePerUnit": 175,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        },
+        {
+          "itemCode": "00020007",
+          "itemDescription": "Dairy Free"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Onions, Leeks & Shallots"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 25
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046517-EA-000",
+      "name": "Green Cabbage Half",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 249
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Broccoli, Cabbage & Cauliflower"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 26
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046533-KGM-000",
+      "name": "White Button Mushrooms",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 30,
+        "minOrderQuantity": 100,
+        "stepSize": 50,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 999,
+        "comparativePrice": {
+          "pricePerUnit": 999,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Mushrooms"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 27
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039945-KGM-000",
+      "name": "Granny Smith Apples",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of USA",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 190,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 529,
+        "comparativePrice": {
+          "pricePerUnit": 529,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Apples & Pears"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 28
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040464-EA-000",
+      "brand": "Pams",
+      "name": "Baby Spinach",
+      "displayName": "120g",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 379,
+        "comparativePrice": {
+          "pricePerUnit": 3158,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 29
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5047010-EA-000",
+      "name": "Fancy Green Lettuce",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 199
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 30
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046462-KGM-000",
+      "name": "Ambrosia Apples",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 180,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 669,
+        "comparativePrice": {
+          "pricePerUnit": 669,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Apples & Pears"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 31
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046582-KGM-000",
+      "name": "Yellow Flesh Nectarines",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 140,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 1299,
+        "comparativePrice": {
+          "pricePerUnit": 1299,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Peaches, Nectarines & Stone Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 32
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039970-KGM-000",
+      "name": "Green Courgettes",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 170,
+        "minOrderQuantity": 100,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 479,
+        "comparativePrice": {
+          "pricePerUnit": 479,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Courgettes & Eggplant"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 33
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046477-KGM-000",
+      "name": "Lemons",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 130,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 699,
+        "comparativePrice": {
+          "pricePerUnit": 699,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Oranges & Citrus Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 34
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046562-EA-000",
+      "name": "NZ Celery",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 499
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Carrots & Root Vegetables"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 35
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5264180-EA-000",
+      "brand": "Pams",
+      "name": "Brushed Agria Potatoes",
+      "displayName": "3kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 949,
+        "comparativePrice": {
+          "pricePerUnit": 316,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020007",
+          "itemDescription": "Dairy Free"
+        },
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Potato & Kumara"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 36
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5045864-KGM-000",
+      "name": "Rose Apples",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 170,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 629,
+        "comparativePrice": {
+          "pricePerUnit": 629,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Apples & Pears"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 37
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046651-KGM-000",
+      "name": "Crown Cut Pumpkin",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 880,
+        "minOrderQuantity": 800,
+        "stepSize": 250,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 399,
+        "comparativePrice": {
+          "pricePerUnit": 399,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Pumpkins & Squash"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Cut & Prepared Vegetables"
+        },
+        {
+          "level0": "Snacks, Treats & Easy Meals",
+          "level1": "Ready to Eat",
+          "level2": "Fresh Cut Fruit & Vegetables"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 38
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5223140-KGM-000",
+      "name": "Peeled Red Onions",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 190,
+        "minOrderQuantity": 150,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 299,
+        "comparativePrice": {
+          "pricePerUnit": 299,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Onions, Leeks & Shallots"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 39
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046509-EA-000",
+      "name": "Celery Half",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 249
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Cut & Prepared Vegetables"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Carrots & Root Vegetables"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Snacks, Treats & Easy Meals",
+          "level1": "Ready to Eat",
+          "level2": "Fresh Cut Fruit & Vegetables"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 40
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5026217-EA-000",
+      "name": "Crown Pumpkin",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 799
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Pumpkins & Squash"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 41
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5264169-EA-000",
+      "brand": "Value",
+      "name": "Fresh Carrots",
+      "displayName": "2kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 599,
+        "comparativePrice": {
+          "pricePerUnit": 300,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        },
+        {
+          "itemCode": "00020007",
+          "itemDescription": "Dairy Free"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Carrots & Root Vegetables"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 42
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5045844-EA-000",
+      "name": "Dragonfruit Pitahaya",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Vietnam",
+      "singlePrice": {
+        "price": 599
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Tropical & Exotic Fruit"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 43
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040462-EA-000",
+      "brand": "Pams",
+      "name": "Baby Leaf Lettuce",
+      "displayName": "100g",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 379,
+        "comparativePrice": {
+          "pricePerUnit": 3790,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Lettuce, Spinach & Salad Greens"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas BBQ Essentials",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 44
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046412-EA-000",
+      "brand": "Campari",
+      "name": "Vine Tomatoes",
+      "displayName": "300g",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 499,
+        "comparativePrice": {
+          "pricePerUnit": 1663,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Tomatoes, Cucumber & Capsicum"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 45
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5040020-EA-000",
+      "name": "Gold Pineapple",
+      "displayName": "1pk",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of Philippines",
+      "singlePrice": {
+        "price": 349,
+        "promoId": "130006987"
+      },
+      "promotions": [
+        {
+          "promoId": "130006987",
+          "rewardValue": 349,
+          "decal": "6000",
+          "sapType": "BASE",
+          "rewardType": "NEW_PRICE",
+          "threshold": 1,
+          "limit": 0,
+          "multiProducts": false,
+          "cardDependencyFlag": false,
+          "bestPromotion": true
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Tropical & Exotic Fruit"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 46
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5093551-EA-000",
+      "brand": "Spring Life",
+      "name": "Mung Bean Sprouts",
+      "displayName": "200g",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 229,
+        "comparativePrice": {
+          "pricePerUnit": 1145,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "facets": [
+        {
+          "itemCode": "00020012",
+          "itemDescription": "Non-GMO"
+        }
+      ],
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Microgreens & Sprouts"
+        },
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fresh Salad & Herbs",
+          "level2": "Microgreens & Sprouts"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 47
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5039953-KGM-000",
+      "name": "Beetroot",
+      "displayName": "kg",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "BOTH",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "variableWeight": {
+        "unitOfMeasure": "g",
+        "averageWeight": 270,
+        "minOrderQuantity": 200,
+        "stepSize": 100,
+        "stepUnitOfMeasure": "g"
+      },
+      "singlePrice": {
+        "price": 499,
+        "comparativePrice": {
+          "pricePerUnit": 499,
+          "unitQuantity": 1,
+          "unitQuantityUom": "kg",
+          "measureDescription": "1kg"
+        }
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Carrots & Root Vegetables"
+        },
+        {
+          "level0": "Featured",
+          "level1": "Christmas",
+          "level2": "Christmas Fruit & Vegetables",
+          "webContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          },
+          "appContent": {
+            "badgeSmallUrl": "",
+            "badgeMediumUrl": "",
+            "badgeLargeUrl": "",
+            "title": "",
+            "subTitle": "",
+            "campaignUrl": ""
+          }
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 48
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5220660-EA-000",
+      "name": "Daikon Radish",
+      "displayName": "1pk",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of New Zealand",
+      "singlePrice": {
+        "price": 299
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Vegetables",
+          "level2": "Bok Choy & Asian Greens"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 49
+      },
+      "boughtBefore": false
+    },
+    {
+      "productId": "5046447-EA-000",
+      "name": "Pomegranate",
+      "displayName": "ea",
+      "availability": [
+        "IN_STORE",
+        "ONLINE"
+      ],
+      "saleType": "UNITS",
+      "restrictedFlag": false,
+      "liquorFlag": false,
+      "tobaccoFlag": false,
+      "originRegulated": true,
+      "originStatement": "Product of USA",
+      "singlePrice": {
+        "price": 499
+      },
+      "categoryTrees": [
+        {
+          "level0": "Fruit & Vegetables",
+          "level1": "Fruit",
+          "level2": "Berries, Grapes & Cherries"
+        }
+      ],
+      "cateredFlag": false,
+      "algoliaAnalytics": {
+        "searchQueryID": "5746e3c91fd100bee3fa66966820cfdb",
+        "searchPosition": 50
+      },
+      "boughtBefore": false
+    }
+  ],
+  "algoliaSearchResult": {
+    "facets": {
+      "brand": {
+        "Pams": 41,
+        "Superb Herb": 11,
+        "Healthy n Fresh": 7,
+        "Pams Fresh": 6,
+        "LeaderBrand": 5,
+        "Taylor Farms": 5,
+        "Living Foods": 4,
+        "Quality Mushrooms": 2,
+        "Sunlite": 2,
+        "Value": 2,
+        "Wilcox": 2,
+        "Beekist": 1,
+        "Bhana Family Farms": 1,
+        "Campari": 1,
+        "Ceres Organics": 1,
+        "Dole": 1,
+        "Eat Your Greens": 1,
+        "Garden Fresh": 1,
+        "Jinning Greenway": 1,
+        "Just Foods": 1,
+        "Meadow Mushrooms": 1,
+        "Pams Superfoods": 1,
+        "Primor": 1,
+        "Rockit Apple": 1,
+        "Southern Fresh": 1,
+        "Spring Life": 1,
+        "Sunburst": 1,
+        "T&G": 1,
+        "The Fresh Grower": 1,
+        "Yolo": 1
+      },
+      "tobacco": {
+        "false": 228
+      },
+      "category1NI": {
+        "Vegetables": 148,
+        "Fresh Salad & Herbs": 86,
+        "Fruit": 48,
+        "Christmas": 40,
+        "Organic Fruit & Vegetables": 17,
+        "Ready to Eat": 7
+      },
+      "onPromotion": {
+        "94ef1985-cab1-4b39-a2f3-230120f03c16": 13,
+        "c0f80e87-16be-4488-9553-da437e8c6c2a": 9,
+        "d8032da3-c1b9-456e-b626-41ce21f8c67b": 9,
+        "4a279605-eaa8-470d-bcd4-0a9e3c9ab43b": 8,
+        "714431ab-6e39-4df6-ac77-cfc5c1e25bc8": 8,
+        "7d48a781-4f68-4c91-a908-8659e1b22f95": 7,
+        "01a114de-149c-4f5f-80a1-90cc63f69c6e": 6,
+        "33d8d6fc-861a-45ff-9937-5ccdb55eaede": 6,
+        "3c5e3145-0767-4066-9349-6c0a1313acc5": 6,
+        "4fcc1c8e-cc5e-4675-ba25-5e56b579cf69": 6,
+        "8cd700ae-d96f-4761-bd7a-805d6b93536d": 6,
+        "c3f9e1a3-fc34-452d-af2e-95349e666ba4": 6,
+        "50b1216b-d066-4457-b88b-9bccf97bf6d3": 5,
+        "60561e46-ece7-43a7-b142-9b14812586e4": 5,
+        "65defcf2-bc15-490e-a84f-1f13b769cd22": 5,
+        "a7d09522-bee2-41e4-8fe0-0b82b7f342f5": 5,
+        "076e8177-943b-41fc-a885-ba3d28297acf": 4,
+        "15e6f441-5c1c-4d25-b4ec-1adf918c49c7": 4,
+        "1c388d5e-29ac-4956-b476-cb3431353d2e": 4,
+        "21ecaaed-0749-4492-985e-4bb7ba43d59c": 4,
+        "2a1b331a-fc4a-496a-b072-e97cc8f70cae": 4,
+        "3404c253-577f-45ca-b301-c98312e46efb": 4,
+        "529d66cc-60e3-432e-b8d1-efc9f2ec4919": 4,
+        "6c73764e-b8e6-4e55-ad37-f6a9d207da1f": 4,
+        "6cda96e1-7d29-44a6-956b-3fcfdecc8184": 4,
+        "90082979-fb9f-4305-9c72-83274fc438cc": 4,
+        "b29a98bd-749c-489c-9eef-6aa38e66a29b": 4,
+        "b39562a4-2b72-43fe-b9ba-eda1d651ad0b": 4,
+        "b92cc33f-b5a8-4b57-9b82-412946800020": 4,
+        "c180a72d-5dbe-4403-b7c7-91655e505492": 4,
+        "c2204dae-579e-4b6b-9d42-2e13ceaa6031": 4,
+        "d6d39eea-889d-4e20-923c-55cab225cf7f": 4,
+        "e1925ea7-01bc-4358-ae7c-c6502da5ab12": 4,
+        "3bb30799-82ce-4648-8c02-5113228963ed": 3,
+        "3bfe040b-f0c9-45e0-949b-b9ad5a591d55": 3,
+        "49037947-e450-49bf-ba1f-a94551c79a72": 3,
+        "5f167936-79ae-4f6a-b9d2-74afe1bb096b": 3,
+        "61dd754e-8525-4b9e-9e08-173389eea8a8": 3,
+        "8f0d70be-5cb7-464b-99cb-8b0130671895": 3,
+        "98ec3885-ac93-4fcb-807b-59c9055c52c4": 3,
+        "9cd8eb60-3222-4efc-bd7c-50e03e6a81a4": 3,
+        "b2e98a14-c8ca-401e-99ed-edf74570c6f6": 3,
+        "bdc5ef4a-c6a7-4f8a-b8cb-28109e6d61c3": 3,
+        "2ed73be8-936d-4f35-9398-75a707f40a7b": 2,
+        "3e82142c-78dc-46f3-82ec-28e65fcf84c9": 2,
+        "48dd98cc-a757-4102-b15d-ea82b4b10571": 2,
+        "5cf0392f-c187-4fc4-a463-eb269d2e8f45": 2,
+        "64eab5b1-8d79-45f4-94f1-02b8cf8b6202": 2,
+        "6e6809dd-01bc-45c9-aab1-f01ccd8338b0": 2,
+        "d1cd1fdd-8767-46a6-a8d3-c3e0632c2dc8": 2,
+        "dbca5e00-f7f9-43ae-91de-031ad16f8a92": 2,
+        "53989945-1a28-481d-a61c-d6f75f760ada": 1,
+        "715f0e22-95e0-45ce-af3a-07057209976e": 1,
+        "be4c4780-218e-425a-a90f-63e21773572b": 1
+      },
+      "productFacets": {
+        "Non-GMO": 73,
+        "Dairy Free": 26,
+        "Organic": 19
+      }
+    }
+  },
+  "totalHits": 228,
+  "page": 0,
+  "totalPages": 5,
+  "hitsPerPage": 50
+}

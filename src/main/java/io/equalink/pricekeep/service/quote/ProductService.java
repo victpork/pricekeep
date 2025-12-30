@@ -8,6 +8,8 @@ import java.util.TreeMap;
 
 import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data._Product;
+import io.equalink.pricekeep.repo.QuoteRepo;
+import io.equalink.pricekeep.service.dto.CompactQuote;
 import io.equalink.pricekeep.service.dto.ProductMapper;
 import io.equalink.pricekeep.service.dto.QuoteDTO;
 import jakarta.data.page.PageRequest;
@@ -33,6 +35,9 @@ public class ProductService {
 
     @Inject
     private ProductRepo productRepo;
+
+    @Inject
+    private QuoteRepo quoteRepo;
 
     private PatriciaTrie<String> suggestWordList;
 
@@ -85,8 +90,9 @@ public class ProductService {
         return p.content().stream().map(productMapper::toQuoteDTO).toList();
     }
 
-    public List<Quote> getPriceHistory(Long productCode, Period period, boolean includeDiscount) {
-        return productRepo.getPriceHistory(productCode, LocalDate.now().minus(period), includeDiscount);
+    public List<CompactQuote> getPriceHistory(Long productCode, Period period) {
+        //return productRepo.getPriceHistory(productCode, LocalDate.now().minus(period), includeDiscount);
+        return quoteRepo.findLowestQuotePerDayHistByProduct(productCode, LocalDate.now().minus(period));
     }
 
     public List<String> suggestWords(String input) {

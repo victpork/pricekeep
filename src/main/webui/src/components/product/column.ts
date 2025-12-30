@@ -16,10 +16,13 @@ export const defaultColumns = [
   colHelper.accessor(row => row.name, {
     id: 'name',
     minSize: 200,
-  }),
-  colHelper.accessor(row => row.desc, {
-    id: 'description',
     cell: props => {
+      return h('a', { class: 'text-left font-medium min-w-[200px]', href: `/products/${props.row.original.id}` }, props.getValue())
+    }
+  }),
+  colHelper.accessor((row) => row.desc, {
+    id: 'description',
+    cell: (props) => {
       return h('div', { class: 'text-left font-medium min-w-[200px]' }, props.getValue())
     }
   }),

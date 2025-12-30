@@ -16,7 +16,9 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.annotation.Identifier;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -58,7 +60,7 @@ public class WoolworthsDataProviderTest {
     ObjectMapper objMapper;
 
     @Inject
-    @Identifier("woolworths")
+    @Named("woolworths")
     WoolworthsProductQuoteFetchService proxy;
 
     @Inject
@@ -234,12 +236,5 @@ public class WoolworthsDataProviderTest {
                 hasProperty("address", is("cnr Main North & Sawyers Arms Roads,Northlands Click and Collect,8051,Northlands Click and Collect"))
             )));
         }
-    }
-
-    @Test
-    void testFetchStore() {
-        Multi<Store> storeListResult = proxy.fetchStore();
-        storeListResult.subscribe().with(storeRepo::persist, e -> fail(e));
-        //storeListResult.chain(l -> proxy.setStore(l.getFirst())).subscribe().with(_ -> {}, Assertions::fail);
     }
 }

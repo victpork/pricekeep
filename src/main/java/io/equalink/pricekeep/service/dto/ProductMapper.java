@@ -34,6 +34,12 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     public QuoteDTO toQuoteDTO(Quote q);
 
+    @Mapping(target="id", ignore = true)
+    @Mapping(target="storeInfo", source = "q")
+    @Mapping(target="productInfo", ignore = true)
+    @Mapping(target="discountType", ignore = true)
+    public QuoteDTO toQuoteDTO(CompactQuote q);
+
     @Mapping(target = "storeInfo", source = "quoteStore")
     @Mapping(target = "quoteDate", source = "quoteDate")
     @Mapping(target = "price", source = "price")

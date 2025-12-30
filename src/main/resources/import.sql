@@ -45,3 +45,8 @@ insert into quote (product_id, store_id, quote_date, price) values ( 3, 4, DATE'
 insert into quote (product_id, store_id, quote_date, price) values ( 1, 5, DATE'2025-03-08', 5);
 insert into quote (product_id, store_id, quote_date, price) values ( 2, 5, DATE'2025-03-08', 3.59);
 insert into quote (product_id, store_id, quote_date, price) values ( 3, 5, DATE'2025-03-08', 3.99);
+
+insert into store_batch(id, name, enabled, job_type, cron_trigger, description) values (1, 'Woolworth Store', true, 'StoreImportJob', '0 0 10 5 * ? *', 'Import stores from server');
+insert into store_group_batch_rel(batch_id, store_group_id) values (1, 1);
+insert into quote_import_batch(id, name, enabled, job_type, cron_trigger, description, keyword) values (2, 'Import Cheese', true, 'ProductQuoteImportJob', '0 0 6 ? * * *', 'Import cheese products', 'cheese');
+insert into product_quote_batch_rel(batch_id, store_id) values (2, 3);

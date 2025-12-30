@@ -10,7 +10,35 @@ import { HttpResponse, delay, http } from "msw";
 import type { RequestHandlerOptions } from "msw";
 
 import { Type, Unit } from "./model";
-import type { ChartNode, ProductInfo, QuoteDTO, QuoteResult } from "./model";
+import type { JobInfo, ProductInfo, QuoteDTO, QuoteResult } from "./model";
+
+export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    id: faker.helpers.arrayElement([
+      faker.number.int({ min: undefined, max: undefined }),
+      undefined,
+    ]),
+    enabled: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
+    name: faker.helpers.arrayElement([
+      faker.string.alpha({ length: { min: 10, max: 20 } }),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([
+      faker.string.alpha({ length: { min: 10, max: 20 } }),
+      undefined,
+    ]),
+    lastRunTime: faker.helpers.arrayElement([
+      `${faker.date.past().toISOString().split(".")[0]}Z`,
+      undefined,
+    ]),
+    nextExecTime: faker.helpers.arrayElement([
+      `${faker.date.past().toISOString().split(".")[0]}Z`,
+      undefined,
+    ]),
+  }));
 
 export const getGetApiCommonLatestDealsResponseMock = (
   overrideResponse: Partial<QuoteResult> = {},
@@ -869,14 +897,135 @@ export const getGetApiProductProductIdResponseMock = (
   ...overrideResponse,
 });
 
-export const getGetApiProductProductIdChartResponseMock = (): ChartNode[] =>
-  Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    index: faker.string.alpha({ length: { min: 10, max: 20 } }),
-    value: faker.string.alpha({ length: { min: 10, max: 20 } }),
-  }));
+export const getPostApiProductProductIdQuoteResponseMock = (
+  overrideResponse: Partial<QuoteDTO> = {},
+): QuoteDTO => ({
+  id: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
+    undefined,
+  ]),
+  productInfo: faker.helpers.arrayElement([
+    {
+      id: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      name: faker.string.alpha({ length: { min: 1, max: 20 } }),
+      imgUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      desc: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      gtin: faker.helpers.arrayElement([
+        faker.helpers.fromRegExp("^([0-9]{8}|[0-9]{12,14})$"),
+        undefined,
+      ]),
+      unit: faker.helpers.arrayElement(Object.values(Unit)),
+      latestQuotes: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 1, max: 10 }) },
+          (_, i) => i + 1,
+        ).map(() => ({
+          id: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          storeInfo: faker.helpers.arrayElement([
+            {
+              id: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              name: faker.string.alpha({ length: { min: 10, max: 20 } }),
+              address: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              url: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          quoteDate: faker.date.past().toISOString().split("T")[0],
+          price: faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
+          discountType: faker.helpers.arrayElement([
+            faker.helpers.arrayElement(Object.values(Type)),
+            undefined,
+          ]),
+        })),
+        undefined,
+      ]),
+      stats: faker.helpers.arrayElement([
+        {
+          [faker.string.alphanumeric(5)]: faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
+        },
+        undefined,
+      ]),
+      quantityPerItem: faker.helpers.arrayElement([
+        faker.number.float({
+          min: undefined,
+          max: undefined,
+          fractionDigits: 2,
+        }),
+        undefined,
+      ]),
+      itemPerBundle: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      tags: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 1, max: 10 }) },
+          (_, i) => i + 1,
+        ).map(() => faker.string.alpha({ length: { min: 10, max: 20 } })),
+        undefined,
+      ]),
+    },
+    undefined,
+  ]),
+  storeInfo: faker.helpers.arrayElement([
+    {
+      id: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      name: faker.string.alpha({ length: { min: 10, max: 20 } }),
+      address: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      url: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+    },
+    { id: faker.number.int({ min: undefined, max: undefined }) },
+  ]),
+  quoteDate: faker.date.past().toISOString().split("T")[0],
+  price: faker.number.float({
+    min: undefined,
+    max: undefined,
+    fractionDigits: 2,
+  }),
+  discountType: faker.helpers.arrayElement([
+    faker.helpers.arrayElement(Object.values(Type)),
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
   Array.from(
@@ -1008,6 +1157,118 @@ export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
       undefined,
     ]),
   }));
+
+export const getPostApiAdminAlertNewMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/alert/new",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 201 });
+    },
+    options,
+  );
+};
+
+export const getGetApiAdminBatchAllMockHandler = (
+  overrideResponse?:
+    | JobInfo[]
+    | ((
+        info: Parameters<Parameters<typeof http.get>[1]>[0],
+      ) => Promise<JobInfo[]> | JobInfo[]),
+  options?: RequestHandlerOptions,
+) => {
+  return http.get(
+    "*/api/admin/batch/all",
+    async (info) => {
+      await delay(1000);
+
+      return new HttpResponse(
+        JSON.stringify(
+          overrideResponse !== undefined
+            ? typeof overrideResponse === "function"
+              ? await overrideResponse(info)
+              : overrideResponse
+            : getGetApiAdminBatchAllResponseMock(),
+        ),
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminBatchNewMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/batch/new",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 201 });
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminBatchRunBatchIdMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<unknown> | unknown),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/batch/run/:batchId",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 200 });
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminStoreNewMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/store/new",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 201 });
+    },
+    options,
+  );
+};
 
 export const getGetApiCommonLatestDealsMockHandler = (
   overrideResponse?:
@@ -1289,34 +1550,6 @@ export const getGetApiProductProductIdMockHandler = (
   );
 };
 
-export const getGetApiProductProductIdChartMockHandler = (
-  overrideResponse?:
-    | ChartNode[]
-    | ((
-        info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<ChartNode[]> | ChartNode[]),
-  options?: RequestHandlerOptions,
-) => {
-  return http.get(
-    "*/api/product/:productId/chart",
-    async (info) => {
-      await delay(1000);
-
-      return new HttpResponse(
-        JSON.stringify(
-          overrideResponse !== undefined
-            ? typeof overrideResponse === "function"
-              ? await overrideResponse(info)
-              : overrideResponse
-            : getGetApiProductProductIdChartResponseMock(),
-        ),
-        { status: 200, headers: { "Content-Type": "application/json" } },
-      );
-    },
-    options,
-  );
-};
-
 export const getPostApiProductProductIdEditMockHandler = (
   overrideResponse?:
     | unknown
@@ -1340,20 +1573,27 @@ export const getPostApiProductProductIdEditMockHandler = (
 
 export const getPostApiProductProductIdQuoteMockHandler = (
   overrideResponse?:
-    | unknown
+    | QuoteDTO
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<unknown> | unknown),
+      ) => Promise<QuoteDTO> | QuoteDTO),
   options?: RequestHandlerOptions,
 ) => {
   return http.post(
     "*/api/product/:productId/quote",
     async (info) => {
       await delay(1000);
-      if (typeof overrideResponse === "function") {
-        await overrideResponse(info);
-      }
-      return new HttpResponse(null, { status: 200 });
+
+      return new HttpResponse(
+        JSON.stringify(
+          overrideResponse !== undefined
+            ? typeof overrideResponse === "function"
+              ? await overrideResponse(info)
+              : overrideResponse
+            : getPostApiProductProductIdQuoteResponseMock(),
+        ),
+        { status: 201, headers: { "Content-Type": "application/json" } },
+      );
     },
     options,
   );
@@ -1387,6 +1627,11 @@ export const getGetApiProductProductIdQuoteHistMockHandler = (
   );
 };
 export const getPricekeepAPIMock = () => [
+  getPostApiAdminAlertNewMockHandler(),
+  getGetApiAdminBatchAllMockHandler(),
+  getPostApiAdminBatchNewMockHandler(),
+  getPostApiAdminBatchRunBatchIdMockHandler(),
+  getPostApiAdminStoreNewMockHandler(),
   getGetApiCommonLatestDealsMockHandler(),
   getGetApiProductAlertsMockHandler(),
   getGetApiProductAllMockHandler(),
@@ -1397,7 +1642,6 @@ export const getPricekeepAPIMock = () => [
   getPostApiProductSearchExtMockHandler(),
   getGetApiProductSuggestMockHandler(),
   getGetApiProductProductIdMockHandler(),
-  getGetApiProductProductIdChartMockHandler(),
   getPostApiProductProductIdEditMockHandler(),
   getPostApiProductProductIdQuoteMockHandler(),
   getGetApiProductProductIdQuoteHistMockHandler(),

@@ -2,17 +2,14 @@ package io.equalink.pricekeep.service.pricefetch;
 
 
 
+import com.microsoft.playwright.*;
 import io.quarkus.logging.Log;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Named;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Browser.NewPageOptions;
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.Proxy;
 
 import io.smallrye.common.annotation.Identifier;
@@ -45,6 +42,7 @@ public class PlayWrightFactory {
     }
 
     @Produces
+    @Named("direct")
     public Page getBrowserPageInstance() {
         return browser.newPage();
     }

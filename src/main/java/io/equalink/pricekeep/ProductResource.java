@@ -141,6 +141,22 @@ public class ProductResource {
 
     @POST
     @Path("/{productId}/quote")
+    @APIResponse(
+        responseCode = "201",
+        description = "New price quoted",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                ref = "#/components/schemas/QuoteDTO"
+            )
+        )
+
+    )
+    @APIResponse(
+        responseCode = "400",
+        description = "Data conflict",
+        content = @Content(mediaType = "application/json")
+    )
     public Response quotePrice(@PathParam("productId") Long productId, @Valid QuoteDTO qDTO) {
         Quote q = quoteMapper.toEntity(qDTO);
         //Product p = productService.getProductById(productId).orElseThrow();
@@ -160,15 +176,8 @@ public class ProductResource {
             case PeriodLength.QUARTER -> Period.ofMonths(3);
             case PeriodLength.YEAR -> Period.ofYears(1);
         };
-        List<Quote> quotes = productService.getPriceHistory(productId, p, includeDiscount);
+        List<CompactQuote> quotes = productService.getPriceHistory(productId, p);
         return quotes.stream().map(pMapper::toQuoteDTO).toList();
-    }
-
-    @GET
-    @Path("/{productId}/chart")
-    public List<ChartNode> getChartData(@PathParam("productId") Long productId, @QueryParam("showDiscount") boolean showDiscount, @NotNull @QueryParam("tr") TimeRange timeRange) {
-        List<Quote> t = productService.getPriceHistory(productId, timeRange.period, showDiscount);
-        return t.stream().map(quoteMapper::toChartNode).toList();
     }
 
     @GET
