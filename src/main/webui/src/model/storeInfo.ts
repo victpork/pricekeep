@@ -9,5 +9,6 @@ export interface StoreInfo {
   readonly id?: number;
   name: string;
   address?: string;
+  storeGroupLogoPath?: string;
   url?: string;
 }

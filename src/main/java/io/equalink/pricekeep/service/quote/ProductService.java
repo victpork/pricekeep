@@ -12,6 +12,7 @@ import io.equalink.pricekeep.repo.QuoteRepo;
 import io.equalink.pricekeep.service.dto.CompactQuote;
 import io.equalink.pricekeep.service.dto.ProductMapper;
 import io.equalink.pricekeep.service.dto.QuoteDTO;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -61,8 +62,8 @@ public class ProductService {
         return productRepo.findByKeyword(keyword);
     }
 
-    public List<Product> getAllProduct(Integer page) {
-        return productRepo.findAll(_Product.name.ascIgnoreCase(), PageRequest.ofPage(page));
+    public Page<Product> getAllProduct(Integer page, Integer pageSize) {
+        return productRepo.findAll(_Product.name.ascIgnoreCase(), PageRequest.ofPage(page).size(pageSize));
     }
 
     void initSearchTrie() {
@@ -102,11 +103,10 @@ public class ProductService {
 
     @Transactional
     public void quotePriceForProduct(Long productId, Quote q) {
-        var p = em.find(Product.class, productId);
-        if (p == null) {
-            throw new EntityNotFoundException("Product ID not found: " + productId);
-        }
-        p.getPriceQuotes().add(q);
+        var p = em.getReference(Product.class, productId);
+        q.setProduct(p);
+        //p.getPriceQuotes().add(q);
+        em.persist(q);
     }
 
     public void updateProductInfo(Product p) {

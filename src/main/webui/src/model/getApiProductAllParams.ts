@@ -7,4 +7,5 @@
 
 export type GetApiProductAllParams = {
   page?: number;
+  pageSize?: number;
 };

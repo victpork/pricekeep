@@ -15,6 +15,7 @@ import org.hibernate.StatelessSession;
 import org.hibernate.annotations.processing.Pattern;
 import org.hibernate.annotations.processing.SQL;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.GenericJDBCException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface ProductRepo {
     @Query("from Product p left join GroupProductCode gpc on p = gpc.product where p.gtin = :gtin or gpc.internalCode = :sku and gpc.storeGroup.name = :storeGroupCode")
     Optional<Product> findBySKUOrGTIN(String gtin, String sku, String storeGroupCode);
 
-    @Find
+    @Query("from Product p left join fetch p.groupSKU sku where p.gtin = :gtin")
     Optional<Product> findByGTIN(String gtin);
 
     @Find
@@ -71,7 +72,7 @@ public interface ProductRepo {
          where q.id is null or q.id in (select q2.id from Quote q2 where q2.product.id = p.id
          and (q2.quoteStore, q2.quoteDate) in (select q3.quoteStore, max(q3.quoteDate) from Quote q3 where q3.product.id = p.id group by q3.quoteStore))
         """)
-    List<Product> findAll(Sort<Product> sort, PageRequest pageRequest);
+    Page<Product> findAll(Sort<Product> sort, PageRequest pageRequest);
 
     @SQL("""
         select distinct e from (
@@ -85,14 +86,21 @@ public interface ProductRepo {
     @Save
     void persist(Product p);
 
+    @Query("from Quote q where q.product.id = :productId and q.quoteStore.id = :storeId and q.quoteDate = :quoteDate")
+    Optional<Quote> findQuoteById(Long productId, Long storeId, LocalDate quoteDate);
 
     @Transactional
     default void persist(Quote q) {
-        if (q.getProduct() != null && q.getProduct().getId() == null) {
-            try {
+        if (q.getProduct() == null) {
+            throw new IllegalArgumentException("Product is null");
+        }
+        if (q.getProduct().getId() == null) {
+            var product = this.findByGTIN(q.getProduct().getGtin());
+            if (product.isEmpty()) {
                 session().insert(q.getProduct());
-            } catch (ConstraintViolationException e) {
+            } else {
                 Log.infov("Product with GTIN {0} already exists in DB", q.getProduct().getGtin());
+                q.setProduct(product.get());
             }
             if (q.getProduct().getGroupSKU() != null && !q.getProduct().getGroupSKU().isEmpty()) {
 
@@ -106,16 +114,19 @@ public interface ProductRepo {
 
             }
         }
-        if (q.getDiscount() != null) {
-            q.getDiscount().setQuote(q);
-            var dct = q.getDiscount();
-            if (dct.getSaveValue() == null) {
-                Log.infov("Dct Type: {0}, Product {1}", dct.getType(), q.getProduct().getName());
-            }
-            session().insert(q.getDiscount());
-        }
-        session().insert(q);
 
+        if (findQuoteById(q.getProduct().getId(), q.getQuoteStore().getId(), q.getQuoteDate()).isEmpty()) {
+            if (q.getDiscount() != null) {
+                q.getDiscount().setQuote(q);
+                var dct = q.getDiscount();
+                if (dct.getSaveValue() == null) {
+                    Log.infov("Dct Type: {0}, Product {1}", dct.getType(), q.getProduct().getName());
+                }
+                session().insert(q.getDiscount());
+            }
+
+            session().insert(q);
+        }
     }
 
     @Query("select q from Product p join p.priceQuotes q where p.id = :productId and q.quoteDate = (select max(q2.quoteDate) from p.Quote q2)")

@@ -49,6 +49,8 @@ public class StoreService {
                         if (!intStoreCodeList.contains(store.getInternalId())) {
                             storeRepo.persist(store);
                         }
+                    }, e -> {
+                        log.error(e);
                     });
             } else {
                 log.errorv("Batch {0}(ID:{1}) is {2} but configured as {3}", b.getName(), jobId, b.getClass().getSimpleName(), "StoreImportBatch");

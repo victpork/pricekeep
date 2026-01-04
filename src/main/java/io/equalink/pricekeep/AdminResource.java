@@ -2,14 +2,20 @@ package io.equalink.pricekeep;
 
 import io.equalink.pricekeep.batch.BatchController;
 import io.equalink.pricekeep.data.BaseBatch;
+import io.equalink.pricekeep.data.ProductQuoteImportBatch;
+import io.equalink.pricekeep.data.StoreImportBatch;
 import io.equalink.pricekeep.repo.BatchRepo;
+import io.equalink.pricekeep.service.dto.BatchMapper;
 import io.equalink.pricekeep.service.dto.JobInfo;
+import io.equalink.pricekeep.service.dto.ProductQuoteImportBatchDTO;
+import io.equalink.pricekeep.service.dto.StoreImportBatchDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Variant;
 import lombok.extern.jbosslog.JBossLog;
+import org.hibernate.engine.jdbc.batch.spi.Batch;
 import org.quartz.SchedulerException;
 
 import java.util.List;
@@ -26,6 +32,8 @@ public class AdminResource {
     @Inject
     BatchController batchController;
 
+    @Inject
+    BatchMapper batchMapper;
 
     @POST
     @Path("/alert/new")
@@ -40,9 +48,17 @@ public class AdminResource {
     }
 
     @POST
-    @Path("/batch/new")
-    public void createDelete() {
+    @Path("/batch/newStoreImport")
+    public void createBatch(StoreImportBatchDTO batch) {
+        batchRepo.persist(batchMapper.toStoreImportBatchEntity(batch));
     }
+
+    @POST
+    @Path("/batch/newProductQuoteImport")
+    public void createBatch(ProductQuoteImportBatchDTO batch) {
+        batchRepo.persist(batchMapper.toProductQuoteImportBatchEntity(batch));
+    }
+
 
     @POST
     @Path("/batch/run/{batchId}")

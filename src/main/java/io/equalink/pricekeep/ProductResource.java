@@ -60,9 +60,16 @@ public class ProductResource {
 
     @GET
     @Path("/all")
-    public List<ProductInfo> getAllProduct(@QueryParam("page") Integer page) {
-        if (page == null) page = 1;
-        return productService.getAllProduct(page).stream().map(p -> pMapper.toDTO(p)).toList();
+    public ProductResult getAllProduct(@QueryParam("page") @DefaultValue("1") Integer page,
+                                       @QueryParam("pageSize") @DefaultValue("25") Integer pageSize) {
+        var result = productService.getAllProduct(page, pageSize);
+        return new ProductResult(
+            result.content().stream().map(p -> pMapper.toDTO(p)).toList(),
+            result.totalElements(),
+            result.totalPages(),
+            result.pageRequest().size(),
+            result.pageRequest().page()
+        );
     }
 
     @GET

@@ -90,6 +90,41 @@ components:
       required:
       - name
       - unit
+    ProductQuoteImportBatchDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        cronTrigger:
+          type: string
+        storeList:
+          type: array
+          items:
+            type: integer
+            format: int64
+        keyword:
+          type: string
+    ProductResult:
+      type: object
+      properties:
+        productList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductInfo"
+        totalRecords:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        pageSize:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int64
     QuoteDTO:
       type: object
       properties:
@@ -111,6 +146,11 @@ components:
           type: number
         discountType:
           $ref: "#/components/schemas/Type"
+        salePrice:
+          type: number
+        multibuyQuantity:
+          type: integer
+          format: int32
       required:
       - storeInfo
       - quoteDate
@@ -141,6 +181,20 @@ components:
       required:
       - quoteDate
       - price
+    StoreImportBatchDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        cronTrigger:
+          type: string
+        storeGroupList:
+          type: array
+          items:
+            type: integer
+            format: int64
     StoreInfo:
       type: object
       properties:
@@ -151,6 +205,8 @@ components:
         name:
           type: string
         address:
+          type: string
+        storeGroupLogoPath:
           type: string
         url:
           type: string
@@ -205,12 +261,36 @@ paths:
       summary: Get All Jobs
       tags:
       - Admin Resource
-  /api/admin/batch/new:
+  /api/admin/batch/newProductQuoteImport:
     post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductQuoteImportBatchDTO"
+        required: true
       responses:
         "201":
           description: Created
-      summary: Create Delete
+        "400":
+          description: Bad Request
+      summary: Create Batch
+      tags:
+      - Admin Resource
+  /api/admin/batch/newStoreImport:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreImportBatchDTO"
+        required: true
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create Batch
       tags:
       - Admin Resource
   /api/admin/batch/run/{batchId}:
@@ -280,15 +360,20 @@ paths:
         schema:
           type: integer
           format: int32
+          default: "1"
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: "25"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ProductInfo"
+                $ref: "#/components/schemas/ProductResult"
       summary: Get All Product
       tags:
       - Product Resource

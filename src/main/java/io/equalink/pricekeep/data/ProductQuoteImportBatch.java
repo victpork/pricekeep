@@ -1,12 +1,9 @@
 package io.equalink.pricekeep.data;
 
-import io.equalink.pricekeep.batch.ProductQuoteImportJob;
 import jakarta.persistence.*;
 import lombok.*;
-import org.quartz.JobDataMap;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter

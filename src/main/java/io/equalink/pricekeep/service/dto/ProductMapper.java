@@ -8,7 +8,7 @@ import io.equalink.pricekeep.data.Product;
 
 @Mapper(componentModel = "cdi", uses = {StoreMapper.class})
 public interface ProductMapper {
-    @Mapping(target = "desc", source = "description")
+    @Mapping(target = "desc", source = "description", defaultValue = "")
     @Mapping(target = "stats", source = "priceStats")
     @Mapping(target = "imgUrl", source = "imgPath")
     @Mapping(target = "latestQuotes", source = "priceQuotes")

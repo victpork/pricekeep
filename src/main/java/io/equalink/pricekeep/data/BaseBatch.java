@@ -28,7 +28,7 @@ public abstract class BaseBatch {
     protected String jobType;
 
     @Column(name = "cron_trigger", length = 50)
-    private String cronTrigger;
+    protected String cronTrigger;
 
-    private LocalDateTime lastRunTime;
+    protected LocalDateTime lastRunTime;
 }

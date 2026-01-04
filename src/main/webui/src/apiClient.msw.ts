@@ -10,7 +10,13 @@ import { HttpResponse, delay, http } from "msw";
 import type { RequestHandlerOptions } from "msw";
 
 import { Type, Unit } from "./model";
-import type { JobInfo, ProductInfo, QuoteDTO, QuoteResult } from "./model";
+import type {
+  JobInfo,
+  ProductInfo,
+  ProductResult,
+  QuoteDTO,
+  QuoteResult,
+} from "./model";
 
 export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
   Array.from(
@@ -92,6 +98,10 @@ export const getGetApiCommonLatestDealsResponseMock = (
                     faker.string.alpha({ length: { min: 10, max: 20 } }),
                     undefined,
                   ]),
+                  storeGroupLogoPath: faker.helpers.arrayElement([
+                    faker.string.alpha({ length: { min: 10, max: 20 } }),
+                    undefined,
+                  ]),
                   url: faker.helpers.arrayElement([
                     faker.string.alpha({ length: { min: 10, max: 20 } }),
                     undefined,
@@ -155,6 +165,10 @@ export const getGetApiCommonLatestDealsResponseMock = (
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
+          storeGroupLogoPath: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
           url: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
@@ -170,6 +184,18 @@ export const getGetApiCommonLatestDealsResponseMock = (
       }),
       discountType: faker.helpers.arrayElement([
         faker.helpers.arrayElement(Object.values(Type)),
+        undefined,
+      ]),
+      salePrice: faker.helpers.arrayElement([
+        faker.number.float({
+          min: undefined,
+          max: undefined,
+          fractionDigits: 2,
+        }),
+        undefined,
+      ]),
+      multibuyQuantity: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
         undefined,
       ]),
     })),
@@ -224,6 +250,10 @@ export const getGetApiProductAlertsResponseMock = (): QuoteDTO[] =>
                 ]),
                 name: faker.string.alpha({ length: { min: 10, max: 20 } }),
                 address: faker.helpers.arrayElement([
+                  faker.string.alpha({ length: { min: 10, max: 20 } }),
+                  undefined,
+                ]),
+                storeGroupLogoPath: faker.helpers.arrayElement([
                   faker.string.alpha({ length: { min: 10, max: 20 } }),
                   undefined,
                 ]),
@@ -290,6 +320,10 @@ export const getGetApiProductAlertsResponseMock = (): QuoteDTO[] =>
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
         ]),
+        storeGroupLogoPath: faker.helpers.arrayElement([
+          faker.string.alpha({ length: { min: 10, max: 20 } }),
+          undefined,
+        ]),
         url: faker.helpers.arrayElement([
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
@@ -307,97 +341,136 @@ export const getGetApiProductAlertsResponseMock = (): QuoteDTO[] =>
       faker.helpers.arrayElement(Object.values(Type)),
       undefined,
     ]),
-  }));
-
-export const getGetApiProductAllResponseMock = (): ProductInfo[] =>
-  Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    id: faker.helpers.arrayElement([
-      faker.number.int({ min: undefined, max: undefined }),
-      undefined,
-    ]),
-    name: faker.string.alpha({ length: { min: 1, max: 20 } }),
-    imgUrl: faker.helpers.arrayElement([
-      faker.string.alpha({ length: { min: 10, max: 20 } }),
-      undefined,
-    ]),
-    desc: faker.helpers.arrayElement([
-      faker.string.alpha({ length: { min: 10, max: 20 } }),
-      undefined,
-    ]),
-    gtin: faker.helpers.arrayElement([
-      faker.helpers.fromRegExp("^([0-9]{8}|[0-9]{12,14})$"),
-      undefined,
-    ]),
-    unit: faker.helpers.arrayElement(Object.values(Unit)),
-    latestQuotes: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        id: faker.helpers.arrayElement([
-          faker.number.int({ min: undefined, max: undefined }),
-          undefined,
-        ]),
-        storeInfo: faker.helpers.arrayElement([
-          {
-            id: faker.helpers.arrayElement([
-              faker.number.int({ min: undefined, max: undefined }),
-              undefined,
-            ]),
-            name: faker.string.alpha({ length: { min: 10, max: 20 } }),
-            address: faker.helpers.arrayElement([
-              faker.string.alpha({ length: { min: 10, max: 20 } }),
-              undefined,
-            ]),
-            url: faker.helpers.arrayElement([
-              faker.string.alpha({ length: { min: 10, max: 20 } }),
-              undefined,
-            ]),
-          },
-          undefined,
-        ]),
-        quoteDate: faker.date.past().toISOString().split("T")[0],
-        price: faker.number.float({
-          min: undefined,
-          max: undefined,
-          fractionDigits: 2,
-        }),
-        discountType: faker.helpers.arrayElement([
-          faker.helpers.arrayElement(Object.values(Type)),
-          undefined,
-        ]),
-      })),
-      undefined,
-    ]),
-    stats: faker.helpers.arrayElement([
-      {
-        [faker.string.alphanumeric(5)]: faker.number.float({
-          min: undefined,
-          max: undefined,
-          fractionDigits: 2,
-        }),
-      },
-      undefined,
-    ]),
-    quantityPerItem: faker.helpers.arrayElement([
+    salePrice: faker.helpers.arrayElement([
       faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
       undefined,
     ]),
-    itemPerBundle: faker.helpers.arrayElement([
+    multibuyQuantity: faker.helpers.arrayElement([
       faker.number.int({ min: undefined, max: undefined }),
       undefined,
     ]),
-    tags: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.string.alpha({ length: { min: 10, max: 20 } })),
-      undefined,
-    ]),
   }));
+
+export const getGetApiProductAllResponseMock = (
+  overrideResponse: Partial<ProductResult> = {},
+): ProductResult => ({
+  productList: faker.helpers.arrayElement([
+    Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => ({
+      id: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      name: faker.string.alpha({ length: { min: 1, max: 20 } }),
+      imgUrl: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      desc: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
+      gtin: faker.helpers.arrayElement([
+        faker.helpers.fromRegExp("^([0-9]{8}|[0-9]{12,14})$"),
+        undefined,
+      ]),
+      unit: faker.helpers.arrayElement(Object.values(Unit)),
+      latestQuotes: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 1, max: 10 }) },
+          (_, i) => i + 1,
+        ).map(() => ({
+          id: faker.helpers.arrayElement([
+            faker.number.int({ min: undefined, max: undefined }),
+            undefined,
+          ]),
+          storeInfo: faker.helpers.arrayElement([
+            {
+              id: faker.helpers.arrayElement([
+                faker.number.int({ min: undefined, max: undefined }),
+                undefined,
+              ]),
+              name: faker.string.alpha({ length: { min: 10, max: 20 } }),
+              address: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              storeGroupLogoPath: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+              url: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
+            },
+            undefined,
+          ]),
+          quoteDate: faker.date.past().toISOString().split("T")[0],
+          price: faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
+          discountType: faker.helpers.arrayElement([
+            faker.helpers.arrayElement(Object.values(Type)),
+            undefined,
+          ]),
+        })),
+        undefined,
+      ]),
+      stats: faker.helpers.arrayElement([
+        {
+          [faker.string.alphanumeric(5)]: faker.number.float({
+            min: undefined,
+            max: undefined,
+            fractionDigits: 2,
+          }),
+        },
+        undefined,
+      ]),
+      quantityPerItem: faker.helpers.arrayElement([
+        faker.number.float({
+          min: undefined,
+          max: undefined,
+          fractionDigits: 2,
+        }),
+        undefined,
+      ]),
+      itemPerBundle: faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        undefined,
+      ]),
+      tags: faker.helpers.arrayElement([
+        Array.from(
+          { length: faker.number.int({ min: 1, max: 10 }) },
+          (_, i) => i + 1,
+        ).map(() => faker.string.alpha({ length: { min: 10, max: 20 } })),
+        undefined,
+      ]),
+    })),
+    undefined,
+  ]),
+  totalRecords: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
+    undefined,
+  ]),
+  totalPages: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
+    undefined,
+  ]),
+  pageSize: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
+    undefined,
+  ]),
+  currentPage: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetApiProductExtSourcesResponseMock = (): string[] =>
   Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () =>
@@ -442,6 +515,10 @@ export const getGetApiProductGtinGtinResponseMock = (
           ]),
           name: faker.string.alpha({ length: { min: 10, max: 20 } }),
           address: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          storeGroupLogoPath: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -534,6 +611,10 @@ export const getPostApiProductNewResponseMock = (
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
+          storeGroupLogoPath: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
           url: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
@@ -622,6 +703,10 @@ export const getGetApiProductSearchResponseMock = (): ProductInfo[] =>
             ]),
             name: faker.string.alpha({ length: { min: 10, max: 20 } }),
             address: faker.helpers.arrayElement([
+              faker.string.alpha({ length: { min: 10, max: 20 } }),
+              undefined,
+            ]),
+            storeGroupLogoPath: faker.helpers.arrayElement([
               faker.string.alpha({ length: { min: 10, max: 20 } }),
               undefined,
             ]),
@@ -721,6 +806,10 @@ export const getPostApiProductSearchExtResponseMock = (): QuoteDTO[] =>
                   faker.string.alpha({ length: { min: 10, max: 20 } }),
                   undefined,
                 ]),
+                storeGroupLogoPath: faker.helpers.arrayElement([
+                  faker.string.alpha({ length: { min: 10, max: 20 } }),
+                  undefined,
+                ]),
                 url: faker.helpers.arrayElement([
                   faker.string.alpha({ length: { min: 10, max: 20 } }),
                   undefined,
@@ -784,6 +873,10 @@ export const getPostApiProductSearchExtResponseMock = (): QuoteDTO[] =>
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
         ]),
+        storeGroupLogoPath: faker.helpers.arrayElement([
+          faker.string.alpha({ length: { min: 10, max: 20 } }),
+          undefined,
+        ]),
         url: faker.helpers.arrayElement([
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
@@ -799,6 +892,14 @@ export const getPostApiProductSearchExtResponseMock = (): QuoteDTO[] =>
     }),
     discountType: faker.helpers.arrayElement([
       faker.helpers.arrayElement(Object.values(Type)),
+      undefined,
+    ]),
+    salePrice: faker.helpers.arrayElement([
+      faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
+      undefined,
+    ]),
+    multibuyQuantity: faker.helpers.arrayElement([
+      faker.number.int({ min: undefined, max: undefined }),
       undefined,
     ]),
   }));
@@ -846,6 +947,10 @@ export const getGetApiProductProductIdResponseMock = (
           ]),
           name: faker.string.alpha({ length: { min: 10, max: 20 } }),
           address: faker.helpers.arrayElement([
+            faker.string.alpha({ length: { min: 10, max: 20 } }),
+            undefined,
+          ]),
+          storeGroupLogoPath: faker.helpers.arrayElement([
             faker.string.alpha({ length: { min: 10, max: 20 } }),
             undefined,
           ]),
@@ -944,6 +1049,10 @@ export const getPostApiProductProductIdQuoteResponseMock = (
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
               ]),
+              storeGroupLogoPath: faker.helpers.arrayElement([
+                faker.string.alpha({ length: { min: 10, max: 20 } }),
+                undefined,
+              ]),
               url: faker.helpers.arrayElement([
                 faker.string.alpha({ length: { min: 10, max: 20 } }),
                 undefined,
@@ -1007,6 +1116,10 @@ export const getPostApiProductProductIdQuoteResponseMock = (
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
       ]),
+      storeGroupLogoPath: faker.helpers.arrayElement([
+        faker.string.alpha({ length: { min: 10, max: 20 } }),
+        undefined,
+      ]),
       url: faker.helpers.arrayElement([
         faker.string.alpha({ length: { min: 10, max: 20 } }),
         undefined,
@@ -1022,6 +1135,14 @@ export const getPostApiProductProductIdQuoteResponseMock = (
   }),
   discountType: faker.helpers.arrayElement([
     faker.helpers.arrayElement(Object.values(Type)),
+    undefined,
+  ]),
+  salePrice: faker.helpers.arrayElement([
+    faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
+    undefined,
+  ]),
+  multibuyQuantity: faker.helpers.arrayElement([
+    faker.number.int({ min: undefined, max: undefined }),
     undefined,
   ]),
   ...overrideResponse,
@@ -1073,6 +1194,10 @@ export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
                 ]),
                 name: faker.string.alpha({ length: { min: 10, max: 20 } }),
                 address: faker.helpers.arrayElement([
+                  faker.string.alpha({ length: { min: 10, max: 20 } }),
+                  undefined,
+                ]),
+                storeGroupLogoPath: faker.helpers.arrayElement([
                   faker.string.alpha({ length: { min: 10, max: 20 } }),
                   undefined,
                 ]),
@@ -1139,6 +1264,10 @@ export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
         ]),
+        storeGroupLogoPath: faker.helpers.arrayElement([
+          faker.string.alpha({ length: { min: 10, max: 20 } }),
+          undefined,
+        ]),
         url: faker.helpers.arrayElement([
           faker.string.alpha({ length: { min: 10, max: 20 } }),
           undefined,
@@ -1154,6 +1283,14 @@ export const getGetApiProductProductIdQuoteHistResponseMock = (): QuoteDTO[] =>
     }),
     discountType: faker.helpers.arrayElement([
       faker.helpers.arrayElement(Object.values(Type)),
+      undefined,
+    ]),
+    salePrice: faker.helpers.arrayElement([
+      faker.number.float({ min: undefined, max: undefined, fractionDigits: 2 }),
+      undefined,
+    ]),
+    multibuyQuantity: faker.helpers.arrayElement([
+      faker.number.int({ min: undefined, max: undefined }),
       undefined,
     ]),
   }));
@@ -1207,7 +1344,7 @@ export const getGetApiAdminBatchAllMockHandler = (
   );
 };
 
-export const getPostApiAdminBatchNewMockHandler = (
+export const getPostApiAdminBatchNewProductQuoteImportMockHandler = (
   overrideResponse?:
     | void
     | ((
@@ -1216,7 +1353,28 @@ export const getPostApiAdminBatchNewMockHandler = (
   options?: RequestHandlerOptions,
 ) => {
   return http.post(
-    "*/api/admin/batch/new",
+    "*/api/admin/batch/newProductQuoteImport",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 201 });
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminBatchNewStoreImportMockHandler = (
+  overrideResponse?:
+    | void
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<void> | void),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/batch/newStoreImport",
     async (info) => {
       await delay(1000);
       if (typeof overrideResponse === "function") {
@@ -1328,10 +1486,10 @@ export const getGetApiProductAlertsMockHandler = (
 
 export const getGetApiProductAllMockHandler = (
   overrideResponse?:
-    | ProductInfo[]
+    | ProductResult
     | ((
         info: Parameters<Parameters<typeof http.get>[1]>[0],
-      ) => Promise<ProductInfo[]> | ProductInfo[]),
+      ) => Promise<ProductResult> | ProductResult),
   options?: RequestHandlerOptions,
 ) => {
   return http.get(
@@ -1629,7 +1787,8 @@ export const getGetApiProductProductIdQuoteHistMockHandler = (
 export const getPricekeepAPIMock = () => [
   getPostApiAdminAlertNewMockHandler(),
   getGetApiAdminBatchAllMockHandler(),
-  getPostApiAdminBatchNewMockHandler(),
+  getPostApiAdminBatchNewProductQuoteImportMockHandler(),
+  getPostApiAdminBatchNewStoreImportMockHandler(),
   getPostApiAdminBatchRunBatchIdMockHandler(),
   getPostApiAdminStoreNewMockHandler(),
   getGetApiCommonLatestDealsMockHandler(),

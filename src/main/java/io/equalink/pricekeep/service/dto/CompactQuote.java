@@ -13,7 +13,7 @@ public class CompactQuote {
     private LocalDate quoteDate;
     private BigDecimal price;
     private BigDecimal dctUnitPrice;
-    private String quoteSource;
+    private Character quoteSource;
     private BigDecimal unitPrice;
     private Long discountId;
     private Long productId;

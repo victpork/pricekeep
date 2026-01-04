@@ -16,4 +16,6 @@ export interface QuoteDTO {
   quoteDate: LocalDate;
   price: number;
   discountType?: Type;
+  salePrice?: number;
+  multibuyQuantity?: number;
 }

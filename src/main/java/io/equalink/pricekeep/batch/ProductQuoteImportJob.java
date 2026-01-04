@@ -6,11 +6,13 @@ import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data.StoreImportBatch;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.repo.ProductRepo;
+import io.equalink.pricekeep.repo.QuoteRepo;
 import io.equalink.pricekeep.repo.StoreRepo;
 import io.equalink.pricekeep.service.pricefetch.ExternalImportController;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import lombok.extern.jbosslog.JBossLog;
+import org.hibernate.exception.GenericJDBCException;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -44,7 +46,7 @@ public class ProductQuoteImportJob implements Job {
 
     private void handleProductQuoteImportBatch(ProductQuoteImportBatch batch) {
         externalImportController.getProductQuoteFromExternalServices(batch.getKeyword(), batch.getSource())
-            .subscribe().with(this::persistProductAndQuote);
+            .subscribe().with(this::persistProductAndQuote, log::error);
     }
 
     private void persistProductAndQuote(Quote q) {
@@ -61,7 +63,11 @@ public class ProductQuoteImportJob implements Job {
                 productRepo.persist(p);
             }
         });
-        productRepo.persist(q);
+        try {
+            productRepo.persist(q);
+        } catch (GenericJDBCException e) {
+            log.error("Error inserting quote", e);
+        }
 
     }
 }

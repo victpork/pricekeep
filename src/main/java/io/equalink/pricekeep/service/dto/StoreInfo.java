@@ -14,5 +14,6 @@ public record StoreInfo(
         @Schema(required = true)
         String name,
         String address,
+        String storeGroupLogoPath,
         String url) {
 }

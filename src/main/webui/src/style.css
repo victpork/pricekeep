@@ -56,6 +56,10 @@
   --shadow-2xl: 0px 4px 10px 0px hsl(0 0% 0% / 0.28);
   --tracking-normal: 0em;
   --spacing: 0.21rem;
+
+  --vis-line-gapfill-stroke-dasharray: 2 3;
+  --vis-line-gapfill-stroke-opacity: 0.8;
+  --vis-line-gapfill-stroke-dashoffset: 0;
 }
 
 .dark {
@@ -168,16 +172,19 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.2s linear;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   transition: opacity 0.2s linear;
   opacity: 0;
 }

@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "cdi")
 public interface StoreMapper {
 
+    @Mapping(target = "storeGroupLogoPath", source = "s.group.iconPath")
     StoreInfo toDTO(Store s);
 
     //@Mapping(target = "geoPoint", ignore = true)
@@ -19,6 +20,7 @@ public interface StoreMapper {
     @Mapping(target = "name", source = "storeName")
     @Mapping(target = "url", ignore = true)
     @Mapping(target = "address", ignore = true)
+    @Mapping(target = "storeGroupLogoPath", ignore = true)
     StoreInfo toDTO(CompactQuote q);
 
     default BaseEntity<StoreInfo> toBaseEntity(CompactQuote cq) {

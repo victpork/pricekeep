@@ -29,8 +29,11 @@ import type {
   GetApiProductSuggestParams,
   JobInfo,
   ProductInfo,
+  ProductQuoteImportBatchDTO,
+  ProductResult,
   QuoteDTO,
   QuoteResult,
+  StoreImportBatchDTO,
 } from "./model";
 
 // https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
@@ -280,61 +283,76 @@ export function useGetApiAdminBatchAll<
 }
 
 /**
- * @summary Create Delete
+ * @summary Create Batch
  */
-export type postApiAdminBatchNewResponse201 = {
+export type postApiAdminBatchNewProductQuoteImportResponse201 = {
   data: void;
   status: 201;
 };
 
-export type postApiAdminBatchNewResponseSuccess =
-  postApiAdminBatchNewResponse201 & {
-    headers: Headers;
-  };
-export type postApiAdminBatchNewResponse = postApiAdminBatchNewResponseSuccess;
-
-export const getPostApiAdminBatchNewUrl = () => {
-  return `/api/admin/batch/new`;
+export type postApiAdminBatchNewProductQuoteImportResponse400 = {
+  data: void;
+  status: 400;
 };
 
-export const postApiAdminBatchNew = async (
+export type postApiAdminBatchNewProductQuoteImportResponseSuccess =
+  postApiAdminBatchNewProductQuoteImportResponse201 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchNewProductQuoteImportResponseError =
+  postApiAdminBatchNewProductQuoteImportResponse400 & {
+    headers: Headers;
+  };
+
+export type postApiAdminBatchNewProductQuoteImportResponse =
+  | postApiAdminBatchNewProductQuoteImportResponseSuccess
+  | postApiAdminBatchNewProductQuoteImportResponseError;
+
+export const getPostApiAdminBatchNewProductQuoteImportUrl = () => {
+  return `/api/admin/batch/newProductQuoteImport`;
+};
+
+export const postApiAdminBatchNewProductQuoteImport = async (
+  productQuoteImportBatchDTO: ProductQuoteImportBatchDTO,
   options?: RequestInit,
-): Promise<postApiAdminBatchNewResponse> => {
-  const res = await fetch(getPostApiAdminBatchNewUrl(), {
+): Promise<postApiAdminBatchNewProductQuoteImportResponse> => {
+  const res = await fetch(getPostApiAdminBatchNewProductQuoteImportUrl(), {
     ...options,
     method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(productQuoteImportBatchDTO),
   });
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: postApiAdminBatchNewResponse["data"] = body
+  const data: postApiAdminBatchNewProductQuoteImportResponse["data"] = body
     ? JSON.parse(body)
     : {};
   return {
     data,
     status: res.status,
     headers: res.headers,
-  } as postApiAdminBatchNewResponse;
+  } as postApiAdminBatchNewProductQuoteImportResponse;
 };
 
-export const getPostApiAdminBatchNewMutationOptions = <
-  TError = unknown,
+export const getPostApiAdminBatchNewProductQuoteImportMutationOptions = <
+  TError = void,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+    Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>,
     TError,
-    void,
+    { data: ProductQuoteImportBatchDTO },
     TContext
   >;
   fetch?: RequestInit;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+  Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>,
   TError,
-  void,
+  { data: ProductQuoteImportBatchDTO },
   TContext
 > => {
-  const mutationKey = ["postApiAdminBatchNew"];
+  const mutationKey = ["postApiAdminBatchNewProductQuoteImport"];
   const { mutation: mutationOptions, fetch: fetchOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -344,42 +362,175 @@ export const getPostApiAdminBatchNewMutationOptions = <
     : { mutation: { mutationKey }, fetch: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiAdminBatchNew>>,
-    void
-  > = () => {
-    return postApiAdminBatchNew(fetchOptions);
+    Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>,
+    { data: ProductQuoteImportBatchDTO }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiAdminBatchNewProductQuoteImport(data, fetchOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiAdminBatchNewMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiAdminBatchNew>>
+export type PostApiAdminBatchNewProductQuoteImportMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>
 >;
-
-export type PostApiAdminBatchNewMutationError = unknown;
+export type PostApiAdminBatchNewProductQuoteImportMutationBody =
+  ProductQuoteImportBatchDTO;
+export type PostApiAdminBatchNewProductQuoteImportMutationError = void;
 
 /**
- * @summary Create Delete
+ * @summary Create Batch
  */
-export const usePostApiAdminBatchNew = <TError = unknown, TContext = unknown>(
+export const usePostApiAdminBatchNewProductQuoteImport = <
+  TError = void,
+  TContext = unknown,
+>(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+      Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>,
       TError,
-      void,
+      { data: ProductQuoteImportBatchDTO },
       TContext
     >;
     fetch?: RequestInit;
   },
   queryClient?: QueryClient,
 ): UseMutationReturnType<
-  Awaited<ReturnType<typeof postApiAdminBatchNew>>,
+  Awaited<ReturnType<typeof postApiAdminBatchNewProductQuoteImport>>,
   TError,
-  void,
+  { data: ProductQuoteImportBatchDTO },
   TContext
 > => {
-  const mutationOptions = getPostApiAdminBatchNewMutationOptions(options);
+  const mutationOptions =
+    getPostApiAdminBatchNewProductQuoteImportMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Create Batch
+ */
+export type postApiAdminBatchNewStoreImportResponse201 = {
+  data: void;
+  status: 201;
+};
+
+export type postApiAdminBatchNewStoreImportResponse400 = {
+  data: void;
+  status: 400;
+};
+
+export type postApiAdminBatchNewStoreImportResponseSuccess =
+  postApiAdminBatchNewStoreImportResponse201 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchNewStoreImportResponseError =
+  postApiAdminBatchNewStoreImportResponse400 & {
+    headers: Headers;
+  };
+
+export type postApiAdminBatchNewStoreImportResponse =
+  | postApiAdminBatchNewStoreImportResponseSuccess
+  | postApiAdminBatchNewStoreImportResponseError;
+
+export const getPostApiAdminBatchNewStoreImportUrl = () => {
+  return `/api/admin/batch/newStoreImport`;
+};
+
+export const postApiAdminBatchNewStoreImport = async (
+  storeImportBatchDTO: StoreImportBatchDTO,
+  options?: RequestInit,
+): Promise<postApiAdminBatchNewStoreImportResponse> => {
+  const res = await fetch(getPostApiAdminBatchNewStoreImportUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(storeImportBatchDTO),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminBatchNewStoreImportResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminBatchNewStoreImportResponse;
+};
+
+export const getPostApiAdminBatchNewStoreImportMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>,
+    TError,
+    { data: StoreImportBatchDTO },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>,
+  TError,
+  { data: StoreImportBatchDTO },
+  TContext
+> => {
+  const mutationKey = ["postApiAdminBatchNewStoreImport"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>,
+    { data: StoreImportBatchDTO }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiAdminBatchNewStoreImport(data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminBatchNewStoreImportMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>
+>;
+export type PostApiAdminBatchNewStoreImportMutationBody = StoreImportBatchDTO;
+export type PostApiAdminBatchNewStoreImportMutationError = void;
+
+/**
+ * @summary Create Batch
+ */
+export const usePostApiAdminBatchNewStoreImport = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>,
+      TError,
+      { data: StoreImportBatchDTO },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminBatchNewStoreImport>>,
+  TError,
+  { data: StoreImportBatchDTO },
+  TContext
+> => {
+  const mutationOptions =
+    getPostApiAdminBatchNewStoreImportMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -855,7 +1006,7 @@ export function useGetApiProductAlerts<
  * @summary Get All Product
  */
 export type getApiProductAllResponse200 = {
-  data: ProductInfo[];
+  data: ProductResult;
   status: 200;
 };
 

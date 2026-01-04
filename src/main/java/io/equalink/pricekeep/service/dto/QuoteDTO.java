@@ -34,7 +34,7 @@ public class QuoteDTO {
         implementation = Void.class
     )
 
-    @JsonDeserialize(using= StoreInfoTypeDeserializer.class)
+    @JsonDeserialize(using = StoreInfoTypeDeserializer.class)
     BaseEntity<StoreInfo> storeInfo;
 
     @NotNull
@@ -44,5 +44,8 @@ public class QuoteDTO {
     @NotNull
     @Schema(required = true)
     BigDecimal price;
+
     Discount.Type discountType;
+    BigDecimal salePrice;
+    Integer multibuyQuantity;
 }

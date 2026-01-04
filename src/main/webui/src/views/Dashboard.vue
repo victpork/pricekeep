@@ -4,27 +4,22 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { PlusCircleIcon, LayoutGridIcon, SheetIcon } from 'lucide-vue-next';
-import { ButtonGroup } from '@/components/ui/button-group';
 import {
   useGetApiCommonLatestDeals,
-  useGetApiProductAll,
 } from '@/apiClient';
 import ProductColleciton from './ProductColleciton.vue';
-import { computed, ref } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
+import type { ComponentExposed } from 'vue-component-type-helpers'
 import {
   Dialog,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import ProductForm from '@/views/ProductForm.vue'
-import DataTable from '@/components/product/DataTable.vue';
-import { defaultColumns } from '@/components/product/column';
+import ProductTable from '@/components/product/ProductTable.vue';
 const { data: latestDeals } = useGetApiCommonLatestDeals()
 const flatDeals = computed(() => (latestDeals.value?.data.results ?? []))
 const isProductDialogOpen = ref(false)
-const isQuoteDialogOpen = ref(false)
-
-const { data: results, refetch } = useGetApiProductAll()
-
+const productTable = useTemplateRef<ComponentExposed<typeof ProductTable>>('productTable')
 </script>
 <template>
   <div class="col-span-3 lg:col-span-4 lg:border-l">
@@ -40,25 +35,15 @@ const { data: results, refetch } = useGetApiProductAll()
             </TabsTrigger>
           </TabsList>
           <div class="ml-auto mr-4">
-            <ButtonGroup>
-              <Dialog v-model:open="isProductDialogOpen">
-                <DialogTrigger as-child>
-                  <Button variant="outline">
-                    <PlusCircleIcon class="mr-2 h-4 w-4" />
-                    Add Product
-                  </Button>
-                </DialogTrigger>
-                <ProductForm @success="() => { isProductDialogOpen = false; refetch() }" />
-              </Dialog>
-              <Dialog v-model:open="isQuoteDialogOpen">
-                <DialogTrigger as-child>
-                  <Button variant="outline">
-                    <PlusCircleIcon class="mr-2 h-4 w-4" />
-                    Quote
-                  </Button>
-                </DialogTrigger>
-              </Dialog>
-            </ButtonGroup>
+            <Dialog v-model:open="isProductDialogOpen">
+              <DialogTrigger as-child>
+                <Button variant="outline">
+                  <PlusCircleIcon class="mr-2 h-4 w-4" />
+                  Add Product
+                </Button>
+              </DialogTrigger>
+              <ProductForm @success="() => { isProductDialogOpen = false; productTable?.refresh() }" />
+            </Dialog>
           </div>
         </div>
         <TabsContent value="at-a-glance" class="border-none p-0 outline-none">
@@ -100,15 +85,12 @@ const { data: results, refetch } = useGetApiProductAll()
           </div>
         </TabsContent>
         <TabsContent value="products" class="h-full flex-col border-none p-0 data-[state=active]:flex">
-          <div class="flex items-center justify-between">
-            <div class="space-y-1">
+          <div class="flex items-center justify-between w-full">
+            <div class="space-y-1 w-full">
               <h2 class="text-2xl font-semibold tracking-tight">
                 Table view
               </h2>
-              <p class="text-sm text-muted-foreground">
-                Table goes here
-              </p>
-              <DataTable :columns="defaultColumns" :data="results?.data || []" />
+              <ProductTable ref="productTable" />
             </div>
           </div>
           <Separator class="my-4" />

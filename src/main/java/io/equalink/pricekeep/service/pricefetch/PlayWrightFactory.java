@@ -19,6 +19,9 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
 
+import java.nio.file.Path;
+import java.util.List;
+
 @ApplicationScoped
 public class PlayWrightFactory {
     private Browser browser;
@@ -62,6 +65,17 @@ public class PlayWrightFactory {
         Proxy proxy = new Proxy(proxyAddr);
         NewPageOptions options = new NewPageOptions().setProxy(proxy).setIgnoreHTTPSErrors(true);
         return browser.newPage(options);
+    }
+
+    @Produces
+    @Named("withHead")
+    public BrowserContext getHeadedModeBrowserInstance() {
+        return playwright.chromium().launchPersistentContext(Path.of("./userProfile"),
+            new BrowserType.LaunchPersistentContextOptions()
+                .setHeadless(false)
+                .setChannel("chrome")
+                .setViewportSize(null)
+        );
     }
 
     void close(@Disposes Page page) {

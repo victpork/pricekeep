@@ -22,5 +22,6 @@ public class StoreGroup {
     @JoinColumn(name = "group_id")
     private Set<Store> branches;
 
+    private String iconPath;
 
 }
