@@ -33,7 +33,6 @@ import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Undo2, PlusCircleIcon } from 'lucide-vue-next'
-import { TrendingUp } from 'lucide-vue-next'
 import { formatCurrency } from '@/util/currencyFormatter'
 import { average } from '@/util/average'
 import { maxDate } from '@/util/maxDate'
@@ -41,6 +40,7 @@ import Checkbox from '@/components/ui/checkbox/Checkbox.vue'
 import Label from '@/components/ui/label/Label.vue'
 import QuoteForm from './QuoteForm.vue'
 import { capitalise } from '@/util/capitalise'
+import PriceMatrix from '@/components/pricematrix/PriceMatrix.vue'
 const router = useRouter()
 const props = defineProps<{
   id: number
@@ -132,7 +132,10 @@ const chartConfig = {
             <img :src="product?.imgUrl" :alt="product?.name" class="max-w-lg" />
           </picture>
         </div>
-
+        <div class="p-4 gap-2 flex flex-col">
+          <h4 class="text-lg font-semibold">Compare prices</h4>
+          <PriceMatrix :quote="product.latestQuotes ?? []" />
+        </div>
       </div>
       <div class="col-span-4 bg-background text-foreground rounded-md">
         <div class="p-4 flex flex-col gap-4">
@@ -207,8 +210,6 @@ const chartConfig = {
             </CardContent>
             <CardFooter class="flex-col items-start gap-2 text-sm p-4">
               <div class="flex gap-2 leading-none font-medium">
-                Trending up by 5.2% this month
-                <TrendingUp className="h-4 w-4" />
               </div>
               <div class="text-muted-foreground leading-none">
                 <Select v-model="quoteQueryParam.l">

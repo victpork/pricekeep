@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import PaginationControl from './PaginationControl.vue';
+import PaginationControl from '@/components/PaginationControl.vue';
 import { useGetApiProductAll } from '@/apiClient';
 import { defaultColumns } from './column';
 
