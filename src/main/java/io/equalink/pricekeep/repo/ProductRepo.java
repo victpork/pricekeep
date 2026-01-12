@@ -42,10 +42,17 @@ public interface ProductRepo {
     @Find
     List<Product> findByExactName(String name);
 
-    @Query("select p from Product p left join fetch p.priceQuotes q " +
-                   "where q.id in (select q2.id from Quote q2 where q2.product.id = p.id and " +
-                   "(q2.quoteStore, q2.quoteDate) in (select q3.quoteStore, max(q3.quoteDate) from Quote q3 where q3.product.id = p.id group by q3.quoteStore)) and " +
-                   "p.id = :id")
+    @Query("""
+               select distinct p from Product p
+            left join fetch p.priceQuotes q
+            where p.id = :id
+            and (q is null or (q.quoteStore, q.quoteDate) in (
+                select q2.quoteStore, max(q2.quoteDate)
+                from Quote q2
+                where q2.product.id = :id
+                group by q2.quoteStore
+            ))
+           """)
     Optional<Product> findByIdWithLatestQuotes(Long id);
 
     @Query("where lower(:keyword) member of tags or lower(name) like lower(concat('%', :keyword, '%'))")
@@ -75,12 +82,12 @@ public interface ProductRepo {
     Page<Product> findAll(Sort<Product> sort, PageRequest pageRequest);
 
     @SQL("""
-        select distinct e from (
-            select p.name as e from Product p
-            union
-            select distinct unnest(p.tags) as e from Product p
-        ) l
-    """)
+            select distinct e from (
+                select p.name as e from Product p
+                union
+                select distinct unnest(p.tags) as e from Product p
+            ) l
+        """)
     List<String> getKeywordList();
 
     @Save
@@ -136,52 +143,52 @@ public interface ProductRepo {
     Optional<Quote> getLowestPriceSince(Long productId, LocalDate cutoff, Limit l);
 
     @SQL("""
-            with
-            mth_stat as (
-                select
-                    min(q.price) as min_price,
-                    avg(q.price) as avg_price
-                from Quote q
-                where q.product_id = :pid and q.quote_date >= current_date - interval '1 month'
-            ),
-            quarter_stat as (
-                select
-                    min(q.price) as min_price,
-                    avg(q.price) as avg_price
-                from Quote q
-                where q.product_id = :pid and q.quote_date >= current_date - interval '3 months'
-            ),
-            year_stat as (
-                select
-                    min(q.price) as min_price,
-                    avg(q.price) as avg_price
-                from Quote q
-                where q.product_id = :pid and q.quote_date >= current_date - interval '1 year'
-            ),
-            update product_stats set month_min = mth_stat.min_price, month_avg = mth_stat.avg_price,
-                quarter_min = quarter_stat.min_price, quarter_avg = quarter_stat.avg_price,
-                year_min = year_stat.min_price, year_avg = year_stat.avg_price
-            where product_id = :pid
-            """)
+        with
+        mth_stat as (
+            select
+                min(q.price) as min_price,
+                avg(q.price) as avg_price
+            from Quote q
+            where q.product_id = :pid and q.quote_date >= current_date - interval '1 month'
+        ),
+        quarter_stat as (
+            select
+                min(q.price) as min_price,
+                avg(q.price) as avg_price
+            from Quote q
+            where q.product_id = :pid and q.quote_date >= current_date - interval '3 months'
+        ),
+        year_stat as (
+            select
+                min(q.price) as min_price,
+                avg(q.price) as avg_price
+            from Quote q
+            where q.product_id = :pid and q.quote_date >= current_date - interval '1 year'
+        ),
+        update product_stats set month_min = mth_stat.min_price, month_avg = mth_stat.avg_price,
+            quarter_min = quarter_stat.min_price, quarter_avg = quarter_stat.avg_price,
+            year_min = year_stat.min_price, year_avg = year_stat.avg_price
+        where product_id = :pid
+        """)
     void updateProductPriceStats(Long pid);
 
     @Query("""
-        select q from Quote q
-        where q.quoteDate >= :cutoffDate
-          and q.price < (
-              select VALUE(p.priceStats) from Product p
-              where p.id = q.product.id and
-              KEY(p.priceStats) = ProductStatType.MONTH_AVG
-          )
-        order by q.product.id, q.price asc
-    """)
+            select q from Quote q
+            where q.quoteDate >= :cutoffDate
+              and q.price < (
+                  select VALUE(p.priceStats) from Product p
+                  where p.id = q.product.id and
+                  KEY(p.priceStats) = ProductStatType.MONTH_AVG
+              )
+            order by q.product.id, q.price asc
+        """)
     Page<Quote> getLatestDeals(PageRequest pageRequest, LocalDate cutoffDate);
 
     @Query("select q from Product p join fetch p.priceQuotes q where " +
-                   "p.id = :productId and " +
-                   "q.quoteDate >= :cutoffDate " +
-                   "and (:includeDiscount = true or q.discount IS NULL) " +
-                   "order by q.quoteDate desc")
+               "p.id = :productId and " +
+               "q.quoteDate >= :cutoffDate " +
+               "and (:includeDiscount = true or q.discount IS NULL) " +
+               "order by q.quoteDate desc")
     List<Quote> getPriceHistory(Long productId, LocalDate cutoffDate, boolean includeDiscount);
 
 
