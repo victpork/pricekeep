@@ -1,7 +1,7 @@
 import type { SimpleQuoteDTO } from '@/model'
 import { h } from 'vue'
 import { type ColumnDef } from '@tanstack/vue-table'
-import { ArrowUpDown, ChevronDown } from 'lucide-vue-next'
+import { ArrowUpDown } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 
 export const columns: ColumnDef<SimpleQuoteDTO>[] = [
@@ -26,11 +26,14 @@ export const columns: ColumnDef<SimpleQuoteDTO>[] = [
         accessorKey: 'price',
         header: ({ column }) => {
             return h('div',
-                { class: 'text-right' },
+                { class: 'flex flex-row-reverse' },
                 h(Button, {
                     variant: 'ghost',
+                    class: 'flex flex-row-reverse p-4',
                     onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-                }, ['Price', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]))
+                }, () => [h('span', 'Price'),
+                h(ArrowUpDown, { class: 'ml-2 h-4 w-4' }),
+                ]))
         },
 
         cell: ({ row }) => {
@@ -39,7 +42,30 @@ export const columns: ColumnDef<SimpleQuoteDTO>[] = [
                 style: 'currency',
                 currency: 'NZD',
             }).format(amount)
-            return h('div', { class: 'text-right font-medium' }, formatted)
+            return h('div', { class: 'text-right font-medium pr-3' }, formatted)
+        },
+    },
+    {
+        accessorKey: 'unitPrice',
+        header: ({ column }) => {
+            return h('div',
+                { class: 'flex flex-row-reverse' },
+                h(Button, {
+                    variant: 'ghost',
+                    class: 'flex flex-row-reverse p-4',
+                    onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+                }, () => [h('span', 'Unit Price'),
+                h(ArrowUpDown, { class: 'ml-2 h-4 w-4' }),
+                ]))
+        },
+
+        cell: ({ row }) => {
+            const amount = row.original.unitPrice
+            const formatted = new Intl.NumberFormat('en-NZ', {
+                style: 'currency',
+                currency: 'NZD',
+            }).format(amount)
+            return h('div', { class: 'text-right font-medium pr-3' }, formatted + " / " + row.original.unit?.toLowerCase())
         },
     },
     {

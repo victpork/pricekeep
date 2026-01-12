@@ -43,7 +43,7 @@ public class Product {
 
         @EnumeratedValue
         @JsonValue
-        final String code;
+        final public String code;
 
         Unit(String code) {
             this.code = code;
@@ -120,6 +120,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(length = 2)
     private Unit unit;
+
+
+    private BigDecimal unitScale;
 
     /**
      * storing the list of SKU used by store group respectively

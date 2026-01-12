@@ -8,14 +8,14 @@ import type { ProductInfo } from "./productInfo";
 import type { QuoteDTOStoreInfo } from "./quoteDTOStoreInfo";
 import type { LocalDate } from "./localDate";
 import type { Type } from "./type";
+import type { QuoteDTODiscountPrice } from "./quoteDTODiscountPrice";
 
 export interface QuoteDTO {
-  readonly id?: number;
   productInfo?: ProductInfo;
   storeInfo: QuoteDTOStoreInfo;
   quoteDate: LocalDate;
   price: number;
   discountType?: Type;
-  salePrice?: number;
+  discountPrice?: QuoteDTODiscountPrice;
   multibuyQuantity?: number;
 }

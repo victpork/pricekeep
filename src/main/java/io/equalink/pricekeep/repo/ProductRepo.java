@@ -79,7 +79,7 @@ public interface ProductRepo {
             select p.name as e from Product p
             union
             select distinct unnest(p.tags) as e from Product p
-        )
+        ) l
     """)
     List<String> getKeywordList();
 

@@ -19,10 +19,6 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 public class QuoteDTO {
-    @Schema(readOnly = true)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Long id;
-
     ProductInfo productInfo;
 
     @NotNull
@@ -46,6 +42,7 @@ public class QuoteDTO {
     BigDecimal price;
 
     Discount.Type discountType;
-    BigDecimal salePrice;
+    @Schema(nullable = true)
+    BigDecimal discountPrice;
     Integer multibuyQuantity;
 }

@@ -34,6 +34,7 @@ public class StoreService {
         return storeRepo.findById(id);
     }
 
+
     @Transactional
     public void execImportStoreBatch(Long jobId) {
         log.infov("Executing StoreImportJob with JobID {0}", jobId);

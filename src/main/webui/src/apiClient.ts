@@ -22,6 +22,7 @@ import type { MaybeRef } from "vue";
 
 import type {
   ExternalProductQueryMessage,
+  GetApiAdminStoreSearchParams,
   GetApiCommonLatestDealsParams,
   GetApiProductAllParams,
   GetApiProductProductIdQuoteHistParams,
@@ -34,6 +35,7 @@ import type {
   QuoteDTO,
   QuoteResult,
   StoreImportBatchDTO,
+  StoreInfo,
 } from "./model";
 
 // https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
@@ -752,6 +754,148 @@ export const usePostApiAdminStoreNew = <TError = unknown, TContext = unknown>(
 
   return useMutation(mutationOptions, queryClient);
 };
+
+/**
+ * @summary Get All Stores
+ */
+export type getApiAdminStoreSearchResponse200 = {
+  data: StoreInfo[];
+  status: 200;
+};
+
+export type getApiAdminStoreSearchResponseSuccess =
+  getApiAdminStoreSearchResponse200 & {
+    headers: Headers;
+  };
+export type getApiAdminStoreSearchResponse =
+  getApiAdminStoreSearchResponseSuccess;
+
+export const getGetApiAdminStoreSearchUrl = (
+  params?: GetApiAdminStoreSearchParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/admin/store/search?${stringifiedParams}`
+    : `/api/admin/store/search`;
+};
+
+export const getApiAdminStoreSearch = async (
+  params?: GetApiAdminStoreSearchParams,
+  options?: RequestInit,
+): Promise<getApiAdminStoreSearchResponse> => {
+  const res = await fetch(getGetApiAdminStoreSearchUrl(params), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiAdminStoreSearchResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as getApiAdminStoreSearchResponse;
+};
+
+export const getGetApiAdminStoreSearchQueryKey = (
+  params?: MaybeRef<GetApiAdminStoreSearchParams>,
+) => {
+  return [
+    "api",
+    "admin",
+    "store",
+    "search",
+    ...(params ? [params] : []),
+  ] as const;
+};
+
+export const getGetApiAdminStoreSearchQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiAdminStoreSearch>>,
+  TError = unknown,
+>(
+  params?: MaybeRef<GetApiAdminStoreSearchParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiAdminStoreSearch>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = getGetApiAdminStoreSearchQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiAdminStoreSearch>>
+  > = ({ signal }) =>
+    getApiAdminStoreSearch(unref(params), { signal, ...fetchOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiAdminStoreSearch>>,
+    TError,
+    TData
+  >;
+};
+
+export type GetApiAdminStoreSearchQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiAdminStoreSearch>>
+>;
+export type GetApiAdminStoreSearchQueryError = unknown;
+
+/**
+ * @summary Get All Stores
+ */
+
+export function useGetApiAdminStoreSearch<
+  TData = Awaited<ReturnType<typeof getApiAdminStoreSearch>>,
+  TError = unknown,
+>(
+  params?: MaybeRef<GetApiAdminStoreSearchParams>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiAdminStoreSearch>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseQueryReturnType<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiAdminStoreSearchQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<
+    QueryKey,
+    TData,
+    TError
+  >;
+
+  return query;
+}
 
 /**
  * @summary Get Recent Discount
@@ -2148,7 +2292,7 @@ export const getPostApiProductProductIdQuoteUrl = (productId: number) => {
 
 export const postApiProductProductIdQuote = async (
   productId: number,
-  quoteDTO: NonReadonly<QuoteDTO>,
+  quoteDTO: QuoteDTO,
   options?: RequestInit,
 ): Promise<postApiProductProductIdQuoteResponse> => {
   const res = await fetch(getPostApiProductProductIdQuoteUrl(productId), {
@@ -2177,14 +2321,14 @@ export const getPostApiProductProductIdQuoteMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof postApiProductProductIdQuote>>,
     TError,
-    { productId: number; data: NonReadonly<QuoteDTO> },
+    { productId: number; data: QuoteDTO },
     TContext
   >;
   fetch?: RequestInit;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof postApiProductProductIdQuote>>,
   TError,
-  { productId: number; data: NonReadonly<QuoteDTO> },
+  { productId: number; data: QuoteDTO },
   TContext
 > => {
   const mutationKey = ["postApiProductProductIdQuote"];
@@ -2198,7 +2342,7 @@ export const getPostApiProductProductIdQuoteMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof postApiProductProductIdQuote>>,
-    { productId: number; data: NonReadonly<QuoteDTO> }
+    { productId: number; data: QuoteDTO }
   > = (props) => {
     const { productId, data } = props ?? {};
 
@@ -2211,7 +2355,7 @@ export const getPostApiProductProductIdQuoteMutationOptions = <
 export type PostApiProductProductIdQuoteMutationResult = NonNullable<
   Awaited<ReturnType<typeof postApiProductProductIdQuote>>
 >;
-export type PostApiProductProductIdQuoteMutationBody = NonReadonly<QuoteDTO>;
+export type PostApiProductProductIdQuoteMutationBody = QuoteDTO;
 export type PostApiProductProductIdQuoteMutationError = unknown;
 
 /**
@@ -2225,7 +2369,7 @@ export const usePostApiProductProductIdQuote = <
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof postApiProductProductIdQuote>>,
       TError,
-      { productId: number; data: NonReadonly<QuoteDTO> },
+      { productId: number; data: QuoteDTO },
       TContext
     >;
     fetch?: RequestInit;
@@ -2234,7 +2378,7 @@ export const usePostApiProductProductIdQuote = <
 ): UseMutationReturnType<
   Awaited<ReturnType<typeof postApiProductProductIdQuote>>,
   TError,
-  { productId: number; data: NonReadonly<QuoteDTO> },
+  { productId: number; data: QuoteDTO },
   TContext
 > => {
   const mutationOptions =

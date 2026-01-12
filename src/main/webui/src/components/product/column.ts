@@ -8,24 +8,18 @@ import { capitalise } from '@/util/capitalise'
 
 export const defaultColumns: ColumnDef<ProductInfo>[] = [
   {
-    accessorKey: 'id',
-    header: () => h('div', { class: 'text-left' }, 'ID'),
-    cell: ({ row }) => {
-      return h('div', { class: 'text-left' }, row.getValue('id'))
-    },
-  },
-  {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
+    size: 150,
     cell: ({ row }) => {
-      return h('a', { class: 'text-left font-medium min-w-[100px]', href: `/products/${row.original.id}` }, capitalise(row.getValue('name')))
+      return h('a', { class: 'text-left font-medium max-w-[150px] overflow-hidden', href: `/products/${row.original.id}` }, capitalise(row.getValue('name')))
     },
   },
   {
     accessorKey: 'description',
     header: () => h('div', { class: 'text-left' }, 'Description'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-left font-medium min-w-[200px]' }, row.original.desc ?? '')
+      return h('div', { class: 'text-left font-medium min-w-[150px]' }, row.original.desc ?? '')
     },
   },
   {
@@ -39,19 +33,46 @@ export const defaultColumns: ColumnDef<ProductInfo>[] = [
       const prices = quotes.map(q => q.price)
       const min = Math.min(...prices)
       const max = Math.max(...prices)
-      const formatter = new Intl.NumberFormat('en-US', {
+      const formatter = new Intl.NumberFormat('en-NZ', {
         style: 'currency',
         currency: 'NZD',
       })
-
+      if (min === max) {
+        return h('div', { class: 'text-right font-medium' }, formatter.format(min))
+      }
       const formatted = `${formatter.format(min)} - ${formatter.format(max)}`
 
       return h('div', { class: 'text-right font-medium' }, formatted)
     },
   },
   {
+    accessorKey: 'unitPrice',
+    header: () => h('div', { class: 'text-right font-medium' }, 'Unit Price'),
+    cell: ({ row }) => {
+      const quotes = row.original.latestQuotes
+      if (!quotes || quotes.length === 0) {
+        return h('div', { class: 'text-center italic font-medium' }, 'no price data')
+      }
+      const unitPrices = quotes.map(q => q.unitPrice)
+      const unit = quotes?.[0]?.unit?.toLowerCase() ?? ''
+      const min = Math.min(...unitPrices)
+      const max = Math.max(...unitPrices)
+      const formatter = new Intl.NumberFormat('en-NZ', {
+        style: 'currency',
+        currency: 'NZD',
+      })
+      if (min === max) {
+        return h('div', { class: 'text-right font-medium' }, formatter.format(min) + " /" + unit)
+      }
+      const formatted = `${formatter.format(min)} - ${formatter.format(max)}`
+
+      return h('div', { class: 'text-right font-medium' }, formatted + " /" + unit)
+    },
+  },
+  {
     accessorKey: 'tags',
-    header: () => h('div', { class: 'text-right' }, 'Tags'),
+    header: () => h('div', { class: 'text-left w-[100px]' }, 'Tags'),
+    minSize: 100,
     cell: ({ row }) => {
       const renderedTags = row.original.tags?.map(tag => h(Badge, { variant: 'outline' }, () => tag)) ?? h('div', { class: 'text-center italic font-medium' }, '')
       return h('div', { class: 'flex space-x-2' }, renderedTags)

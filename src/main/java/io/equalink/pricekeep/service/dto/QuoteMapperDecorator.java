@@ -38,9 +38,9 @@ public abstract class QuoteMapperDecorator implements QuoteMapper {
         }
         if (qInfo.getDiscountType() != null) {
             if (qInfo.getDiscountType().equals(Discount.Type.BUNDLE)) {
-                quote.getDiscount().setSaveValue(qInfo.getPrice().subtract(qInfo.getSalePrice().divide(new BigDecimal(qInfo.getMultibuyQuantity()), RoundingMode.HALF_UP)));
+                quote.getDiscount().setSaveValue(qInfo.getPrice().subtract(qInfo.getDiscountPrice().divide(new BigDecimal(qInfo.getMultibuyQuantity()), RoundingMode.HALF_UP)));
             } else {
-                quote.getDiscount().setSaveValue(qInfo.getPrice().subtract(qInfo.getSalePrice()));
+                quote.getDiscount().setSaveValue(qInfo.getPrice().subtract(qInfo.getDiscountPrice()));
             }
             quote.getDiscount().setQuote(quote);
         } else {

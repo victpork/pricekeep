@@ -44,7 +44,7 @@ public class PricekeepResourceTest {
 
     @Test
     void testUpdateQuote() {
-        QuoteDTO qInfo = new QuoteDTO(null, null, new BaseEntity.WithId<>(1L), LocalDate.now(), new BigDecimal("2.99"), null, null, null);
+        QuoteDTO qInfo = new QuoteDTO(null, new BaseEntity.WithId<>(1L), LocalDate.now(), new BigDecimal("2.99"), null, null, null);
         given().contentType(ContentType.JSON).body(qInfo).when().post("/{productId}/quote", "1")
                 .then().statusCode(RestResponse.StatusCode.ACCEPTED).body("id", notNullValue());
     }
@@ -82,8 +82,8 @@ public class PricekeepResourceTest {
 
     @Test
     void testEntityResult() throws IOException {
-        QuoteDTO q1 = new QuoteDTO(null, null, new BaseEntity.WithId<>(3L), null, null, null, null, null);
-        QuoteDTO q2 = new QuoteDTO(null, null,
+        QuoteDTO q1 = new QuoteDTO(null, new BaseEntity.WithId<>(3L), null, null, null, null, null);
+        QuoteDTO q2 = new QuoteDTO(null,
             new BaseEntity.WithDetail<>(new StoreInfo(3L, "Hello", "Nil", null, null)),
             null, null, null, null, null);
 

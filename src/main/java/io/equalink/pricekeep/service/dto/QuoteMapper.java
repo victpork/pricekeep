@@ -28,5 +28,6 @@ public interface QuoteMapper {
     @Mapping(target = "multiBuyQuantity", source = "multibuyQuantity",
         conditionExpression = "java(d.discountType == Discount.Type.BUNDLE)")
     @Mapping(target = "saveValue", ignore = true)
+    @Mapping(target = "salePrice", source = "discountPrice")
     Discount toDiscountEntity(QuoteDTO d);
 }

@@ -5,10 +5,8 @@ import io.equalink.pricekeep.data.BaseBatch;
 import io.equalink.pricekeep.data.ProductQuoteImportBatch;
 import io.equalink.pricekeep.data.StoreImportBatch;
 import io.equalink.pricekeep.repo.BatchRepo;
-import io.equalink.pricekeep.service.dto.BatchMapper;
-import io.equalink.pricekeep.service.dto.JobInfo;
-import io.equalink.pricekeep.service.dto.ProductQuoteImportBatchDTO;
-import io.equalink.pricekeep.service.dto.StoreImportBatchDTO;
+import io.equalink.pricekeep.repo.StoreRepo;
+import io.equalink.pricekeep.service.dto.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -34,6 +32,12 @@ public class AdminResource {
 
     @Inject
     BatchMapper batchMapper;
+
+    @Inject
+    StoreRepo storeRepo;
+
+    @Inject
+    StoreMapper storeMapper;
 
     @POST
     @Path("/alert/new")
@@ -80,5 +84,12 @@ public class AdminResource {
     @Path("/batch/all")
     public List<JobInfo> getAllJobs() {
         return batchController.getAllJobs();
+    }
+
+    @GET
+    @Path("/store/search")
+    public List<StoreInfo> getAllStores(@QueryParam("q") String storeName) {
+        log.infov("Searching for stores: {0}", "%" + storeName.replaceAll("%", "").toLowerCase() + "%");
+        return storeRepo.findStoreByName("%" + storeName.replaceAll("%", "").toLowerCase() + "%").stream().map(storeMapper::toDTO).toList();
     }
 }

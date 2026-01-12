@@ -46,7 +46,9 @@ public class ProductQuoteImportJob implements Job {
 
     private void handleProductQuoteImportBatch(ProductQuoteImportBatch batch) {
         externalImportController.getProductQuoteFromExternalServices(batch.getKeyword(), batch.getSource())
-            .subscribe().with(this::persistProductAndQuote, log::error);
+            .subscribe().with(this::persistProductAndQuote,
+                e -> log.error("Batch error", e),
+                () -> log.info("Import job finished"));
     }
 
     private void persistProductAndQuote(Quote q) {

@@ -36,11 +36,16 @@ import { Undo2, PlusCircleIcon } from 'lucide-vue-next'
 import { formatCurrency } from '@/util/currencyFormatter'
 import { average } from '@/util/average'
 import { maxDate } from '@/util/maxDate'
+import Separator from '@/components/ui/separator/Separator.vue'
 import Checkbox from '@/components/ui/checkbox/Checkbox.vue'
 import Label from '@/components/ui/label/Label.vue'
 import QuoteForm from './QuoteForm.vue'
 import { capitalise } from '@/util/capitalise'
 import PriceMatrix from '@/components/pricematrix/PriceMatrix.vue'
+import { ImageIcon } from "lucide-vue-next"
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
 const router = useRouter()
 const props = defineProps<{
   id: number
@@ -51,9 +56,9 @@ const quoteQueryParam = ref<GetApiProductProductIdQuoteHistParams>({ discount: t
 const { data: quoteData, refetch: refetchQuoteData } = useGetApiProductProductIdQuoteHist(props.id, quoteQueryParam)
 type ChartNode = { date: Date, price: number, store: string }
 const chartData = ref<ChartNode[]>([])
-const useUpdatedDataOnly = ref(false)
 const avg = ref(0)
 const datasetDate = ref(new Date())
+const hasImageError = ref(false)
 
 watch(isError, (isErr) => {
   if (isErr) {
@@ -66,16 +71,18 @@ watch(quoteQueryParam, () => {
   refetchQuoteData()
 })
 const product = computed(() => data.value?.data ?? { name: "test", desc: "", imgUrl: "", latestQuotes: [], unit: 'EA', id: 0 })
-const lowestPrice = computed(() => {
-  const latest = maxDate(product.value.latestQuotes?.map(q => new Date(q.quoteDate)) ?? [])
-  return Math.min(...product.value.latestQuotes?.filter(q => useUpdatedDataOnly.value ? new Date(q.quoteDate) == latest : true).map(q => q.price) ?? [0])
+const lowestQuote = computed(() => {
+  if (!product.value.latestQuotes?.length) {
+    return { price: 0, discountPrice: 0, storeInfo: { name: "", storeGroupLogoPath: "" }, quoteDate: new Date() };
+  }
+  return product.value.latestQuotes?.reduce((min, obj) => (obj.discountPrice ?? obj.price) < (min.discountPrice ?? min.price) ? obj : min) ??
+    { price: 0, discountPrice: 0, storeInfo: { name: "", storeGroupLogoPath: "" }, quoteDate: new Date() };
 })
 
 watch(quoteData,
   (d) => {
-    console.log("Quote data fetched")
     datasetDate.value = maxDate(d?.data?.map(q => new Date(q.quoteDate)) ?? [])
-    chartData.value = d?.data?.map(q => ({ date: new Date(q.quoteDate), price: q.price, store: 'name' in q.storeInfo ? q.storeInfo.name : '' })) ?? []
+    chartData.value = d?.data?.map(q => ({ date: new Date(q.quoteDate), price: q.discountPrice ?? q.price, store: 'name' in q.storeInfo ? q.storeInfo.name : '' })) ?? []
     avg.value = average(chartData.value.map(q => q.price))
   }
 )
@@ -86,6 +93,9 @@ const chartConfig = {
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig
+
+dayjs.extend(relativeTime)
+
 
 </script>
 
@@ -107,7 +117,7 @@ const chartConfig = {
                 Quote
               </Button>
             </DialogTrigger>
-            <QuoteForm :product-id="id" />
+            <QuoteForm :product-id="id" :product-name="product.name" />
           </Dialog>
           <Dialog>
             <DialogTrigger as-child>
@@ -116,7 +126,6 @@ const chartConfig = {
                 Alert
               </Button>
             </DialogTrigger>
-            <QuoteForm :product-id="id" />
           </Dialog>
         </ButtonGroup>
       </div>
@@ -127,10 +136,20 @@ const chartConfig = {
           <h2 class="text-2xl font-semibold">{{ capitalise(product.name) }}</h2>
           <p>{{ product.desc }}</p>
         </div>
-        <div>
+        <div class="p-4">
           <picture>
-            <img :src="product?.imgUrl" :alt="product?.name" class="max-w-lg" />
+            <img v-if="!hasImageError && product?.imgUrl" :src="product?.imgUrl" :alt="product?.name"
+              class="max-w-lg rounded-md" @error="hasImageError = true" />
+            <div v-else class="max-w-lg h-64 bg-muted flex items-center justify-center rounded-md border border-dashed">
+              <div class="flex flex-col items-center gap-2 text-muted-foreground">
+                <ImageIcon :size="48" />
+                <span>No image available</span>
+              </div>
+            </div>
           </picture>
+        </div>
+        <div class="p-4">
+          <Separator />
         </div>
         <div class="p-4 gap-2 flex flex-col">
           <h4 class="text-lg font-semibold">Compare prices</h4>
@@ -147,17 +166,17 @@ const chartConfig = {
               <div class="flex flex-1 flex-row justify-center gap-1 text-left">
                 <div v-if="product.latestQuotes?.[0]" class="flex flex-1 flex-col justify-center gap-1 text-left px-6">
                   <span class="text-muted-foreground text-xs">
-                    Lowest Price {{ useUpdatedDataOnly ? 'Now' : 'All Time' }}
+                    Lowest Price
                   </span>
                   <span class="text-lg leading-none font-bold sm:text-3xl">
-                    {{ formatCurrency(lowestPrice) }}
+                    {{ formatCurrency(lowestQuote.discountPrice ?? lowestQuote.price) }}
                   </span>
                   <span class="flex flex-row items-center gap-1">
-                    <span v-if="product.latestQuotes?.[0]?.storeInfo?.storeGroupLogoPath">
-                      <img :src="product.latestQuotes?.[0]?.storeInfo?.storeGroupLogoPath" alt="" class="w-4 h-4" />
+                    <span v-if="lowestQuote.storeInfo?.storeGroupLogoPath">
+                      <img :src="lowestQuote.storeInfo?.storeGroupLogoPath" alt="" class="w-4 h-4" />
                     </span>
                     <span class="text-muted-foreground text-xs">
-                      {{ product.latestQuotes?.[0]?.storeInfo?.name }}
+                      {{ lowestQuote.storeInfo?.name }}
                     </span>
                   </span>
                 </div>
@@ -174,8 +193,9 @@ const chartConfig = {
               </div>
             </CardContent>
             <CardFooter class="flex items-center gap-1">
-              <Checkbox v-model="useUpdatedDataOnly" />
-              <Label>Use latest data only</Label>
+              <span class="text-muted-foreground text-sm">
+                Updated {{
+                  dayjs(lowestQuote.quoteDate).fromNow() }}</span>
             </CardFooter>
           </Card>
           <Card>
@@ -193,7 +213,7 @@ const chartConfig = {
                         month: 'short',
                         day: 'numeric',
                       })
-                    }" :tick-values="chartData.map(d => d.date)" />
+                    }" :tick-values="chartData.map(d => d.date)" :tickTextHideOverlapping="true" />
                   <VisAxis type="y" :tick-format="(d: number) => {
                     return formatCurrency(d)
                   }" :tick-line="false" :domain-line="false" :grid-line="true" />

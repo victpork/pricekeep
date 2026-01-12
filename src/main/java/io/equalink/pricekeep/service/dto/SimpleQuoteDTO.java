@@ -10,10 +10,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record SimpleQuoteDTO(
-        @Schema(readOnly = true)
-        @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-        Long id,
-
         StoreInfo storeInfo,
 
         @NotNull
@@ -23,6 +19,12 @@ public record SimpleQuoteDTO(
         @NotNull
         @Schema(required = true)
         BigDecimal price,
-        Discount.Type discountType
+        @NotNull
+        @Schema(required = true)
+        BigDecimal unitPrice,
+        String unit,
+        Discount.Type discountType,
+        BigDecimal discountPrice,
+        BigDecimal multibuyQuantity
 ) {
 }

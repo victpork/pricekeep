@@ -17,8 +17,8 @@ public interface StoreRepo {
     @Find
     StoreGroup findStoreGroupByName(@Pattern String name);
 
-    @Find
-    List<Store> findStoreByName(@Pattern String name);
+    @Query("where name ilike :name")
+    List<Store> findStoreByName(String name);
 
     @Find
     List<Store> findStoreByInternalId(String internalId);

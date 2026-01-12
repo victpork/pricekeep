@@ -12,6 +12,7 @@ import io.equalink.pricekeep.repo.QuoteRepo;
 import io.equalink.pricekeep.service.dto.CompactQuote;
 import io.equalink.pricekeep.service.dto.ProductMapper;
 import io.equalink.pricekeep.service.dto.QuoteDTO;
+import io.quarkus.logging.Log;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.persistence.EntityManager;
@@ -86,14 +87,16 @@ public class ProductService {
 
     public List<QuoteDTO> latestDeals(int page, int pageSize) {
 
-        var p = productRepo.getLatestDeals(PageRequest.ofPage(page, 5, false), LocalDate.now().minusDays(5));
+        var p = productRepo.getLatestDeals(PageRequest.ofPage(page, pageSize, false), LocalDate.now().minusDays(5));
 
         return p.content().stream().map(productMapper::toQuoteDTO).toList();
     }
 
     public List<CompactQuote> getPriceHistory(Long productCode, Period period) {
         //return productRepo.getPriceHistory(productCode, LocalDate.now().minus(period), includeDiscount);
-        return quoteRepo.findLowestQuotePerDayHistByProduct(productCode, LocalDate.now().minus(period));
+        var cutOff = LocalDate.now().minus(period);
+        Log.infov("Cutoff date: {0}", cutOff);
+        return quoteRepo.findLowestQuotePerDayHistByProduct(productCode, cutOff);
     }
 
     public List<String> suggestWords(String input) {

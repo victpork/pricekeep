@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {
   Gauge,
-  Settings, 
-  Store, 
-  Bell, 
-  Package2, 
-  TableConfig, 
+  Settings,
+  Store,
+  Bell,
+  Package2,
+  TableConfig,
   PanelLeftOpenIcon,
   PanelLeftCloseIcon,
 } from "lucide-vue-next"
@@ -25,13 +25,13 @@ import {
 import { RouterLink } from "vue-router";
 import { ref } from "vue";
 
-const {toggleSidebar, open, openMobile} = useSidebar()
+const { toggleSidebar, open, openMobile } = useSidebar()
 const toggleIcon = ref(PanelLeftCloseIcon)
 const toggleBtnClass = ref("")
 openMobile.value = true
 const toggle = () => {
   toggleSidebar();
-  toggleIcon.value = open.value ? PanelLeftCloseIcon: PanelLeftOpenIcon
+  toggleIcon.value = open.value ? PanelLeftCloseIcon : PanelLeftOpenIcon
   toggleBtnClass.value = open.value ? "bg-cyan-500" : ""
 }
 
@@ -51,27 +51,22 @@ const linkStruct = [
     items: [
       {
         title: "Stores",
-        url: "#",
+        url: "/stores",
         icon: Store,
       },
       {
-        title: "Products",
-        url: "#",
-        icon: Package2,
-      },
-      {
         title: "Data Sources",
-        url: "#",
+        url: "/batches",
         icon: TableConfig,
       },
       {
         title: "Alerts",
-        url: "#",
+        url: "/alerts",
         icon: Bell,
       },
       {
         title: "Settings",
-        url: "#",
+        url: "/settings",
         icon: Settings,
       },
     ]
@@ -83,7 +78,9 @@ const linkStruct = [
   <Sidebar collapsible="icon">
     <SidebarHeader>
       <button @click="toggle">
-        <div class="px-1"><component :is="toggleIcon"/></div>
+        <div class="px-1">
+          <component :is="toggleIcon" />
+        </div>
       </button>
     </SidebarHeader>
     <SidebarContent>
@@ -94,7 +91,7 @@ const linkStruct = [
             <SidebarMenuItem v-for="item in group.items" :key="item.title">
               <SidebarMenuButton asChild size="xl" :isActive="item.url === $route.fullPath">
                 <RouterLink :to="item.url" class="flex flex-col items-center gap-1 h-auto py-2">
-                  <component :is="item.icon"/>
+                  <component :is="item.icon" />
                   <span class="text-xs">{{ item.title }}</span>
                 </RouterLink>
               </SidebarMenuButton>
@@ -107,6 +104,4 @@ const linkStruct = [
   </Sidebar>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
