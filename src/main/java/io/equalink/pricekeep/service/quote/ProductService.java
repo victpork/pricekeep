@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import io.equalink.pricekeep.data.Alert;
 import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.data._Product;
+import io.equalink.pricekeep.repo.AlertRepo;
 import io.equalink.pricekeep.repo.QuoteRepo;
 import io.equalink.pricekeep.service.dto.CompactQuote;
 import io.equalink.pricekeep.service.dto.ProductMapper;
@@ -48,6 +50,9 @@ public class ProductService {
     @Inject
     private ProductMapper productMapper;
 
+    @Inject
+    AlertRepo alertRepo;
+
     @Startup
     void init() {
         initSearchTrie();
@@ -65,8 +70,11 @@ public class ProductService {
         return productRepo.findByKeyword(keyword);
     }
 
-    public Page<Product> getAllProduct(Integer page, Integer pageSize) {
-        return productRepo.findAll(_Product.name.ascIgnoreCase(), PageRequest.ofPage(page).size(pageSize));
+    public Page<Product> getAllProduct(Integer page, Integer pageSize, String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return productRepo.findAll(_Product.name.ascIgnoreCase(), PageRequest.ofPage(page).size(pageSize));
+        }
+        return productRepo.findAll("%" + keyword + "%", _Product.name.ascIgnoreCase(), PageRequest.ofPage(page).size(pageSize));
     }
 
     void initSearchTrie() {
@@ -121,5 +129,17 @@ public class ProductService {
 
     public void updateProductInfo(Product p) {
         productRepo.persist(p);
+    }
+
+    public void createAlert(Long productId, BigDecimal priceLevel) {
+        Product ref = em.getReference(Product.class, productId);
+        Alert alert = new Alert();
+        alert.setProduct(ref);
+        alert.setTargetPrice(priceLevel);
+        alertRepo.createAlert(alert);
+    }
+
+    public List<Product> getTriggeredAlerts() {
+        return productRepo.getTriggeredAlerts();
     }
 }

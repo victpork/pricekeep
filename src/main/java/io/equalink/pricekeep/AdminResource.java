@@ -40,12 +40,6 @@ public class AdminResource {
     StoreMapper storeMapper;
 
     @POST
-    @Path("/alert/new")
-    public void createAlert() {
-
-    }
-
-    @POST
     @Path("/store/new")
     public void createStore() {
 

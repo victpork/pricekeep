@@ -43,7 +43,10 @@ import PriceMatrix from '@/components/pricematrix/PriceMatrix.vue'
 import { ImageIcon } from "lucide-vue-next"
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-
+import DialogContent from '@/components/ui/dialog/DialogContent.vue'
+import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
+import { DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog'
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@/components/ui/input-group'
 const router = useRouter()
 const props = defineProps<{
   id: number
@@ -127,6 +130,36 @@ dayjs.extend(relativeTime)
                 Alert
               </Button>
             </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Alert</DialogTitle>
+                <DialogDescription>
+                  Add price alert for this product
+                </DialogDescription>
+              </DialogHeader>
+              <Field>
+                <FieldLabel for="alert-level">
+                  Price Level Trigger
+                </FieldLabel>
+                <InputGroup class="max-w-[200px]">
+                  <InputGroupAddon>
+                    <InputGroupText>$</InputGroupText>
+                  </InputGroupAddon>
+                  <InputGroupInput placeholder="0.00" type="number" min="0" step="0.01" />
+                </InputGroup>
+                <FieldDescription>
+                  You will be notified when price drops to this level
+                </FieldDescription>
+              </Field>
+              <DialogFooter class="flex flex-row-reverse gap-2">
+                <DialogClose as-child>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <DialogClose as-child>
+                  <Button>Set up</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
           </Dialog>
         </ButtonGroup>
       </div>
@@ -140,7 +173,7 @@ dayjs.extend(relativeTime)
         <div class="p-4">
           <picture>
             <img v-if="!hasImageError && product?.imgUrl" :src="product?.imgUrl" :alt="product?.name"
-              class="max-w-lg rounded-md" @error="hasImageError = true" />
+              class="max-w-lg rounded-md min-w-[500px]" @error="hasImageError = true" />
             <div v-else class="max-w-lg h-64 bg-muted flex items-center justify-center rounded-md border border-dashed">
               <div class="flex flex-col items-center gap-2 text-muted-foreground">
                 <ImageIcon :size="48" />

@@ -16,7 +16,7 @@ public interface ProductMapper {
     @Mapping(target = "quantityPerItem", source = "packageSize")
     @Mapping(target = "itemPerBundle", source = "itemPerPackage")
     public ProductInfo toDTO(Product p);
-
+    
     @Mapping(target = "description", source = "desc")
     @Mapping(target = "priceQuotes", ignore = true)
     @Mapping(target = "groupSKU", ignore = true)
@@ -37,11 +37,11 @@ public interface ProductMapper {
     @Mapping(target = "multibuyQuantity", source = "discount.multiBuyQuantity")
     public QuoteDTO toQuoteDTO(Quote q);
 
-    @Mapping(target="storeInfo", source = "q")
-    @Mapping(target="productInfo", ignore = true)
-    @Mapping(target="discountType", ignore = true)
-    @Mapping(target="discountPrice", ignore = true)
-    @Mapping(target="multibuyQuantity", ignore = true)
+    @Mapping(target = "storeInfo", source = "q")
+    @Mapping(target = "productInfo", ignore = true)
+    @Mapping(target = "discountType", ignore = true)
+    @Mapping(target = "discountPrice", ignore = true)
+    @Mapping(target = "multibuyQuantity", ignore = true)
     public QuoteDTO toQuoteDTO(CompactQuote q);
 
     @Mapping(target = "storeInfo", source = "quoteStore")

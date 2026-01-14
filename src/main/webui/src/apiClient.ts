@@ -67,111 +67,6 @@ type NonReadonly<T> = [T] extends [UnionToIntersection<T>]
   : DistributeReadOnlyOverUnions<T>;
 
 /**
- * @summary Create Alert
- */
-export type postApiAdminAlertNewResponse201 = {
-  data: void;
-  status: 201;
-};
-
-export type postApiAdminAlertNewResponseSuccess =
-  postApiAdminAlertNewResponse201 & {
-    headers: Headers;
-  };
-export type postApiAdminAlertNewResponse = postApiAdminAlertNewResponseSuccess;
-
-export const getPostApiAdminAlertNewUrl = () => {
-  return `/api/admin/alert/new`;
-};
-
-export const postApiAdminAlertNew = async (
-  options?: RequestInit,
-): Promise<postApiAdminAlertNewResponse> => {
-  const res = await fetch(getPostApiAdminAlertNewUrl(), {
-    ...options,
-    method: "POST",
-  });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: postApiAdminAlertNewResponse["data"] = body
-    ? JSON.parse(body)
-    : {};
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postApiAdminAlertNewResponse;
-};
-
-export const getPostApiAdminAlertNewMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiAdminAlertNew>>,
-    TError,
-    void,
-    TContext
-  >;
-  fetch?: RequestInit;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiAdminAlertNew>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["postApiAdminAlertNew"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiAdminAlertNew>>,
-    void
-  > = () => {
-    return postApiAdminAlertNew(fetchOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostApiAdminAlertNewMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiAdminAlertNew>>
->;
-
-export type PostApiAdminAlertNewMutationError = unknown;
-
-/**
- * @summary Create Alert
- */
-export const usePostApiAdminAlertNew = <TError = unknown, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postApiAdminAlertNew>>,
-      TError,
-      void,
-      TContext
-    >;
-    fetch?: RequestInit;
-  },
-  queryClient?: QueryClient,
-): UseMutationReturnType<
-  Awaited<ReturnType<typeof postApiAdminAlertNew>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationOptions = getPostApiAdminAlertNewMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-/**
  * @summary Get All Jobs
  */
 export type getApiAdminBatchAllResponse200 = {
@@ -1037,7 +932,7 @@ export function useGetApiCommonLatestDeals<
  * @summary Get Today Alert Trigger
  */
 export type getApiProductAlertsResponse200 = {
-  data: QuoteDTO[];
+  data: ProductInfo[];
   status: 200;
 };
 
@@ -2143,6 +2038,122 @@ export function useGetApiProductProductId<
 
   return query;
 }
+
+/**
+ * @summary Create Alert
+ */
+export type postApiProductProductIdCreateAlertResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type postApiProductProductIdCreateAlertResponseSuccess =
+  postApiProductProductIdCreateAlertResponse200 & {
+    headers: Headers;
+  };
+export type postApiProductProductIdCreateAlertResponse =
+  postApiProductProductIdCreateAlertResponseSuccess;
+
+export const getPostApiProductProductIdCreateAlertUrl = (productId: number) => {
+  return `/api/product/${productId}/createAlert`;
+};
+
+export const postApiProductProductIdCreateAlert = async (
+  productId: number,
+  postApiProductProductIdCreateAlertBody: number,
+  options?: RequestInit,
+): Promise<postApiProductProductIdCreateAlertResponse> => {
+  const res = await fetch(getPostApiProductProductIdCreateAlertUrl(productId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiProductProductIdCreateAlertBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiProductProductIdCreateAlertResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiProductProductIdCreateAlertResponse;
+};
+
+export const getPostApiProductProductIdCreateAlertMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
+    TError,
+    { productId: number; data: number },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
+  TError,
+  { productId: number; data: number },
+  TContext
+> => {
+  const mutationKey = ["postApiProductProductIdCreateAlert"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
+    { productId: number; data: number }
+  > = (props) => {
+    const { productId, data } = props ?? {};
+
+    return postApiProductProductIdCreateAlert(productId, data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiProductProductIdCreateAlertMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>
+>;
+export type PostApiProductProductIdCreateAlertMutationBody = number;
+export type PostApiProductProductIdCreateAlertMutationError = unknown;
+
+/**
+ * @summary Create Alert
+ */
+export const usePostApiProductProductIdCreateAlert = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
+      TError,
+      { productId: number; data: number },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
+  TError,
+  { productId: number; data: number },
+  TContext
+> => {
+  const mutationOptions =
+    getPostApiProductProductIdCreateAlertMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 /**
  * @summary Edit Product

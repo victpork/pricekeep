@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class Alert {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToOne

@@ -1,6 +1,9 @@
 package io.equalink.pricekeep;
 
+import io.equalink.pricekeep.data.Alert;
+import io.equalink.pricekeep.data.Product;
 import io.equalink.pricekeep.data.Quote;
+import io.equalink.pricekeep.repo.AlertRepo;
 import io.equalink.pricekeep.service.PeriodLength;
 import io.equalink.pricekeep.service.dto.*;
 import io.equalink.pricekeep.service.pricefetch.ExternalImportController;
@@ -21,6 +24,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
+import java.math.BigDecimal;
 import java.time.Period;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +40,9 @@ public class ProductResource {
 
     @Inject
     ProductMapper pMapper;
+
+    @Inject
+    NilRelationProductMapper  nrpMapper;
 
     @Inject
     QuoteMapper quoteMapper;
@@ -61,8 +68,9 @@ public class ProductResource {
     @GET
     @Path("/all")
     public ProductResult getAllProduct(@QueryParam("page") @DefaultValue("1") Integer page,
-                                       @QueryParam("pageSize") @DefaultValue("25") Integer pageSize) {
-        var result = productService.getAllProduct(page, pageSize);
+                                       @QueryParam("pageSize") @DefaultValue("25") Integer pageSize,
+                                       @QueryParam("keyword") String keyword) {
+        var result = productService.getAllProduct(page, pageSize, keyword);
         return new ProductResult(
             result.content().stream().map(p -> pMapper.toDTO(p)).toList(),
             result.totalElements(),
@@ -189,8 +197,9 @@ public class ProductResource {
 
     @GET
     @Path("/alerts")
-    public List<QuoteDTO> getTodayAlertTrigger() {
-        return List.of();
+    public List<ProductInfo> getTodayAlertTrigger() {
+        List<Product> triggeredProducts = productService.getTriggeredAlerts();
+        return triggeredProducts.stream().map(nrpMapper::toDTOWithoutRelation).toList();
     }
 
     @POST
@@ -204,5 +213,12 @@ public class ProductResource {
         productService.updateProductInfo(existingProduct);
 
         return Response.ok(pMapper.toDTO(existingProduct)).build();
+    }
+
+    @POST
+    @Path("/{productId}/createAlert")
+    public Response createAlert(@PathParam("productId") Long productId, BigDecimal priceAlertLevel) {
+        productService.createAlert(productId, priceAlertLevel);
+        return Response.ok().build();
     }
 }

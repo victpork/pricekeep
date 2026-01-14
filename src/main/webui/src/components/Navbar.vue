@@ -9,6 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/avatar'
 import AutoComplete from './ui/AutoComplete.vue'
 import {
   useGetApiProductSuggest,
@@ -39,16 +44,25 @@ const { data: alerts } = useGetApiProductAlerts<Prettify<GetApiProductAlertsQuer
     <div class="flex items-center">
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
-          <Button class="border-0 p-1.5 size-12" variant="secondary">
-            <Bell class="size-8" />
-          </Button>
+          <span class="relative inline-flex">
+            <Button class="border-0 p-1.5 size-12" @mouseenter="" @mouseleave="" variant="secondary" size="icon">
+              <Bell class="size-8" />
+            </Button>
+            <span v-if="alerts?.data" class="absolute top-0 right-0 -mt-1 -mr-1 flex size-4">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
+              <span class="relative inline-flex size-4 rounded-full bg-red-500"></span>
+            </span>
+          </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="start">
           <template v-for="(alert, index) in alerts?.data">
             <DropdownMenuItem>
-              <span>{{ alert.productInfo?.name }}</span>
+              <Avatar>
+                <AvatarImage :src="alert.imgUrl ?? ''" :alt="alert.name" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <a :href="`/products/${alert.id}`">{{ alert.name }}</a>
             </DropdownMenuItem>
-            <DropdownMenuSeparator v-if="index === (alerts?.data.length ?? 1) - 1"/>
           </template>
         </DropdownMenuContent>
       </DropdownMenu>

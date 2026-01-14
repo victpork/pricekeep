@@ -14,12 +14,18 @@ import {
   Dialog,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { SearchIcon } from 'lucide-vue-next';
 import ProductForm from '@/views/ProductForm.vue'
 import ProductTable from '@/components/product/ProductTable.vue';
+import { refDebounced } from '@vueuse/core'
 const { data: latestDeals } = useGetApiCommonLatestDeals()
 const flatDeals = computed(() => (latestDeals.value?.data.results ?? []))
 const isProductDialogOpen = ref(false)
 const productTable = useTemplateRef<ComponentExposed<typeof ProductTable>>('productTable')
+const searchKey = ref<string>()
+
+const debouncedSearchKey = refDebounced(searchKey, 500)
 </script>
 <template>
   <div class="col-span-3 lg:col-span-4 lg:border-l">
@@ -86,11 +92,19 @@ const productTable = useTemplateRef<ComponentExposed<typeof ProductTable>>('prod
         </TabsContent>
         <TabsContent value="products" class="h-full flex-col border-none p-0 data-[state=active]:flex">
           <div class="flex items-center justify-between w-full">
-            <div class="space-y-1 w-full">
+            <div class="space-y-1 w-full flex flex-col gap-2">
               <h2 class="text-2xl font-semibold tracking-tight">
-                Table view
+                Product List
               </h2>
-              <ProductTable ref="productTable" />
+              <div class="flex flex-row">
+                <InputGroup class="basis-xs">
+                  <InputGroupInput placeholder="Search..." v-model="searchKey" />
+                  <InputGroupAddon>
+                    <SearchIcon />
+                  </InputGroupAddon>
+                </InputGroup>
+              </div>
+              <ProductTable ref="productTable" :keyword="debouncedSearchKey" />
             </div>
           </div>
           <Separator class="my-4" />

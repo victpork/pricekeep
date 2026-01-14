@@ -43,16 +43,16 @@ public interface ProductRepo {
     List<Product> findByExactName(String name);
 
     @Query("""
-               select distinct p from Product p
-            left join fetch p.priceQuotes q
-            where p.id = :id
-            and (q is null or (q.quoteStore, q.quoteDate) in (
-                select q2.quoteStore, max(q2.quoteDate)
-                from Quote q2
-                where q2.product.id = :id
-                group by q2.quoteStore
-            ))
-           """)
+            select distinct p from Product p
+         left join fetch p.priceQuotes q
+         where p.id = :id
+         and (q is null or (q.quoteStore, q.quoteDate) in (
+             select q2.quoteStore, max(q2.quoteDate)
+             from Quote q2
+             where q2.product.id = :id
+             group by q2.quoteStore
+         ))
+        """)
     Optional<Product> findByIdWithLatestQuotes(Long id);
 
     @Query("where lower(:keyword) member of tags or lower(name) like lower(concat('%', :keyword, '%'))")
@@ -69,6 +69,18 @@ public interface ProductRepo {
          and (q2.quoteStore, q2.quoteDate) in (select q3.quoteStore, max(q3.quoteDate) from Quote q3 where q3.product.id = p.id group by q3.quoteStore))
         """)
     List<Product> find(@Pattern String name, Sort<Product> sort, PageRequest pageRequest);
+
+    @Query("""
+        select p from Product p
+         left join fetch p.priceQuotes q
+         left join fetch q.quoteStore s
+         left join fetch q.discount qd
+         left join fetch p.priceStats ps
+         where q.id is null or q.id in (select q2.id from Quote q2 where q2.product.id = p.id
+         and (q2.quoteStore, q2.quoteDate) in (select q3.quoteStore, max(q3.quoteDate) from Quote q3 where q3.product.id = p.id group by q3.quoteStore))
+         and lower(p.name) like lower(:keyword)
+        """)
+    Page<Product> findAll(String keyword, Sort<Product> sort, PageRequest pageRequest);
 
     @Query("""
         select p from Product p
@@ -192,7 +204,11 @@ public interface ProductRepo {
     List<Quote> getPriceHistory(Long productId, LocalDate cutoffDate, boolean includeDiscount);
 
 
-    @Query("select q from Alert a join Quote q where q.quoteDate >= :cutoffDate " +
-               "and q.price <= a.targetPrice ")
-    List<Quote> getTriggeredAlerts(LocalDate cutoffDate);
+    @SQL("""
+        select distinct p.* from alert a inner join (select * from quote q where (q.store_id, q.quote_date, q.product_id ) in (select q2.store_id, max(q2.quote_date), q2.product_id
+        from Quote q2 group by q2.store_id, q2.product_id) ) t on a.product_id = t.product_id and a.target_price >= t.price
+        left join Product p on t.product_id = p.id
+        """)
+    List<Product> getTriggeredAlerts();
+
 }

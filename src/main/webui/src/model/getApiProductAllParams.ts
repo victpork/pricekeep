@@ -6,6 +6,7 @@
  */
 
 export type GetApiProductAllParams = {
+  keyword?: string;
   page?: number;
   pageSize?: number;
 };

@@ -242,14 +242,6 @@ components:
           readOnly: true
       type: object
 paths:
-  /api/admin/alert/new:
-    post:
-      responses:
-        "201":
-          description: Created
-      summary: Create Alert
-      tags:
-      - Admin Resource
   /api/admin/batch/all:
     get:
       responses:
@@ -370,13 +362,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/QuoteDTO"
+                  $ref: "#/components/schemas/ProductInfo"
       summary: Get Today Alert Trigger
       tags:
       - Product Resource
   /api/product/all:
     get:
       parameters:
+      - name: keyword
+        in: query
+        schema:
+          type: string
       - name: page
         in: query
         schema:
@@ -532,6 +528,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProductInfo"
       summary: Get Product By Id
+      tags:
+      - Product Resource
+  /api/product/{productId}/createAlert:
+    post:
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: number
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+      summary: Create Alert
       tags:
       - Product Resource
   /api/product/{productId}/edit:
