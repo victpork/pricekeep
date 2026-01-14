@@ -65,12 +65,11 @@ const form = useForm({
         onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-        console.debug(value)
         postQuote({
             productId: props.productId,
             data: {
                 price: value.price,
-                quoteDate: value.quoteDate.toDate(getLocalTimeZone()).toISOString().slice(0, 10),
+                quoteDate: value.quoteDate.toString(),
                 storeInfo: {
                     id: value.storeId,
                 },
