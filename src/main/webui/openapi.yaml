@@ -576,7 +576,7 @@ paths:
               $ref: "#/components/schemas/QuoteDTO"
         required: true
       responses:
-        "201":
+        "202":
           description: New price quoted
           content:
             application/json:

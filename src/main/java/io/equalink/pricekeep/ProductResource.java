@@ -149,7 +149,7 @@ public class ProductResource {
     @POST
     @Path("/{productId}/quote")
     @APIResponse(
-        responseCode = "201",
+        responseCode = "202",
         description = "New price quoted",
         content = @Content(
             mediaType = "application/json",
@@ -170,7 +170,7 @@ public class ProductResource {
 
         productService.quotePriceForProduct(productId, q);
 
-        return Response.accepted(pMapper.toQuoteDTO(q)).build();
+        return Response.accepted(qDTO).build();
     }
 
     @GET

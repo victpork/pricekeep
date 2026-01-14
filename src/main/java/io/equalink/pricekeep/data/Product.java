@@ -113,9 +113,10 @@ public class Product {
 
     /**
      * Number of items in a bundle (e.g., 6 for a pack of 6)
+     * Null when product price in loose form (e.g. per kg)
      */
-    @Column(nullable = false, name = "item_per_package")
-    private int itemPerPackage;
+    @Column(name = "item_per_package")
+    private Integer itemPerPackage;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 2)

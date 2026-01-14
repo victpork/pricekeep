@@ -794,7 +794,7 @@
           "required" : true
         },
         "responses" : {
-          "201" : {
+          "202" : {
             "description" : "New price quoted",
             "content" : {
               "application/json" : {

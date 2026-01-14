@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, h, computed, watch } from 'vue'
+import { ref, h, watch } from 'vue'
 import { useForm } from '@tanstack/vue-form'
 import { toast } from 'vue-sonner'
 import { z } from 'zod'
@@ -13,12 +13,6 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroupTextarea,
-} from '@/components/ui/input-group'
-import {
     Select,
     SelectContent,
     SelectItem,
@@ -27,20 +21,15 @@ import {
     SelectGroup,
     SelectLabel,
 } from '@/components/ui/select'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import Switch from '@/components/ui/switch/Switch.vue'
 import Label from '@/components/ui/label/Label.vue'
-import { usePostApiProductProductIdQuote, useGetApiAdminStoreSearch } from '@/apiClient'
-import type { StoreInfo, } from '@/model'
+import { usePostApiProductProductIdQuote } from '@/apiClient'
 import { today, getLocalTimeZone, type DateValue } from '@internationalized/date'
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogDescription } from '@/components/ui/dialog'
 import { Type } from '@/model'
-import { cn } from '@/lib/utils'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { CalendarIcon, ChevronsUpDownIcon } from 'lucide-vue-next'
+import { DatePicker } from '@/components/ui/date-picker'
 import { capitalise, skewToCapText } from '@/util/capitalise'
-import { refDebounced } from '@vueuse/core'
+import Storepicker from '@/components/StorePicker/Storepicker.vue'
 const props = defineProps<{
     productId: number
     productName: string
@@ -56,7 +45,7 @@ const formSchema = z.object({
     price: z.number().min(0),
     quoteDate: z.custom<DateValue>(),
     storeId: z.number(),
-    discountType: z.enum([Type.PERCENTAGE, Type.FIXED_AMOUNT, Type.BUNDLE, Type.OTHER]).optional(),
+    discountType: z.enum([Type.PERCENTAGE, Type.FIXED_AMOUNT, Type.BUNDLE, Type.NEAR_EXPIRY, Type.OTHER]).optional(),
     salePrice: z.number().min(0).optional(),
     multibuyQuantity: z.number().min(0).optional(),
 })
@@ -76,7 +65,7 @@ const form = useForm({
         onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-        console.log(value)
+        console.debug(value)
         postQuote({
             productId: props.productId,
             data: {
@@ -91,7 +80,7 @@ const form = useForm({
             }
         }).then((p) => {
             console.log('Posted', p.status)
-            if (p.status == 201) {
+            if (p.status == 202) {
                 toast.success('New Price Posted', {
                     description: h('span', { class: 'text-sm' }, [
                         'Quote ',
@@ -101,6 +90,7 @@ const form = useForm({
                 })
                 form.reset()
                 emit('success')
+
             } else {
                 toast.error('Failed to create quote', {
                     description: p.data,
@@ -115,32 +105,15 @@ const form = useForm({
 function isInvalid(field: any) {
     return field.state.meta.isTouched && !field.state.meta.isValid
 }
-const defaultPlaceholder = today(getLocalTimeZone())
-const datePopoverClose = ref(false)
-const storePopoverClose = ref(false)
 
-const handleDateSelect = (newDate: DateValue | undefined) => {
-    if (newDate) {
-        datePopoverClose.value = false;
-    }
-};
-const storeSearchKey = ref("")
-const debounceStoreSearchKey = refDebounced(storeSearchKey, 300)
-const storeSearchQuery = computed(() => ({ q: debounceStoreSearchKey.value }))
-const storeQueryEnabled = computed(() => debounceStoreSearchKey.value.length >= 3)
-const { data: storeResult } = useGetApiAdminStoreSearch(storeSearchQuery, {
-    query: {
-        enabled: storeQueryEnabled
-    }
-})
-
-const stores = computed<StoreInfo[]>(() => storeResult.value?.data ?? [])
-
-const selectedStore = computed(() =>
-    stores.value.find(s => s.id === selectedStoreId.value)
+watch(
+    () => form.state.values,
+    (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+    },
+    { deep: true }
 )
 
-const selectedStoreId = ref(0)
 const discountFormEnabled = ref(false)
 </script>
 <template>
@@ -156,56 +129,17 @@ const discountFormEnabled = ref(false)
                 <FieldGroup>
                     <form.Field name="quoteDate" v-slot="{ field }">
                         <Field :data-invalid="isInvalid(field)">
-                            <Popover v-model:open="datePopoverClose">
-                                <PopoverTrigger as-child>
-                                    <Button variant="outline" :class="cn(
-                                        'w-[280px] justify-start text-left font-normal',
-                                        !form.state.values.quoteDate && 'text-muted-foreground',
-                                    )">
-                                        <CalendarIcon class="mr-2 h-4 w-4" />
-                                        {{ form.state.values.quoteDate ? form.state.values.quoteDate.toString() :
-                                            "Quote Date" }}
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent class="w-auto p-0">
-                                    <Calendar v-model="form.state.values.quoteDate" :initial-focus="true"
-                                        :default-placeholder="defaultPlaceholder" layout="month-and-year"
-                                        :max-value="today(getLocalTimeZone())" @update:model-value="handleDateSelect" />
-                                </PopoverContent>
-                            </Popover>
+                            <DatePicker :model-value="field.state.value"
+                                @update:model-value="(v) => field.handleChange(v as DateValue)" placeholder="Quote Date"
+                                :max-value="today(getLocalTimeZone())" />
                             <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                         </Field>
                     </form.Field>
                 </FieldGroup>
                 <form.Field name="storeId" v-slot="{ field }">
                     <Field :data-invalid="isInvalid(field)">
-                        <Popover v-model:open="storePopoverClose">
-                            <PopoverTrigger as-child>
-                                <Button variant="outline" role="combobox" :aria-expanded="storePopoverClose"
-                                    class="w-[200px] justify-between">
-                                    {{ selectedStore?.name || "Store to quote from..." }}
-                                    <ChevronsUpDownIcon class="opacity-50" />
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent class="w-[200px] p-0">
-                                <Command>
-                                    <CommandInput class="h-9" placeholder="Search store..."
-                                        @input="storeSearchKey = $event.target.value" />
-                                    <CommandList>
-                                        <CommandEmpty>No store found.</CommandEmpty>
-                                        <CommandGroup>
-                                            <CommandItem v-for="store in stores" :key="store.id" :value="store.id ?? 0"
-                                                @select="() => {
-                                                    selectedStoreId = selectedStoreId === store.id ? 0 : store.id ?? 0
-                                                    storePopoverClose = false
-                                                }">
-                                                {{ store.name }}
-                                            </CommandItem>
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
+                        <Storepicker :model-value="field.state.value"
+                            @update:model-value="(v) => field.handleChange(v as number)" />
                         <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                     </Field>
                 </form.Field>
@@ -213,8 +147,9 @@ const discountFormEnabled = ref(false)
             <div>
                 <form.Field name="price" v-slot="{ field }">
                     <Field :data-invalid="isInvalid(field)" class="w-[200px]">
-                        <Input v-model="field.state.value" type="number" placeholder="Price" min="0" step="0.01"
-                            class="w-[200px]" />
+                        <Input id="price" :name="field.name" :model-value="field.state.value" @blur="field.handleBlur"
+                            @input="field.handleChange($event.target.valueAsNumber)" type="number" placeholder="Price"
+                            min="0" step="0.01" class="w-[200px]" />
                         <FieldError v-if="isInvalid(field)" :errors="field.state.meta.errors" />
                         <FieldDescription>Original price without discount</FieldDescription>
                     </Field>
@@ -231,8 +166,8 @@ const discountFormEnabled = ref(false)
                     <FieldGroup v-if="discountFormEnabled">
                         <form.Field name="discountType" v-slot="{ field }">
                             <Field :data-invalid="isInvalid(field)">
-                                <Select :name="field.name" :value="field.state.value"
-                                    @update:model-value="field.handleChange">
+                                <Select :name="field.name" :model-value="field.state.value"
+                                    @update:model-value="(e) => field.handleChange(e as Type)">
                                     <SelectTrigger class="w-[180px]">
                                         <SelectValue placeholder="Discount Type" />
                                     </SelectTrigger>
@@ -281,7 +216,7 @@ const discountFormEnabled = ref(false)
             <DialogClose as-child>
                 <Button variant="outline" @click="form.reset()">Cancel</Button>
             </DialogClose>
-            <Button type="submit" form="productForm">Quote</Button>
+            <Button type="submit" form="quoteForm">Quote</Button>
         </DialogFooter>
     </DialogContent>
 </template>

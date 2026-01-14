@@ -1,5 +1,7 @@
 package io.equalink.pricekeep.service.quote;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -106,9 +108,14 @@ public class ProductService {
 
     @Transactional
     public void quotePriceForProduct(Long productId, Quote q) {
+
         var p = em.getReference(Product.class, productId);
         q.setProduct(p);
-        //p.getPriceQuotes().add(q);
+        if (q.getUnitPrice() == null) {
+            p = em.find(Product.class, productId);
+            q.setProduct(p);
+            q.setUnitPrice(q.getUnitPriceFromPackage(false));
+        }
         em.persist(q);
     }
 

@@ -81,8 +81,17 @@ public class Quote {
         if (useDiscount && discount != null) {
             basePrice = discount.applyDiscount(price);
         }
+        // Discrete item, unit price is $/ea
+        if (product.getUnit() == Product.Unit.PER_ITEM) return basePrice.divide(BigDecimal.valueOf(product.getItemPerPackage()), RoundingMode.HALF_EVEN);
+        if (product.getPackageSize() == null) return basePrice;
+        // If item sold in loose
+        if (product.getItemPerPackage() == null || product.getItemPerPackage() == 0) return basePrice;
+
+        // unit price = base price / (itemPerPackage * quantPerItem / unitScale)
+        // e.g. a package of 6 cans of 330ml fizzy drinks sold at $ 12
+        // unit price per 100ml = $12 / (330 * 6 / 100) = $0.60/100ml
         return basePrice.divide(
-            product.getPackageSize().multiply(BigDecimal.valueOf(product.getItemPerPackage())), RoundingMode.HALF_EVEN
+            product.getPackageSize().multiply(BigDecimal.valueOf(product.getItemPerPackage())).multiply(product.getUnitScale()), RoundingMode.HALF_EVEN
         );
     }
 }

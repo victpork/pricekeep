@@ -37,8 +37,6 @@ import { formatCurrency } from '@/util/currencyFormatter'
 import { average } from '@/util/average'
 import { maxDate } from '@/util/maxDate'
 import Separator from '@/components/ui/separator/Separator.vue'
-import Checkbox from '@/components/ui/checkbox/Checkbox.vue'
-import Label from '@/components/ui/label/Label.vue'
 import QuoteForm from './QuoteForm.vue'
 import { capitalise } from '@/util/capitalise'
 import PriceMatrix from '@/components/pricematrix/PriceMatrix.vue'
@@ -51,7 +49,7 @@ const props = defineProps<{
   id: number
 }>()
 
-const { data, isError } = useGetApiProductProductId(props.id)
+const { data, isError, refetch: refetchProductData } = useGetApiProductProductId(props.id)
 const quoteQueryParam = ref<GetApiProductProductIdQuoteHistParams>({ discount: true, l: 'YEAR' })
 const { data: quoteData, refetch: refetchQuoteData } = useGetApiProductProductIdQuoteHist(props.id, quoteQueryParam)
 type ChartNode = { date: Date, price: number, store: string }
@@ -70,6 +68,8 @@ watch(isError, (isErr) => {
 watch(quoteQueryParam, () => {
   refetchQuoteData()
 })
+const isQuoteDialogOpen = ref(false)
+
 const product = computed(() => data.value?.data ?? { name: "test", desc: "", imgUrl: "", latestQuotes: [], unit: 'EA', id: 0 })
 const lowestQuote = computed(() => {
   if (!product.value.latestQuotes?.length) {
@@ -110,14 +110,15 @@ dayjs.extend(relativeTime)
       </div>
       <div>
         <ButtonGroup>
-          <Dialog>
+          <Dialog v-model:open="isQuoteDialogOpen">
             <DialogTrigger as-child>
               <Button variant="outline">
                 <PlusCircleIcon class="mr-2 h-4 w-4" />
                 Quote
               </Button>
             </DialogTrigger>
-            <QuoteForm :product-id="id" :product-name="product.name" />
+            <QuoteForm :product-id="id" :product-name="product.name"
+              @success="() => { isQuoteDialogOpen = false; refetchQuoteData(); refetchProductData() }" />
           </Dialog>
           <Dialog>
             <DialogTrigger as-child>
