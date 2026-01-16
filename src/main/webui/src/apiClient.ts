@@ -21,6 +21,7 @@ import { computed, unref } from "vue";
 import type { MaybeRef } from "vue";
 
 import type {
+  AlertDTO,
   ExternalProductQueryMessage,
   GetApiAdminStoreSearchParams,
   GetApiCommonLatestDealsParams,
@@ -34,6 +35,8 @@ import type {
   ProductResult,
   QuoteDTO,
   QuoteResult,
+  SetAlertMessage,
+  SimpleQuoteDTO,
   StoreImportBatchDTO,
   StoreInfo,
 } from "./model";
@@ -932,7 +935,7 @@ export function useGetApiCommonLatestDeals<
  * @summary Get Today Alert Trigger
  */
 export type getApiProductAlertsResponse200 = {
-  data: ProductInfo[];
+  data: SimpleQuoteDTO[];
   status: 200;
 };
 
@@ -2040,122 +2043,6 @@ export function useGetApiProductProductId<
 }
 
 /**
- * @summary Create Alert
- */
-export type postApiProductProductIdCreateAlertResponse200 = {
-  data: unknown;
-  status: 200;
-};
-
-export type postApiProductProductIdCreateAlertResponseSuccess =
-  postApiProductProductIdCreateAlertResponse200 & {
-    headers: Headers;
-  };
-export type postApiProductProductIdCreateAlertResponse =
-  postApiProductProductIdCreateAlertResponseSuccess;
-
-export const getPostApiProductProductIdCreateAlertUrl = (productId: number) => {
-  return `/api/product/${productId}/createAlert`;
-};
-
-export const postApiProductProductIdCreateAlert = async (
-  productId: number,
-  postApiProductProductIdCreateAlertBody: number,
-  options?: RequestInit,
-): Promise<postApiProductProductIdCreateAlertResponse> => {
-  const res = await fetch(getPostApiProductProductIdCreateAlertUrl(productId), {
-    ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postApiProductProductIdCreateAlertBody),
-  });
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: postApiProductProductIdCreateAlertResponse["data"] = body
-    ? JSON.parse(body)
-    : {};
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postApiProductProductIdCreateAlertResponse;
-};
-
-export const getPostApiProductProductIdCreateAlertMutationOptions = <
-  TError = unknown,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
-    TError,
-    { productId: number; data: number },
-    TContext
-  >;
-  fetch?: RequestInit;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
-  TError,
-  { productId: number; data: number },
-  TContext
-> => {
-  const mutationKey = ["postApiProductProductIdCreateAlert"];
-  const { mutation: mutationOptions, fetch: fetchOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, fetch: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
-    { productId: number; data: number }
-  > = (props) => {
-    const { productId, data } = props ?? {};
-
-    return postApiProductProductIdCreateAlert(productId, data, fetchOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostApiProductProductIdCreateAlertMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>
->;
-export type PostApiProductProductIdCreateAlertMutationBody = number;
-export type PostApiProductProductIdCreateAlertMutationError = unknown;
-
-/**
- * @summary Create Alert
- */
-export const usePostApiProductProductIdCreateAlert = <
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
-      TError,
-      { productId: number; data: number },
-      TContext
-    >;
-    fetch?: RequestInit;
-  },
-  queryClient?: QueryClient,
-): UseMutationReturnType<
-  Awaited<ReturnType<typeof postApiProductProductIdCreateAlert>>,
-  TError,
-  { productId: number; data: number },
-  TContext
-> => {
-  const mutationOptions =
-    getPostApiProductProductIdCreateAlertMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-/**
  * @summary Edit Product
  */
 export type postApiProductProductIdEditResponse200 = {
@@ -2281,6 +2168,266 @@ export const usePostApiProductProductIdEdit = <
 
   return useMutation(mutationOptions, queryClient);
 };
+
+/**
+ * @summary Edit Alert
+ */
+export type postApiProductProductIdEditAlertResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type postApiProductProductIdEditAlertResponse400 = {
+  data: void;
+  status: 400;
+};
+
+export type postApiProductProductIdEditAlertResponseSuccess =
+  postApiProductProductIdEditAlertResponse200 & {
+    headers: Headers;
+  };
+export type postApiProductProductIdEditAlertResponseError =
+  postApiProductProductIdEditAlertResponse400 & {
+    headers: Headers;
+  };
+
+export type postApiProductProductIdEditAlertResponse =
+  | postApiProductProductIdEditAlertResponseSuccess
+  | postApiProductProductIdEditAlertResponseError;
+
+export const getPostApiProductProductIdEditAlertUrl = (productId: number) => {
+  return `/api/product/${productId}/editAlert`;
+};
+
+export const postApiProductProductIdEditAlert = async (
+  productId: number,
+  setAlertMessage: SetAlertMessage,
+  options?: RequestInit,
+): Promise<postApiProductProductIdEditAlertResponse> => {
+  const res = await fetch(getPostApiProductProductIdEditAlertUrl(productId), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(setAlertMessage),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiProductProductIdEditAlertResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiProductProductIdEditAlertResponse;
+};
+
+export const getPostApiProductProductIdEditAlertMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>,
+    TError,
+    { productId: number; data: SetAlertMessage },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>,
+  TError,
+  { productId: number; data: SetAlertMessage },
+  TContext
+> => {
+  const mutationKey = ["postApiProductProductIdEditAlert"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>,
+    { productId: number; data: SetAlertMessage }
+  > = (props) => {
+    const { productId, data } = props ?? {};
+
+    return postApiProductProductIdEditAlert(productId, data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiProductProductIdEditAlertMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>
+>;
+export type PostApiProductProductIdEditAlertMutationBody = SetAlertMessage;
+export type PostApiProductProductIdEditAlertMutationError = void;
+
+/**
+ * @summary Edit Alert
+ */
+export const usePostApiProductProductIdEditAlert = <
+  TError = void,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>,
+      TError,
+      { productId: number; data: SetAlertMessage },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiProductProductIdEditAlert>>,
+  TError,
+  { productId: number; data: SetAlertMessage },
+  TContext
+> => {
+  const mutationOptions =
+    getPostApiProductProductIdEditAlertMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Get Alert
+ */
+export type getApiProductProductIdGetAlertResponse200 = {
+  data: AlertDTO;
+  status: 200;
+};
+
+export type getApiProductProductIdGetAlertResponseSuccess =
+  getApiProductProductIdGetAlertResponse200 & {
+    headers: Headers;
+  };
+export type getApiProductProductIdGetAlertResponse =
+  getApiProductProductIdGetAlertResponseSuccess;
+
+export const getGetApiProductProductIdGetAlertUrl = (productId: number) => {
+  return `/api/product/${productId}/getAlert`;
+};
+
+export const getApiProductProductIdGetAlert = async (
+  productId: number,
+  options?: RequestInit,
+): Promise<getApiProductProductIdGetAlertResponse> => {
+  const res = await fetch(getGetApiProductProductIdGetAlertUrl(productId), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiProductProductIdGetAlertResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as getApiProductProductIdGetAlertResponse;
+};
+
+export const getGetApiProductProductIdGetAlertQueryKey = (
+  productId?: MaybeRef<number>,
+) => {
+  return ["api", "product", productId, "getAlert"] as const;
+};
+
+export const getGetApiProductProductIdGetAlertQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>,
+  TError = unknown,
+>(
+  productId: MaybeRef<number>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = getGetApiProductProductIdGetAlertQueryKey(productId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>
+  > = ({ signal }) =>
+    getApiProductProductIdGetAlert(unref(productId), {
+      signal,
+      ...fetchOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: computed(() => !!unref(productId)),
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>,
+    TError,
+    TData
+  >;
+};
+
+export type GetApiProductProductIdGetAlertQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>
+>;
+export type GetApiProductProductIdGetAlertQueryError = unknown;
+
+/**
+ * @summary Get Alert
+ */
+
+export function useGetApiProductProductIdGetAlert<
+  TData = Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>,
+  TError = unknown,
+>(
+  productId: MaybeRef<number>,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiProductProductIdGetAlert>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseQueryReturnType<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiProductProductIdGetAlertQueryOptions(
+    productId,
+    options,
+  );
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<
+    QueryKey,
+    TData,
+    TError
+  >;
+
+  return query;
+}
 
 /**
  * @summary Quote Price

@@ -6,6 +6,7 @@ import io.equalink.pricekeep.data.Quote;
 import io.equalink.pricekeep.repo.AlertRepo;
 import io.equalink.pricekeep.service.PeriodLength;
 import io.equalink.pricekeep.service.dto.*;
+import io.equalink.pricekeep.service.dto.utils.AlertAction;
 import io.equalink.pricekeep.service.pricefetch.ExternalImportController;
 import io.equalink.pricekeep.service.quote.ProductService;
 import io.equalink.pricekeep.service.quote.QuoteService;
@@ -23,26 +24,24 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 import java.math.BigDecimal;
 import java.time.Period;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Path("/product")
 @Consumes(MediaType.APPLICATION_JSON)
 public class ProductResource {
-    @Inject
-    QuoteService quoteService;
 
     @Inject
     ProductService productService;
 
     @Inject
     ProductMapper pMapper;
-
-    @Inject
-    NilRelationProductMapper  nrpMapper;
 
     @Inject
     QuoteMapper quoteMapper;
@@ -197,9 +196,9 @@ public class ProductResource {
 
     @GET
     @Path("/alerts")
-    public List<ProductInfo> getTodayAlertTrigger() {
-        List<Product> triggeredProducts = productService.getTriggeredAlerts();
-        return triggeredProducts.stream().map(nrpMapper::toDTOWithoutRelation).toList();
+    public List<SimpleQuoteDTO> getTodayAlertTrigger() {
+        List<Quote> triggeredProducts = productService.getTriggeredAlerts();
+        return triggeredProducts.stream().map(pMapper::toSimpleQuoteDTO).toList();
     }
 
     @POST
@@ -216,9 +215,25 @@ public class ProductResource {
     }
 
     @POST
-    @Path("/{productId}/createAlert")
-    public Response createAlert(@PathParam("productId") Long productId, BigDecimal priceAlertLevel) {
-        productService.createAlert(productId, priceAlertLevel);
+    @Path("/{productId}/editAlert")
+    public Response editAlert(@PathParam("productId") Long productId, SetAlertMessage req) {
+        if (req.action() == AlertAction.SET) {
+            productService.createAlert(productId, req.targetPrice());
+        } else {
+            productService.removeAlert(productId);
+        }
         return Response.ok().build();
+    }
+
+
+    @GET
+    @Path("/{productId}/getAlert")
+    public AlertDTO getAlert(@PathParam("productId") Long productId) {
+        return productService.getAlert(productId).map(pMapper::toAlertDTO).orElseThrow();
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<String> mapException(NoSuchElementException ex) {
+        return RestResponse.status(Response.Status.NOT_FOUND, "Element not found: " + ex.getMessage());
     }
 }

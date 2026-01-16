@@ -10,6 +10,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record SimpleQuoteDTO(
+        String productName,
+        String productImgPath,
+        Long productId,
+
         StoreInfo storeInfo,
 
         @NotNull
@@ -19,6 +23,8 @@ public record SimpleQuoteDTO(
         @NotNull
         @Schema(required = true)
         BigDecimal price,
+
+        BigDecimal unitScale,
         @NotNull
         @Schema(required = true)
         BigDecimal unitPrice,

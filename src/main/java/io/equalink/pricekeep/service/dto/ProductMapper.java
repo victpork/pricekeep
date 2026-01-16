@@ -1,5 +1,6 @@
 package io.equalink.pricekeep.service.dto;
 
+import io.equalink.pricekeep.data.Alert;
 import io.equalink.pricekeep.data.Quote;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -44,13 +45,21 @@ public interface ProductMapper {
     @Mapping(target = "multibuyQuantity", ignore = true)
     public QuoteDTO toQuoteDTO(CompactQuote q);
 
+    @Mapping(target = "productName", source = "product.name")
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productImgPath", source = "product.imgPath")
     @Mapping(target = "storeInfo", source = "quoteStore")
     @Mapping(target = "quoteDate", source = "quoteDate")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "unitPrice", source = "unitPrice")
+    @Mapping(target = "unitScale", source = "product.unitScale")
     @Mapping(target = "discountType", source = "discount.type")
     @Mapping(target = "unit", expression = "java((q.getProduct().getUnitScale() == null ? \"\" : q.getProduct().getUnitScale().stripTrailingZeros().toPlainString()) + q.getProduct().getUnit().code)")
     @Mapping(target = "discountPrice", source = "discount.salePrice")
     @Mapping(target = "multibuyQuantity", source = "discount.multiBuyQuantity")
     public SimpleQuoteDTO toSimpleQuoteDTO(Quote q);
+
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "priceLevel", source = "targetPrice")
+    public AlertDTO toAlertDTO(Alert a);
 }

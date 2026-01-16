@@ -65,7 +65,7 @@ export const columns: ColumnDef<SimpleQuoteDTO>[] = [
                 style: 'currency',
                 currency: 'NZD',
             }).format(amount)
-            return h('div', { class: 'text-right font-medium pr-3' }, formatted + " / " + row.original.unit?.toLowerCase())
+            return h('div', { class: 'text-right font-medium pr-3' }, formatted + " /" + row.original.unit?.toLowerCase())
         },
     },
     {

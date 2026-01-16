@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue'
-import { useGetApiProductProductId, useGetApiProductProductIdQuoteHist } from '@/apiClient'
+import { watch, ref, computed, toRef } from 'vue'
+import { useGetApiProductProductIdGetAlert, useGetApiProductProductId, useGetApiProductProductIdQuoteHist, usePostApiProductProductIdEditAlert } from '@/apiClient'
 import type { GetApiProductProductIdQuoteHistParams } from '@/model'
 import { useRouter } from 'vue-router'
 import type { ChartConfig } from '@/components/ui/chart'
@@ -32,29 +32,31 @@ import {
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Undo2, PlusCircleIcon } from 'lucide-vue-next'
+import { Undo2, PlusCircleIcon, ImageIcon, BellPlusIcon, BellDotIcon } from 'lucide-vue-next'
 import { formatCurrency } from '@/util/currencyFormatter'
-import { average } from '@/util/average'
-import { maxDate } from '@/util/maxDate'
+import { average, maxDate, capitalise } from '@/util'
 import Separator from '@/components/ui/separator/Separator.vue'
 import QuoteForm from './QuoteForm.vue'
-import { capitalise } from '@/util/capitalise'
 import PriceMatrix from '@/components/pricematrix/PriceMatrix.vue'
-import { ImageIcon } from "lucide-vue-next"
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import DialogContent from '@/components/ui/dialog/DialogContent.vue'
-import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
-import { DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Label } from '@/components/ui/label'
+import { Field, FieldDescription } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@/components/ui/input-group'
+import { Switch } from '@/components/ui/switch'
 const router = useRouter()
 const props = defineProps<{
   id: number
 }>()
 
-const { data, isError, refetch: refetchProductData } = useGetApiProductProductId(props.id)
+const pid = toRef(() => props.id)
+
+const { data, isError, refetch: refetchProductData } = useGetApiProductProductId(pid)
 const quoteQueryParam = ref<GetApiProductProductIdQuoteHistParams>({ discount: true, l: 'YEAR' })
-const { data: quoteData, refetch: refetchQuoteData } = useGetApiProductProductIdQuoteHist(props.id, quoteQueryParam)
+const { data: quoteData, refetch: refetchQuoteData } = useGetApiProductProductIdQuoteHist(pid, quoteQueryParam)
+const { data: alertData } = useGetApiProductProductIdGetAlert(pid)
+const { mutate: setAlert } = usePostApiProductProductIdEditAlert()
 type ChartNode = { date: Date, price: number, store: string }
 const chartData = ref<ChartNode[]>([])
 const avg = ref(0)
@@ -67,6 +69,23 @@ watch(isError, (isErr) => {
     router.push({ name: 'NotFound' })
   }
 })
+const alertForm = ref({
+  enabled: alertData.value !== undefined,
+  targetPrice: alertData.value?.data.priceLevel ?? 0,
+})
+
+watch(alertData, (newData) => {
+  if (newData !== undefined) {
+    alertForm.value.enabled = newData.data.priceLevel !== undefined
+    alertForm.value.targetPrice = newData.data.priceLevel ?? 0
+  } else {
+    alertForm.value.enabled = false
+    alertForm.value.targetPrice = 0
+  }
+},
+  { once: true })
+
+const alertPopoverOpen = ref(false)
 
 watch(quoteQueryParam, () => {
   refetchQuoteData()
@@ -89,7 +108,6 @@ watch(quoteData,
     avg.value = average(chartData.value.map(q => q.price))
   }
 )
-
 const chartConfig = {
   price: {
     label: "price",
@@ -99,7 +117,20 @@ const chartConfig = {
 
 dayjs.extend(relativeTime)
 
-
+const updateAlert = async () => {
+  if (alertForm.value.enabled) {
+    setAlert({
+      productId: props.id,
+      data: { action: 'SET', targetPrice: alertForm.value.targetPrice }
+    })
+  } else {
+    setAlert({
+      productId: props.id,
+      data: { action: 'REMOVE' }
+    })
+  }
+  alertPopoverOpen.value = false
+}
 </script>
 
 <template>
@@ -123,44 +154,39 @@ dayjs.extend(relativeTime)
             <QuoteForm :product-id="id" :product-name="product.name"
               @success="() => { isQuoteDialogOpen = false; refetchQuoteData(); refetchProductData() }" />
           </Dialog>
-          <Dialog>
-            <DialogTrigger as-child>
+          <Popover v-model:open="alertPopoverOpen">
+            <PopoverTrigger as-child>
               <Button variant="outline">
-                <PlusCircleIcon class="mr-2 h-4 w-4" />
+                <BellDotIcon v-if="alertForm.enabled" class="mr-2 h-4 w-4" color="#FF0000" />
+                <BellPlusIcon v-else class="mr-2 h-4 w-4" />
                 Alert
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Alert</DialogTitle>
-                <DialogDescription>
-                  Add price alert for this product
-                </DialogDescription>
-              </DialogHeader>
-              <Field>
-                <FieldLabel for="alert-level">
-                  Price Level Trigger
-                </FieldLabel>
-                <InputGroup class="max-w-[200px]">
-                  <InputGroupAddon>
-                    <InputGroupText>$</InputGroupText>
-                  </InputGroupAddon>
-                  <InputGroupInput placeholder="0.00" type="number" min="0" step="0.01" />
-                </InputGroup>
-                <FieldDescription>
-                  You will be notified when price drops to this level
-                </FieldDescription>
-              </Field>
-              <DialogFooter class="flex flex-row-reverse gap-2">
-                <DialogClose as-child>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <DialogClose as-child>
-                  <Button>Set up</Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+            </PopoverTrigger>
+            <PopoverContent align="end">
+              <div class="flex flex-col gap-2 gap-y-4">
+                <div class="flex gap-2">
+                  <Switch v-model="alertForm.enabled" /> <Label>Enable Alert</Label>
+                </div>
+                <div>
+                  <Field v-if="alertForm.enabled">
+                    <InputGroup class="max-w-[200px]">
+                      <InputGroupAddon>
+                        <InputGroupText>$</InputGroupText>
+                      </InputGroupAddon>
+                      <InputGroupInput placeholder="0.00" type="number" min="0" step="0.01"
+                        v-model="alertForm.targetPrice" />
+                    </InputGroup>
+                    <FieldDescription>
+                      You will be notified when price drops to this level
+                    </FieldDescription>
+                  </Field>
+                </div>
+                <div class="self-end">
+                  <Button @click="updateAlert">Apply</Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </ButtonGroup>
       </div>
     </div>

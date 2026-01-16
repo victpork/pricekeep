@@ -9,9 +9,13 @@ import type { LocalDate } from "./localDate";
 import type { Type } from "./type";
 
 export interface SimpleQuoteDTO {
+  productName?: string;
+  productImgPath?: string;
+  productId?: number;
   storeInfo?: StoreInfo;
   quoteDate: LocalDate;
   price: number;
+  unitScale?: number;
   unitPrice: number;
   unit?: string;
   discountType?: Type;

@@ -133,13 +133,19 @@ public class ProductService {
 
     public void createAlert(Long productId, BigDecimal priceLevel) {
         Product ref = em.getReference(Product.class, productId);
-        Alert alert = new Alert();
-        alert.setProduct(ref);
-        alert.setTargetPrice(priceLevel);
-        alertRepo.createAlert(alert);
+        alertRepo.createAlert(ref, priceLevel);
     }
 
-    public List<Product> getTriggeredAlerts() {
+    public List<Quote> getTriggeredAlerts() {
         return productRepo.getTriggeredAlerts();
+    }
+
+    public void removeAlert(Long productId) {
+        Alert ref = em.getReference(Alert.class, productId);
+        alertRepo.removeAlert(ref);
+    }
+
+    public Optional<Alert> getAlert(Long productId) {
+        return alertRepo.getAlert(productId);
     }
 }

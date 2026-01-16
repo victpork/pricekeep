@@ -6,23 +6,26 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import AutoComplete from './ui/AutoComplete.vue'
 import {
   useGetApiProductSuggest,
   useGetApiProductAlerts,
   type GetApiProductAlertsQueryResult,
 } from '@/apiClient';
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { refDebounced } from '@vueuse/core'
 import { type Prettify } from '@/lib/prettify'
-
+import Image from '@/components/ui/image/Image.vue'
+import { formatCurrency } from '@/util/currencyFormatter'
 const searchText = ref("")
 const debounceQuery = refDebounced(searchText, 300)
 const searchEnabled = computed(() => debounceQuery.value !== null && debounceQuery.value.length >= 3)
@@ -48,20 +51,29 @@ const { data: alerts } = useGetApiProductAlerts<Prettify<GetApiProductAlertsQuer
             <Button class="border-0 p-1.5 size-12" @mouseenter="" @mouseleave="" variant="secondary" size="icon">
               <Bell class="size-8" />
             </Button>
-            <span v-if="alerts?.data" class="absolute top-0 right-0 -mt-1 -mr-1 flex size-4">
+            <span v-if="alerts?.data.length" class="absolute top-0 right-0 -mt-1 -mr-1 flex size-4">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"></span>
               <span class="relative inline-flex size-4 rounded-full bg-red-500"></span>
             </span>
           </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <template v-for="(alert, index) in alerts?.data">
+        <DropdownMenuContent align="start" v-if="alerts?.data.length">
+          <template v-for="(alert, index) in alerts?.data" :key="index">
             <DropdownMenuItem>
-              <Avatar>
-                <AvatarImage :src="alert.imgUrl ?? ''" :alt="alert.name" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <a :href="`/products/${alert.id}`">{{ alert.name }}</a>
+              <Item as-child>
+                <RouterLink :to="`/products/${alert.productId}`">
+                  <ItemMedia>
+                    <Image :src="alert.productImgPath" :alt="alert.productName" width="64" height="64"
+                      class="size-16 rounded-md" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>{{ alert.productName }}</ItemTitle>
+                    <ItemDescription>{{ formatCurrency(alert.discountPrice ?? alert.price) }} @ {{ alert.storeInfo?.name
+                    }}<Badge v-if="alert.discountPrice" variant="destructive">Discounted</Badge>
+                    </ItemDescription>
+                  </ItemContent>
+                </RouterLink>
+              </Item>
             </DropdownMenuItem>
           </template>
         </DropdownMenuContent>

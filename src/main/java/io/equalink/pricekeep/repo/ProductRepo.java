@@ -205,10 +205,12 @@ public interface ProductRepo {
 
 
     @SQL("""
-        select distinct p.* from alert a inner join (select * from quote q where (q.store_id, q.quote_date, q.product_id ) in (select q2.store_id, max(q2.quote_date), q2.product_id
+        select p.*, t.*, s.*, sg.* from alert a inner join (select * from quote q where (q.store_id, q.quote_date, q.product_id ) in (select q2.store_id, max(q2.quote_date), q2.product_id
         from Quote q2 group by q2.store_id, q2.product_id) ) t on a.product_id = t.product_id and a.target_price >= t.price
         left join Product p on t.product_id = p.id
+        left join Store s on s.id = t.store_id
+        left join store_group sg on s.group_id = sg.id
         """)
-    List<Product> getTriggeredAlerts();
+    List<Quote> getTriggeredAlerts();
 
 }

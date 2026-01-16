@@ -2,6 +2,22 @@
   "openapi" : "3.1.0",
   "components" : {
     "schemas" : {
+      "AlertAction" : {
+        "type" : "string",
+        "enum" : [ "SET", "REMOVE" ]
+      },
+      "AlertDTO" : {
+        "type" : "object",
+        "properties" : {
+          "productId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "priceLevel" : {
+            "type" : "number"
+          }
+        }
+      },
       "ExternalProductQueryMessage" : {
         "type" : "object",
         "properties" : {
@@ -210,9 +226,30 @@
           }
         }
       },
+      "SetAlertMessage" : {
+        "type" : "object",
+        "properties" : {
+          "action" : {
+            "$ref" : "#/components/schemas/AlertAction"
+          },
+          "targetPrice" : {
+            "type" : "number"
+          }
+        }
+      },
       "SimpleQuoteDTO" : {
         "type" : "object",
         "properties" : {
+          "productName" : {
+            "type" : "string"
+          },
+          "productImgPath" : {
+            "type" : "string"
+          },
+          "productId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
           "storeInfo" : {
             "$ref" : "#/components/schemas/StoreInfo"
           },
@@ -221,6 +258,9 @@
             "$ref" : "#/components/schemas/LocalDate"
           },
           "price" : {
+            "type" : "number"
+          },
+          "unitScale" : {
             "type" : "number"
           },
           "unitPrice" : {
@@ -477,7 +517,7 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/ProductInfo"
+                    "$ref" : "#/components/schemas/SimpleQuoteDTO"
                   }
                 }
               }
@@ -729,41 +769,6 @@
         "tags" : [ "Product Resource" ]
       }
     },
-    "/api/product/{productId}/createAlert" : {
-      "post" : {
-        "parameters" : [ {
-          "name" : "productId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "type" : "number"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : { }
-              }
-            }
-          }
-        },
-        "summary" : "Create Alert",
-        "tags" : [ "Product Resource" ]
-      }
-    },
     "/api/product/{productId}/edit" : {
       "post" : {
         "parameters" : [ {
@@ -799,6 +804,71 @@
           }
         },
         "summary" : "Edit Product",
+        "tags" : [ "Product Resource" ]
+      }
+    },
+    "/api/product/{productId}/editAlert" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SetAlertMessage"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "summary" : "Edit Alert",
+        "tags" : [ "Product Resource" ]
+      }
+    },
+    "/api/product/{productId}/getAlert" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "productId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AlertDTO"
+                }
+              }
+            }
+          }
+        },
+        "summary" : "Get Alert",
         "tags" : [ "Product Resource" ]
       }
     },
