@@ -15,7 +15,7 @@ dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-hibernate-validator'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
-    implementation 'io.quarkiverse.quinoa:quarkus-quinoa:2.6.2'
+    implementation 'io.quarkiverse.quinoa:quarkus-quinoa:2.7.1'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-rest-jackson'
@@ -51,8 +51,8 @@ group = 'io.equalink'
 version = '1.0.0-SNAPSHOT'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_24
-    targetCompatibility = JavaVersion.VERSION_24
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 configurations {
