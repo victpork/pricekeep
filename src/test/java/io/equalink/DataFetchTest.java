@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -56,9 +57,9 @@ public class DataFetchTest {
 
     @Test
     void testFetchStore() {
-        StoreGroup sg = storeRepo.findStoreGroupByName("woolworths");
-        assertNotNull(sg);
-        var storeStream = fetchService.getStoreListFromExternalServices(List.of(sg));
+        Optional<StoreGroup> sg = storeRepo.findStoreGroupByName("woolworths");
+        assertTrue(sg.isPresent());
+        var storeStream = fetchService.getStoreListFromExternalServices(List.of(sg.get()));
         storeStream.subscribe().with(s -> storeRepo.persist(s));
     }
 
@@ -67,10 +68,10 @@ public class DataFetchTest {
     @Test
     void testFetchAll() throws Exception {
         assertEquals("localhost:3041", proxyAddr);
-        StoreGroup sg = storeRepo.findStoreGroupByName("woolworths");
-        assertNotNull(sg);
+        Optional<StoreGroup> sg = storeRepo.findStoreGroupByName("woolworths");
+        assertTrue(sg.isPresent());
         Store s = new Store();
-        s.setGroup(sg);
+        s.setGroup(sg.get());
         s.setName("Woolworths Hobsonville");
         s.setInternalId("1223854");
         s.setAddress("124 Hobsonville Road,Hobsonville Click Collect,0618,Hobsonville Click and Collect");

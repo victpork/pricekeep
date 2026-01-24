@@ -1,5 +1,7 @@
 package io.equalink.pricekeep.repo;
 
+import io.equalink.pricekeep.data.GroupProductCode;
+import io.equalink.pricekeep.data.GroupProductCodeId;
 import io.equalink.pricekeep.data.Product;
 import io.equalink.pricekeep.data.Quote;
 import io.quarkus.logging.Log;
@@ -11,6 +13,7 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.jbosslog.JBossLog;
+import org.hibernate.HibernateException;
 import org.hibernate.StatelessSession;
 import org.hibernate.annotations.processing.Pattern;
 import org.hibernate.annotations.processing.SQL;
@@ -35,6 +38,10 @@ public interface ProductRepo {
 
     @Query("from Product p left join fetch p.groupSKU sku where p.gtin = :gtin")
     Optional<Product> findByGTIN(String gtin);
+
+    @Query("select gpc.product from GroupProductCode gpc where gpc.internalCode = :sku and gpc.storeGroup.name = :groupName")
+    Optional<Product> findBySKU(String sku, String groupName);
+
 
     @Find
     Optional<Product> findById(Long id);
@@ -108,32 +115,50 @@ public interface ProductRepo {
     @Query("from Quote q where q.product.id = :productId and q.quoteStore.id = :storeId and q.quoteDate = :quoteDate")
     Optional<Quote> findQuoteById(Long productId, Long storeId, LocalDate quoteDate);
 
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     default void persist(Quote q) {
+         /*
+          Product check case list:
+          1. GTIN found in DB -> Check if SKU in DB -> if both yes then skip
+          2. SKU found in DB -> skip
+          3. GTIN not found -> Add product to DB
+         */
         if (q.getProduct() == null) {
             throw new IllegalArgumentException("Product is null");
         }
-        if (q.getProduct().getId() == null) {
-            var product = this.findByGTIN(q.getProduct().getGtin());
-            if (product.isEmpty()) {
-                session().insert(q.getProduct());
-            } else {
-                Log.infov("Product with GTIN {0} already exists in DB", q.getProduct().getGtin());
-                q.setProduct(product.get());
-            }
-            if (q.getProduct().getGroupSKU() != null && !q.getProduct().getGroupSKU().isEmpty()) {
+        Product newP = q.getProduct();
+        Optional<GroupProductCode> newGPC = newP.getGroupSKU().stream().findFirst();
+        Optional<Product> productInDB = Optional.empty();
+        boolean skuPresent = false;
+        if (newGPC.isPresent()) {
+            productInDB = this.findBySKU(newGPC.get().getInternalCode(), newGPC.get().getStoreGroup().getName());
+            skuPresent = productInDB.isPresent();
+        }
+        if (productInDB.isEmpty()) {
+            productInDB = this.findByGTIN(q.getProduct().getGtin());
+        }
+        final Product newProductEnt = productInDB.orElseGet(() -> {
+            session().insert(q.getProduct());
+            return q.getProduct();
+        });
 
-                q.getProduct().getGroupSKU().forEach(k -> {
+        // Persist internal SKU, assume already have storegroup entity associated
+        if (newGPC.isPresent() && !skuPresent) {
+            q.getProduct().getGroupSKU().forEach(k -> {
+                if (k.getId() == null) {
+                    k.setProduct(newProductEnt);
+                    k.setId(GroupProductCodeId.builder().storeGroupId(k.getStoreGroup().getId()).productId(k.getProduct().getId()).build());
                     try {
                         session().insert(k);
                     } catch (ConstraintViolationException e) {
                         Log.infov("Product with GTIN {0} SKU {1} already exists in DB", q.getProduct().getGtin(), k.getInternalCode());
+                    } catch (HibernateException e) {
+                        Log.error("Hibernate exception", e);
                     }
-                });
-
-            }
+                }
+            });
         }
-
+        q.setProduct(newProductEnt);
         if (findQuoteById(q.getProduct().getId(), q.getQuoteStore().getId(), q.getQuoteDate()).isEmpty()) {
             if (q.getDiscount() != null) {
                 q.getDiscount().setQuote(q);
@@ -143,7 +168,6 @@ public interface ProductRepo {
                 }
                 session().insert(q.getDiscount());
             }
-
             session().insert(q);
         }
     }

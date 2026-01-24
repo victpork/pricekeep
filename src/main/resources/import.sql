@@ -1,8 +1,8 @@
 -- This file allow to write SQL commands that will be emitted in test and dev.
 -- The commands are commented as their support depends of the database
-insert into store_group (id, name) values (1, 'woolworths');
-insert into store_group (id, name) values (2, 'paknsave');
-insert into store_group (id, name) values (3, 'newworld');
+insert into store_group (id, name, iconpath) values (1, 'woolworths', '/static/assets/img/storegroup-icon/cd_logo_wapple.svg');
+insert into store_group (id, name, iconpath) values (2, 'paknsave', '/static/assets/img/storegroup-icon/pns.png');
+insert into store_group (id, name, iconpath) values (3, 'newworld', '/static/assets/img/storegroup-icon/nw.svg');
 alter sequence store_group_seq restart with 4;
 
 insert into store (id, name, group_id) values (1, 'Woolworths Non-existent 1', 1);

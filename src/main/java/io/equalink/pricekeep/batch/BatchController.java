@@ -30,32 +30,17 @@ public class BatchController {
     @Inject
     BatchRepo batchRepo;
 
+    public void createBatch(BaseBatch batchEntity) throws SchedulerException {
+        batchRepo.persist(batchEntity);
+        scheduleBatch(batchEntity);
+    }
+
+
     void onStart(@Observes StartupEvent ignoredEvent) throws SchedulerException {
         List<BaseBatch> batchList = batchRepo.getAllBatchesForExecution();
 
         for (BaseBatch b : batchList) {
-            JobBuilder jobBuilder = switch (b) {
-                case ProductQuoteImportBatch _ -> JobBuilder.newJob(ProductQuoteImportJob.class);
-                case StoreImportBatch _ -> JobBuilder.newJob(StoreImportJob.class);
-                default -> {
-                    log.errorv("Invalid job type {0} for ID {1}", b.getClass().getSimpleName(), b.getId());
-                    yield null;
-                }
-            };
-            if (jobBuilder == null) continue;
-            JobDetail job = jobBuilder
-                                .withIdentity(b.getName())
-                                .usingJobData(JOB_TYPE, b.getClass().getSimpleName())
-                                .usingJobData(JOB_ID, b.getId())
-                                .storeDurably()
-                                .build();
-
-            Trigger trigger = TriggerBuilder.newTrigger()
-                                  .forJob(b.getName())
-                                  .withSchedule(CronScheduleBuilder.cronSchedule(b.getCronTrigger()))
-                                  .build();
-
-            quartzScheduler.scheduleJob(job, trigger);
+            scheduleBatch(b);
         }
         quartzScheduler.start();
         log.info(quartzScheduler.getMetaData().getSummary());
@@ -97,6 +82,30 @@ public class BatchController {
         }
         log.infov("Job {0} triggered successfully", batch.getName());
         log.info(quartzScheduler.getMetaData().getSummary());
-        log.info(quartzScheduler.getJobDetail(jobKey).isDurable());
+    }
+
+    private void scheduleBatch(BaseBatch b) throws SchedulerException {
+        JobBuilder jobBuilder = switch (b) {
+            case ProductQuoteImportBatch _ -> JobBuilder.newJob(ProductQuoteImportJob.class);
+            case StoreImportBatch _ -> JobBuilder.newJob(StoreImportJob.class);
+            default -> {
+                log.errorv("Invalid job type {0} for ID {1}", b.getClass().getSimpleName(), b.getId());
+                yield null;
+            }
+        };
+        if (jobBuilder == null) return;
+        JobDetail job = jobBuilder
+                            .withIdentity(b.getName())
+                            .usingJobData(JOB_TYPE, b.getClass().getSimpleName())
+                            .usingJobData(JOB_ID, b.getId())
+                            .storeDurably()
+                            .build();
+
+        Trigger trigger = TriggerBuilder.newTrigger()
+                              .forJob(b.getName())
+                              .withSchedule(CronScheduleBuilder.cronSchedule(b.getCronTrigger()))
+                              .build();
+
+        quartzScheduler.scheduleJob(job, trigger);
     }
 }

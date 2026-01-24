@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface StoreRepo {
     @Find
-    StoreGroup findStoreGroupByName(@Pattern String name);
+    Optional<StoreGroup> findStoreGroupByName(@Pattern String name);
 
     @Query("where name ilike :name")
     List<Store> findStoreByName(String name);

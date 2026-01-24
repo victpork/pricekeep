@@ -47,24 +47,12 @@ public class WoolworthsDataProviderTest {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @TestHTTPResource("WoolworthsTestData2.json")
-    URL wwTestData2;
-
-    @TestHTTPResource("WoolworthsTestData.json")
-    URL wwSaleTestData;
-
-    @TestHTTPResource("WoolworthsAddressTestData.json")
-    URL wwAddressData;
-
     @Inject
     ObjectMapper objMapper;
 
     @Inject
     @Named("woolworths")
     WoolworthsProductQuoteFetchService proxy;
-
-    @Inject
-    ProductRepo productRepo;
 
     @Inject
     StoreRepo storeRepo;
@@ -101,7 +89,7 @@ public class WoolworthsDataProviderTest {
 
     @Test
     void testJSONDeserialize() throws IOException {
-        try (InputStream inputStream = wwTestData2.openStream()) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("WoolworthsTestData2.json")) {
             var searchResult = objMapper.readValue(inputStream, WoolworthsProductSearchResult.class);
             assert (searchResult != null);
             var resultItems = searchResult.getProducts().getItems().stream().filter(p -> p.getType().equals("Product")).toList();
@@ -169,7 +157,7 @@ public class WoolworthsDataProviderTest {
     @Test
     @Transactional
     void testDataConversion() throws IOException {
-        try (InputStream inputStream = wwSaleTestData.openStream()) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("WoolworthsTestData.json")) {
             var searchResult = objMapper.readValue(inputStream, WoolworthsProductSearchResult.class);
             assert (searchResult != null);
             var resultItems = searchResult.getProducts().getItems();
@@ -227,7 +215,7 @@ public class WoolworthsDataProviderTest {
 
     @Test
     void testParseAddresses() throws IOException {
-        try (InputStream inputStream = wwAddressData.openStream()) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("WoolworthsAddressTestData.json")) {
             var addressRsp = objMapper.readValue(inputStream, WoolworthsAddressResponse.class);
             List<WoolworthsStoreAddress> addresses = addressRsp.getStoreAreas().getStoreAddresses();
             assertThat(addresses, hasItem(allOf(
@@ -235,6 +223,20 @@ public class WoolworthsDataProviderTest {
                 hasProperty("name", is("Woolworths Northlands")),
                 hasProperty("address", is("cnr Main North & Sawyers Arms Roads,Northlands Click and Collect,8051,Northlands Click and Collect"))
             )));
+        }
+    }
+
+    @Test
+    void testParseProductData() throws IOException {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("WoolworthProduct.json")) {
+            var searchResult = objMapper.readValue(inputStream, WoolworthsProductSearchResult.class);
+            assert (searchResult != null);
+            var resultItems = searchResult.getProducts().getItems();
+            var productList = resultItems.stream().map(dataMapper::toProduct).toList();
+            Product p1 = productList.getFirst();
+            assertNotNull(p1.getUnit());
+            assertThat(p1.getGroupSKU(), not(empty()));
+            assertThat(p1.getGroupSKU(), hasItem(hasProperty("internalCode", equalTo("694330"))));
         }
     }
 }

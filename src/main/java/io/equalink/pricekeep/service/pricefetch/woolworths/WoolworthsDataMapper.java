@@ -61,10 +61,6 @@ public interface WoolworthsDataMapper {
         return String.join(" ", pq.getName().trim(), packageType, volumeSize);
     }
 
-    default GroupProductCode generateInternalProductCodeLinkage(WoolworthsProductQuote pq) {
-        return GroupProductCode.builder().internalCode(pq.getSku()).build();
-    }
-
     default Discount toDiscount(WoolworthsProductQuote pq) {
         if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) == 0) return null;
         Discount res = new Discount();
@@ -93,59 +89,6 @@ public interface WoolworthsDataMapper {
         if (q.getDiscount() != null) {
             q.getDiscount().setQuote(q);
         }
-    }
-    @AfterMapping
-    default void afterMappingProduct(@MappingTarget Product p, WoolworthsProductQuote pq, Store store) {
-        String unitOfMeasureStr = pq.getSize().getCupMeasure();
-        if (unitOfMeasureStr != null) {
-            Matcher m = unitNumberPattern.matcher(unitOfMeasureStr);
-            if (m.find()) {
-                String unit = m.group("unit");
-                p.setUnit(switch (unit.toLowerCase()) {
-                    case "ea" -> Product.Unit.PER_ITEM;
-                    case "kg" -> Product.Unit.PER_KG;
-                    case "m" -> Product.Unit.PER_METRE;
-                    case "ml" -> Product.Unit.PER_MILLILITRE;
-                    case "l" -> Product.Unit.PER_LITRE;
-                    case "g" -> Product.Unit.PER_G;
-                    default -> null;
-                });
-                p.setUnitScale(new BigDecimal(m.group("number")));
-            }
-        }
-        // Determine product size and items in package
-        if (pq.getSize().getVolumeSize() != null && !pq.getSize().getVolumeSize().isEmpty()) {
-            String volSize = pq.getSize().getVolumeSize().toLowerCase();
-            int packPos = volSize.indexOf("pack");
-            if (packPos >= 0) {
-                //Packaged product with multiple containers
-                p.setItemPerPackage(Integer.parseInt(volSize.substring(0, packPos)));
-                if (pq.getSize().getPackageType() != null && !pq.getSize().getPackageType().isEmpty()) {
-                    String packageType = pq.getSize().getPackageType().toLowerCase();
-                    Matcher m = unitNumberPattern.matcher(packageType);
-                    if (m.find()) {
-                        p.setPackageSize(new BigDecimal(m.group("number")));
-                    } else {
-                        Log.warnv("Cannot determine volume for {0} with string {1} ", pq.getName(), pq.getSize().getPackageType());
-                    }
-                } else {
-                    Log.warnv("Cannot determine volume size for product {0}, volumeSize is empty", pq.getName());
-                }
-            } else {
-                //Product in single container
-                p.setItemPerPackage(1);
-                Matcher m = unitNumberPattern.matcher(volSize);
-                if (m.find()) {
-                    p.setPackageSize(new BigDecimal(m.group("number")));
-                } else {
-                    Log.warnv("Cannot determine volume for {0} with string {1} ", pq.getName(), pq.getSize().getVolumeSize());
-                }
-            }
-        }
-        var intPrdCode = generateInternalProductCodeLinkage(pq);
-        intPrdCode.setProduct(p);
-        intPrdCode.setStoreGroup(store.getGroup());
-        p.addSKUMapping(intPrdCode);
     }
 
     default StoreGroup getWWStoreGroup() {

@@ -1,0 +1,158 @@
+{
+  "products": {
+    "items": [
+      {
+        "type": "Product",
+        "name": "karikaas deli cheese vintage gouda",
+        "barcode": "9415223001238",
+        "variety": "vintage gouda",
+        "brand": "karikaas",
+        "slug": "karikaas-deli-cheese-vintage-gouda",
+        "sku": "694330",
+        "unit": "Each",
+        "selectedPurchasingUnit": null,
+        "price": {
+          "originalPrice": 10.0,
+          "salePrice": 10.0,
+          "savePrice": 0.0,
+          "savePercentage": 0.0,
+          "canShowSavings": true,
+          "hasBonusPoints": false,
+          "isClubPrice": false,
+          "isSpecial": false,
+          "isNew": false,
+          "canShowOriginalPrice": true,
+          "discount": null,
+          "total": null,
+          "isTargetedOffer": false,
+          "averagePricePerSingleUnit": null,
+          "isBoostOffer": false,
+          "purchasingUnitPrice": null,
+          "orderedPrice": null,
+          "isUsingOrderedPrice": false,
+          "currentPricingMatchesOrderedPricing": null,
+          "extendedListPrice": null,
+          "originalAveragePricePerSingleUnit": null,
+          "promotionStartDate": null,
+          "promotionEndDate": null
+        },
+        "images": {
+          "small": "https://assets.woolworths.com.au/images/2010/694330.jpg?impolicy=wowcdxwbjbx&w=65&h=65",
+          "big": "https://assets.woolworths.com.au/images/2010/694330.jpg?impolicy=wowcdxwbjbx&w=200&h=200"
+        },
+        "quantity": {
+          "min": 1.0,
+          "max": 36.0,
+          "increment": 1.0,
+          "value": null,
+          "quantityInOrder": null,
+          "purchasingQuantityString": null
+        },
+        "stockLevel": 3,
+        "eachUnitQuantity": null,
+        "averageWeightPerUnit": null,
+        "size": {
+          "cupListPrice": 8.0,
+          "cupPrice": 8.0,
+          "cupMeasure": "100g",
+          "packageType": "block",
+          "volumeSize": "125g"
+        },
+        "hasShopperNotes": null,
+        "productTag": null,
+        "departments": [
+          {
+            "id": 4,
+            "name": "Fridge & Deli"
+          }
+        ],
+        "subsAllowed": false,
+        "supportsBothEachAndKgPricing": false,
+        "adId": null,
+        "brandSuggestionId": null,
+        "brandSuggestionName": null,
+        "priceUnitLabel": null,
+        "availabilityStatus": "In Stock",
+        "onlineSample": null,
+        "onlineSampleRealProductMapId": 0,
+        "isAgeRestricted": false
+      },
+      {
+        "type": "Product",
+        "name": "angel food parmesan cheese powder dairy free",
+        "barcode": "9421900615865",
+        "variety": "powder dairy free",
+        "brand": "angel food",
+        "slug": "angel-food-parmesan-cheese-powder-dairy-free",
+        "sku": "120003",
+        "unit": "Each",
+        "selectedPurchasingUnit": null,
+        "price": {
+          "originalPrice": 6.79,
+          "salePrice": 6.79,
+          "savePrice": 0.00,
+          "savePercentage": 0.0,
+          "canShowSavings": true,
+          "hasBonusPoints": false,
+          "isClubPrice": false,
+          "isSpecial": false,
+          "isNew": false,
+          "canShowOriginalPrice": true,
+          "discount": null,
+          "total": null,
+          "isTargetedOffer": false,
+          "averagePricePerSingleUnit": null,
+          "isBoostOffer": false,
+          "purchasingUnitPrice": null,
+          "orderedPrice": null,
+          "isUsingOrderedPrice": false,
+          "currentPricingMatchesOrderedPricing": null,
+          "extendedListPrice": null,
+          "originalAveragePricePerSingleUnit": null,
+          "promotionStartDate": null,
+          "promotionEndDate": null
+        },
+        "images": {
+          "small": "https://assets.woolworths.com.au/images/2010/120003.jpg?impolicy=wowcdxwbjbx&w=65&h=65",
+          "big": "https://assets.woolworths.com.au/images/2010/120003.jpg?impolicy=wowcdxwbjbx&w=200&h=200"
+        },
+        "quantity": {
+          "min": 1.0,
+          "max": 36.0,
+          "increment": 1.0,
+          "value": null,
+          "quantityInOrder": null,
+          "purchasingQuantityString": null
+        },
+        "stockLevel": 3,
+        "eachUnitQuantity": null,
+        "averageWeightPerUnit": null,
+        "size": {
+          "cupListPrice": 6.79,
+          "cupPrice": 6.79,
+          "cupMeasure": "100g",
+          "packageType": "bag",
+          "volumeSize": "100g"
+        },
+        "hasShopperNotes": null,
+        "productTag": null,
+        "departments": [
+          {
+            "id": 4,
+            "name": "Fridge & Deli"
+          }
+        ],
+        "subsAllowed": false,
+        "supportsBothEachAndKgPricing": false,
+        "adId": null,
+        "brandSuggestionId": null,
+        "brandSuggestionName": null,
+        "priceUnitLabel": null,
+        "availabilityStatus": "In Stock",
+        "onlineSample": null,
+        "onlineSampleRealProductMapId": 0,
+        "isAgeRestricted": false
+      }
+    ]
+  }
+},

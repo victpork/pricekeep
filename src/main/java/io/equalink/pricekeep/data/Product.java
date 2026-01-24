@@ -7,10 +7,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.eclipse.microprofile.openapi.annotations.extensions.Extension;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
@@ -94,6 +94,7 @@ public class Product {
     /**
      * Global Trade Item Number (GTIN) or GS1
      */
+    @NaturalId
     @Column(unique = true, length = 14)
     private String gtin;
 
@@ -101,7 +102,6 @@ public class Product {
      * Price quote detail relation, cascade all operations
      */
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
-    @Builder.Default
     private List<Quote> priceQuotes = new ArrayList<>();
 
     /**
@@ -130,11 +130,9 @@ public class Product {
      */
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    @Builder.Default
     private Set<GroupProductCode> groupSKU = new HashSet<>();
 
     @Column(name = "tags", columnDefinition = "text[]")
-    @Builder.Default
     @Type(ListArrayType.class)
     private Set<String> tags = new HashSet<>();
 
@@ -149,8 +147,7 @@ public class Product {
     @MapKeyColumn(name = "statType")
     @Column(name = "value", nullable = false, length = 5)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    @Builder.Default
-    private Map<ProductStatType, BigDecimal> priceStats = new HashMap<>();
+    private Map<ProductStatType, BigDecimal> priceStats =  new HashMap<>();
 
 
     private String imgPath;
@@ -174,6 +171,20 @@ public class Product {
     }
 
     public void addSKUMapping(GroupProductCode gpc) {
+        if (groupSKU == null) groupSKU = new HashSet<>();
         groupSKU.add(gpc);
+    }
+
+    @Override
+    public String toString() {
+        int priceQuoteCnt = this.priceQuotes == null ? 0 : this.priceQuotes.size();
+        int priceStatCnt = this.priceStats == null ? 0 : this.priceStats.size();
+        int groupSKUCnt = this.groupSKU == null ? 0 : this.groupSKU.size();
+        return String.format("%s[%s] - quote:%d priceStats:%d skuMap:%d",
+            this.getName(),
+            this.getGtin(),
+            priceQuoteCnt,
+            priceStatCnt,
+            groupSKUCnt);
     }
 }

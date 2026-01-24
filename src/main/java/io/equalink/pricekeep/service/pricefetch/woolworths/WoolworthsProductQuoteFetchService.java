@@ -116,7 +116,7 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
                 }
                 String skuFromFileName = reqUrl.substring(reqUrl.lastIndexOf("/") + 1, reqUrl.lastIndexOf("."));
                 String fileExt = contentType.substring(contentType.indexOf("/") + 1);
-                log.infov("SKU: {0}, FileExt: {1}", skuFromFileName, fileExt);
+                //log.infov("SKU: {0}, FileExt: {1}", skuFromFileName, fileExt);
                 String gtin = imageMapping.getOrDefault(skuFromFileName, skuFromFileName);
                 imageMapping.put(gtin, fileExt);
                 try {
@@ -137,7 +137,7 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
     protected Quote mapperFunction(WoolworthsProductQuote item) {
         Quote q = dataMapper.toQuote(item);
         if (q.getProduct() != null) {
-            q.getProduct().setImgPath(String.format("/static/assets/img/%s.%s", q.getProduct().getGtin(), imageMapping.get(q.getProduct().getGtin())));
+            q.getProduct().setImgPath(String.format("/static/assets/img/%s.%s", q.getProduct().getGtin(), imageMapping.getOrDefault(q.getProduct().getGtin(), "jpg")));
         }
         return q;
     }
