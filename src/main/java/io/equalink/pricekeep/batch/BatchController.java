@@ -1,8 +1,6 @@
 package io.equalink.pricekeep.batch;
 
-import io.equalink.pricekeep.data.BaseBatch;
-import io.equalink.pricekeep.data.ProductQuoteImportBatch;
-import io.equalink.pricekeep.data.StoreImportBatch;
+import io.equalink.pricekeep.data.*;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.service.dto.JobInfo;
 import io.quarkus.runtime.StartupEvent;
@@ -16,6 +14,8 @@ import org.quartz.impl.matchers.GroupMatcher;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @JBossLog
@@ -23,6 +23,7 @@ public class BatchController {
 
     public static final String JOB_TYPE = "JOB_TYPE";
     public static final String JOB_ID = "JOB_ID";
+    public static final String JOB_STATUS = "JOB_STATUS";
 
     @Inject
     Scheduler quartzScheduler;
@@ -55,15 +56,34 @@ public class BatchController {
             jInfo.name(batch.getName());
             jInfo.description(batch.getDescription());
             jInfo.id(batch.getId());
+            jInfo.type(batch.getJobType());
+            jInfo.frequency(batch.getCronTrigger());
+            jInfo.lastRunTime(batch.getLastRunTime());
             jInfo.enabled(batch.isEnabled());
-
-            try {
-                var nextTriggerTime = quartzScheduler.getTriggersOfJob(JobKey.jobKey(batch.getName()))
-                                  .stream().findFirst().map(
-                                      t -> LocalDateTime.ofInstant(t.getNextFireTime().toInstant(), ZoneId.systemDefault()));
-                jInfo.nextExecTime(nextTriggerTime.orElse(LocalDateTime.MIN));
-            } catch (SchedulerException e) {
-                jInfo.nextExecTime(LocalDateTime.MIN);
+            jInfo.lastResult(batch.getLastRunResult());
+            if (batch.isEnabled()) {
+                try {
+                    var nextTriggerTime = quartzScheduler.getTriggersOfJob(JobKey.jobKey(batch.getName()))
+                                              .stream().findFirst().map(
+                            t -> LocalDateTime.ofInstant(t.getNextFireTime().toInstant(), ZoneId.systemDefault()));
+                    jInfo.nextExecTime(nextTriggerTime.orElse(LocalDateTime.MIN));
+                    jInfo.status(JobStatus.valueOf(quartzScheduler.getJobDetail(JobKey.jobKey(batch.getName())).getJobDataMap().getString(JOB_STATUS)));
+                } catch (SchedulerException e) {
+                    jInfo.nextExecTime(LocalDateTime.MIN);
+                }
+            } else {
+                jInfo.status(JobStatus.DISABLED);
+            }
+            switch (batch) {
+                case StoreImportBatch siBatch:
+                    jInfo.parameters(Map.of("storegroup", siBatch.getStoreGroup().stream().map(StoreGroup::getName).collect(Collectors.joining(","))));
+                    break;
+                case ProductQuoteImportBatch pqBatch:
+                    jInfo.parameters(Map.of("keyword", pqBatch.getKeyword(),
+                        "store", pqBatch.getSource().stream().map(Store::getName).collect(Collectors.joining(","))));
+                    break;
+                default:
+                   break;
             }
             return jInfo.build();
         }).toList();
@@ -98,6 +118,7 @@ public class BatchController {
                             .withIdentity(b.getName())
                             .usingJobData(JOB_TYPE, b.getClass().getSimpleName())
                             .usingJobData(JOB_ID, b.getId())
+                            .usingJobData(JOB_STATUS, JobStatus.ENABLED.name())
                             .storeDurably()
                             .build();
 

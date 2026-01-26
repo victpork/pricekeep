@@ -4,13 +4,20 @@
  * pricekeep API
  * OpenAPI spec version: 1.0.0-SNAPSHOT
  */
+import type { JobStatus } from "./jobStatus";
 import type { LocalDateTime } from "./localDateTime";
+import type { JobInfoParameters } from "./jobInfoParameters";
 
 export interface JobInfo {
   id?: number;
   enabled?: boolean;
   name?: string;
   description?: string;
+  type?: string;
+  frequency?: string;
+  status?: JobStatus;
+  lastResult?: JobStatus;
   lastRunTime?: LocalDateTime;
   nextExecTime?: LocalDateTime;
+  parameters?: JobInfoParameters;
 }

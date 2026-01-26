@@ -3,6 +3,7 @@ import SingleProduct from '@/views/SingleProduct.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import layout from './layout/layout.vue'
 import ProductColleciton from '@/views/ProductColleciton.vue'
+import ManageDataSource from '@/views/ManageDataSource.vue'
 import NotFound from '@/views/NotFound.vue'
 const routes = [
   {
@@ -11,6 +12,7 @@ const routes = [
     children: [
       { path: '', redirect: { name: 'dashboard' } },
       { path: 'dashboard', name: 'dashboard', component: Dashboard },
+      { path: 'batches', name: 'batches', component: ManageDataSource },
       {
         path: 'products/:id(\\d+)',
         component: SingleProduct,

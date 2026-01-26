@@ -94,23 +94,29 @@ public abstract class WoolworthsDataMapperDecorator implements WoolworthsDataMap
                     if (m.find()) {
                         result.setPackageSize(new BigDecimal(m.group("number")));
                     } else {
-                        Log.warnv("Cannot determine volume for {0} with string {1} ", pq.getName(), pq.getSize().getPackageType());
+                        Log.warnv("Cannot determine volume for {0} with string {1}", pq.getName(), pq.getSize().getPackageType());
+                        setVolumeOfSingleContainer(result, pq);
                     }
                 } else {
-                    Log.warnv("Cannot determine volume size for product {0}, volumeSize is empty", pq.getName());
+                    Log.warnv("Cannot determine volume size for product {0}[{1}/{2}], packageType is empty, reverting to use volumeSize", pq.getName(), pq.getBarcode(), pq.getSku());
+                    setVolumeOfSingleContainer(result, pq);
                 }
             } else {
                 //Product in single container
-                result.setItemPerPackage(1);
-                Matcher m = unitNumberPattern.matcher(volSize);
-                if (m.find()) {
-                    result.setPackageSize(new BigDecimal(m.group("number")));
-                } else {
-                    Log.warnv("Cannot determine volume for {0} with string {1} ", pq.getName(), pq.getSize().getVolumeSize());
-                }
+                setVolumeOfSingleContainer(result, pq);
             }
         }
 
         return result;
+    }
+
+    private void setVolumeOfSingleContainer(Product p, WoolworthsProductQuote pq) {
+        p.setItemPerPackage(1);
+        Matcher m = unitNumberPattern.matcher(pq.getSize().getVolumeSize().trim().toLowerCase());
+        if (m.find()) {
+            p.setPackageSize(new BigDecimal(m.group("number")));
+        } else {
+            Log.warnv("Cannot determine volume for {0}[{2}/{3}] with string {1} ", pq.getName(), pq.getSize().getVolumeSize(), pq.getBarcode(), pq.getSku());
+        }
     }
 }

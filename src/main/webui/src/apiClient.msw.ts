@@ -9,7 +9,7 @@ import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
 import type { RequestHandlerOptions } from "msw";
 
-import { Type, Unit } from "./model";
+import { JobStatus, Type, Unit } from "./model";
 import type {
   AlertDTO,
   JobInfo,
@@ -39,12 +39,36 @@ export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
       faker.string.alpha({ length: { min: 10, max: 20 } }),
       undefined,
     ]),
+    type: faker.helpers.arrayElement([
+      faker.string.alpha({ length: { min: 10, max: 20 } }),
+      undefined,
+    ]),
+    frequency: faker.helpers.arrayElement([
+      faker.string.alpha({ length: { min: 10, max: 20 } }),
+      undefined,
+    ]),
+    status: faker.helpers.arrayElement([
+      faker.helpers.arrayElement(Object.values(JobStatus)),
+      undefined,
+    ]),
+    lastResult: faker.helpers.arrayElement([
+      faker.helpers.arrayElement(Object.values(JobStatus)),
+      undefined,
+    ]),
     lastRunTime: faker.helpers.arrayElement([
       `${faker.date.past().toISOString().split(".")[0]}Z`,
       undefined,
     ]),
     nextExecTime: faker.helpers.arrayElement([
       `${faker.date.past().toISOString().split(".")[0]}Z`,
+      undefined,
+    ]),
+    parameters: faker.helpers.arrayElement([
+      {
+        [faker.string.alphanumeric(5)]: faker.string.alpha({
+          length: { min: 10, max: 20 },
+        }),
+      },
       undefined,
     ]),
   }));

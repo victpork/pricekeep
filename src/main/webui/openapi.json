@@ -48,13 +48,35 @@
           "description" : {
             "type" : "string"
           },
+          "type" : {
+            "type" : "string"
+          },
+          "frequency" : {
+            "type" : "string"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/JobStatus"
+          },
+          "lastResult" : {
+            "$ref" : "#/components/schemas/JobStatus"
+          },
           "lastRunTime" : {
             "$ref" : "#/components/schemas/LocalDateTime"
           },
           "nextExecTime" : {
             "$ref" : "#/components/schemas/LocalDateTime"
+          },
+          "parameters" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
           }
         }
+      },
+      "JobStatus" : {
+        "type" : "string",
+        "enum" : [ "RUNNING", "PAUSED", "DISABLED", "ENABLED", "COMPLETED", "ERROR" ]
       },
       "LocalDate" : {
         "type" : "string",

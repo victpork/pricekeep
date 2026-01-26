@@ -1,16 +1,14 @@
 package io.equalink.pricekeep.batch;
 
+import io.equalink.pricekeep.data.BaseBatch;
 import io.equalink.pricekeep.service.StoreService;
 import jakarta.inject.Inject;
 import lombok.extern.jbosslog.JBossLog;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.*;
 
 @JBossLog
 @DisallowConcurrentExecution
-public class StoreImportJob implements Job {
+public class StoreImportJob extends BaseJob {
 
     public static final String TYPE = "StoreImportJob";
 
@@ -18,8 +16,8 @@ public class StoreImportJob implements Job {
     StoreService storeService;
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        long jobId = context.getJobDetail().getJobDataMap().getLong(BatchController.JOB_ID);
+    public void run(BaseBatch b, JobDataMap contextMap) throws JobExecutionException {
+        long jobId = contextMap.getLong(BatchController.JOB_ID);
         storeService.execImportStoreBatch(jobId);
     }
 }

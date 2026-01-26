@@ -1,5 +1,6 @@
 package io.equalink.pricekeep.data;
 
+import io.equalink.pricekeep.batch.JobStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,4 +32,6 @@ public abstract class BaseBatch {
     protected String cronTrigger;
 
     protected LocalDateTime lastRunTime;
+
+    protected JobStatus lastRunResult;
 }

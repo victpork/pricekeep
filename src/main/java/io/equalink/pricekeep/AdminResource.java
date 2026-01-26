@@ -54,7 +54,14 @@ public class AdminResource {
     @POST
     @Path("/batch/newProductQuoteImport")
     public void createBatch(ProductQuoteImportBatchDTO batch) {
-        batchRepo.persist(batchMapper.toProductQuoteImportBatchEntity(batch));
+        var batchEntity = batchMapper.toProductQuoteImportBatchEntity(batch);
+        batchRepo.persist(batchEntity);
+        try {
+            batchController.createBatch(batchEntity);
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 

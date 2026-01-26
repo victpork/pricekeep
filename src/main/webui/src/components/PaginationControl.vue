@@ -1,16 +1,15 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="TData">
 import { type Table } from '@tanstack/vue-table'
-import { type ProductInfo } from '@/model/productInfo'
 import { ChevronsLeft, ChevronLeft, ChevronsRight, ChevronRight } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 interface DataTablePaginationProps {
-    table: Table<ProductInfo>,
+    table: Table<TData>,
     showSelectedCount?: boolean
 }
 defineProps<DataTablePaginationProps>()
 </script>
 <template>
-    <div class="flex flex-row-reverse items-center justify-between px-2">
+    <div class="flex flex-row items-center justify-between p-2">
         <div v-if="showSelectedCount" class="flex-1 text-sm text-muted-foreground">
             {{ table.getFilteredSelectedRowModel().rows.length }} of
             {{ table.getFilteredRowModel().rows.length }} row(s) selected.

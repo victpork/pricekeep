@@ -12,6 +12,7 @@ public interface BatchMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "jobType", ignore = true)
     @Mapping(target = "lastRunTime", ignore = true)
+    @Mapping(target = "lastRunResult", ignore = true)
     StoreImportBatch toStoreImportBatchEntity(StoreImportBatchDTO batch);
 
     @Mapping(target = "source", ignore = true)
