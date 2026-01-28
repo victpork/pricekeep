@@ -3,8 +3,8 @@ package io.equalink.pricekeep.data;
 import io.equalink.pricekeep.batch.ProductQuoteImportJob;
 import io.equalink.pricekeep.batch.StoreImportJob;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.jbosslog.JBossLog;
 import org.quartz.JobDataMap;
 
@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @JBossLog
 @Entity
 @Table(name = "store_batch")
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoreImportBatch extends BaseBatch {
 
     @ManyToMany

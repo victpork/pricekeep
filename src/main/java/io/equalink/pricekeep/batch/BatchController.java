@@ -3,10 +3,12 @@ package io.equalink.pricekeep.batch;
 import io.equalink.pricekeep.data.*;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.service.dto.JobInfo;
+import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.extern.jbosslog.JBossLog;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -36,13 +38,28 @@ public class BatchController {
         scheduleBatch(batchEntity);
     }
 
+    @Transactional
+    public void enableBatch(BaseBatch batchEntity) throws SchedulerException {
+        scheduleBatch(batchEntity);
+        batchRepo.setEnabled(batchEntity,true);
+    }
 
-    void onStart(@Observes StartupEvent ignoredEvent) throws SchedulerException {
+    @Transactional
+    public void disableBatch(BaseBatch batchEntity) throws SchedulerException {
+        quartzScheduler.deleteJob(batchEntity.getJobKey());
+        batchRepo.setEnabled(batchEntity,false);
+    }
+
+    @Startup
+    void onStart() throws SchedulerException {
         List<BaseBatch> batchList = batchRepo.getAllBatchesForExecution();
-
+        log.infov("Batch count: {0}", batchList.size());
+        batchList.forEach(batch -> log.infov("Batch: {0}[{1}]", batch.getName(), batch.getId()));
+        quartzScheduler.clear();
         for (BaseBatch b : batchList) {
             scheduleBatch(b);
         }
+
         quartzScheduler.start();
         log.info(quartzScheduler.getMetaData().getSummary());
         log.infov("Registered jobs: {0}", quartzScheduler.getJobKeys(GroupMatcher.anyJobGroup()).size());
@@ -63,11 +80,11 @@ public class BatchController {
             jInfo.lastResult(batch.getLastRunResult());
             if (batch.isEnabled()) {
                 try {
-                    var nextTriggerTime = quartzScheduler.getTriggersOfJob(JobKey.jobKey(batch.getName()))
+                    var nextTriggerTime = quartzScheduler.getTriggersOfJob(batch.getJobKey())
                                               .stream().findFirst().map(
                             t -> LocalDateTime.ofInstant(t.getNextFireTime().toInstant(), ZoneId.systemDefault()));
                     jInfo.nextExecTime(nextTriggerTime.orElse(LocalDateTime.MIN));
-                    jInfo.status(JobStatus.valueOf(quartzScheduler.getJobDetail(JobKey.jobKey(batch.getName())).getJobDataMap().getString(JOB_STATUS)));
+                    jInfo.status(JobStatus.valueOf(quartzScheduler.getJobDetail(batch.getJobKey()).getJobDataMap().getString(JOB_STATUS)));
                 } catch (SchedulerException e) {
                     jInfo.nextExecTime(LocalDateTime.MIN);
                 }
@@ -90,7 +107,7 @@ public class BatchController {
     }
 
     public void forceStart(BaseBatch batch) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(batch.getName());
+        JobKey jobKey = batch.getJobKey();
         log.infov("Triggering job {0}, exists: {1}", batch.getName(), quartzScheduler.checkExists(jobKey));
         JobDetail jobDetail = quartzScheduler.getJobDetail(jobKey);
         log.infov("Job class: {0}", jobDetail.getJobClass().getName());
@@ -115,7 +132,7 @@ public class BatchController {
         };
         if (jobBuilder == null) return;
         JobDetail job = jobBuilder
-                            .withIdentity(b.getName())
+                            .withIdentity(b.getJobKey())
                             .usingJobData(JOB_TYPE, b.getClass().getSimpleName())
                             .usingJobData(JOB_ID, b.getId())
                             .usingJobData(JOB_STATUS, JobStatus.ENABLED.name())
@@ -123,7 +140,7 @@ public class BatchController {
                             .build();
 
         Trigger trigger = TriggerBuilder.newTrigger()
-                              .forJob(b.getName())
+                              .forJob(b.getJobKey())
                               .withSchedule(CronScheduleBuilder.cronSchedule(b.getCronTrigger()))
                               .build();
 

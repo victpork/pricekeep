@@ -183,11 +183,255 @@ export function useGetApiAdminBatchAll<
 }
 
 /**
+ * @summary Disable Batch
+ */
+export type postApiAdminBatchDisableResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type postApiAdminBatchDisableResponse400 = {
+  data: void;
+  status: 400;
+};
+
+export type postApiAdminBatchDisableResponseSuccess =
+  postApiAdminBatchDisableResponse200 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchDisableResponseError =
+  postApiAdminBatchDisableResponse400 & {
+    headers: Headers;
+  };
+
+export type postApiAdminBatchDisableResponse =
+  | postApiAdminBatchDisableResponseSuccess
+  | postApiAdminBatchDisableResponseError;
+
+export const getPostApiAdminBatchDisableUrl = () => {
+  return `/api/admin/batch/disable`;
+};
+
+export const postApiAdminBatchDisable = async (
+  postApiAdminBatchDisableBody: number[],
+  options?: RequestInit,
+): Promise<postApiAdminBatchDisableResponse> => {
+  const res = await fetch(getPostApiAdminBatchDisableUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiAdminBatchDisableBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminBatchDisableResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminBatchDisableResponse;
+};
+
+export const getPostApiAdminBatchDisableMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminBatchDisable>>,
+    TError,
+    { data: number[] },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminBatchDisable>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationKey = ["postApiAdminBatchDisable"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminBatchDisable>>,
+    { data: number[] }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiAdminBatchDisable(data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminBatchDisableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchDisable>>
+>;
+export type PostApiAdminBatchDisableMutationBody = number[];
+export type PostApiAdminBatchDisableMutationError = void;
+
+/**
+ * @summary Disable Batch
+ */
+export const usePostApiAdminBatchDisable = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminBatchDisable>>,
+      TError,
+      { data: number[] },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminBatchDisable>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationOptions = getPostApiAdminBatchDisableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
+ * @summary Enable Batch
+ */
+export type postApiAdminBatchEnableResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type postApiAdminBatchEnableResponse400 = {
+  data: void;
+  status: 400;
+};
+
+export type postApiAdminBatchEnableResponseSuccess =
+  postApiAdminBatchEnableResponse200 & {
+    headers: Headers;
+  };
+export type postApiAdminBatchEnableResponseError =
+  postApiAdminBatchEnableResponse400 & {
+    headers: Headers;
+  };
+
+export type postApiAdminBatchEnableResponse =
+  | postApiAdminBatchEnableResponseSuccess
+  | postApiAdminBatchEnableResponseError;
+
+export const getPostApiAdminBatchEnableUrl = () => {
+  return `/api/admin/batch/enable`;
+};
+
+export const postApiAdminBatchEnable = async (
+  postApiAdminBatchEnableBody: number[],
+  options?: RequestInit,
+): Promise<postApiAdminBatchEnableResponse> => {
+  const res = await fetch(getPostApiAdminBatchEnableUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postApiAdminBatchEnableBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiAdminBatchEnableResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postApiAdminBatchEnableResponse;
+};
+
+export const getPostApiAdminBatchEnableMutationOptions = <
+  TError = void,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiAdminBatchEnable>>,
+    TError,
+    { data: number[] },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiAdminBatchEnable>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationKey = ["postApiAdminBatchEnable"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiAdminBatchEnable>>,
+    { data: number[] }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return postApiAdminBatchEnable(data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type PostApiAdminBatchEnableMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchEnable>>
+>;
+export type PostApiAdminBatchEnableMutationBody = number[];
+export type PostApiAdminBatchEnableMutationError = void;
+
+/**
+ * @summary Enable Batch
+ */
+export const usePostApiAdminBatchEnable = <TError = void, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiAdminBatchEnable>>,
+      TError,
+      { data: number[] },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof postApiAdminBatchEnable>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationOptions = getPostApiAdminBatchEnableMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
  * @summary Create Batch
  */
-export type postApiAdminBatchNewProductQuoteImportResponse201 = {
-  data: void;
-  status: 201;
+export type postApiAdminBatchNewProductQuoteImportResponse200 = {
+  data: unknown;
+  status: 200;
 };
 
 export type postApiAdminBatchNewProductQuoteImportResponse400 = {
@@ -196,7 +440,7 @@ export type postApiAdminBatchNewProductQuoteImportResponse400 = {
 };
 
 export type postApiAdminBatchNewProductQuoteImportResponseSuccess =
-  postApiAdminBatchNewProductQuoteImportResponse201 & {
+  postApiAdminBatchNewProductQuoteImportResponse200 & {
     headers: Headers;
   };
 export type postApiAdminBatchNewProductQuoteImportResponseError =
@@ -438,61 +682,61 @@ export const usePostApiAdminBatchNewStoreImport = <
 /**
  * @summary Run Batch
  */
-export type postApiAdminBatchRunBatchIdResponse200 = {
+export type postApiAdminBatchBatchIdRunResponse200 = {
   data: unknown;
   status: 200;
 };
 
-export type postApiAdminBatchRunBatchIdResponseSuccess =
-  postApiAdminBatchRunBatchIdResponse200 & {
+export type postApiAdminBatchBatchIdRunResponseSuccess =
+  postApiAdminBatchBatchIdRunResponse200 & {
     headers: Headers;
   };
-export type postApiAdminBatchRunBatchIdResponse =
-  postApiAdminBatchRunBatchIdResponseSuccess;
+export type postApiAdminBatchBatchIdRunResponse =
+  postApiAdminBatchBatchIdRunResponseSuccess;
 
-export const getPostApiAdminBatchRunBatchIdUrl = (batchId: number) => {
-  return `/api/admin/batch/run/${batchId}`;
+export const getPostApiAdminBatchBatchIdRunUrl = (batchId: number) => {
+  return `/api/admin/batch/${batchId}/run`;
 };
 
-export const postApiAdminBatchRunBatchId = async (
+export const postApiAdminBatchBatchIdRun = async (
   batchId: number,
   options?: RequestInit,
-): Promise<postApiAdminBatchRunBatchIdResponse> => {
-  const res = await fetch(getPostApiAdminBatchRunBatchIdUrl(batchId), {
+): Promise<postApiAdminBatchBatchIdRunResponse> => {
+  const res = await fetch(getPostApiAdminBatchBatchIdRunUrl(batchId), {
     ...options,
     method: "POST",
   });
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: postApiAdminBatchRunBatchIdResponse["data"] = body
+  const data: postApiAdminBatchBatchIdRunResponse["data"] = body
     ? JSON.parse(body)
     : {};
   return {
     data,
     status: res.status,
     headers: res.headers,
-  } as postApiAdminBatchRunBatchIdResponse;
+  } as postApiAdminBatchBatchIdRunResponse;
 };
 
-export const getPostApiAdminBatchRunBatchIdMutationOptions = <
+export const getPostApiAdminBatchBatchIdRunMutationOptions = <
   TError = unknown,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+    Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>,
     TError,
     { batchId: number },
     TContext
   >;
   fetch?: RequestInit;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+  Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>,
   TError,
   { batchId: number },
   TContext
 > => {
-  const mutationKey = ["postApiAdminBatchRunBatchId"];
+  const mutationKey = ["postApiAdminBatchBatchIdRun"];
   const { mutation: mutationOptions, fetch: fetchOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -502,33 +746,33 @@ export const getPostApiAdminBatchRunBatchIdMutationOptions = <
     : { mutation: { mutationKey }, fetch: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+    Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>,
     { batchId: number }
   > = (props) => {
     const { batchId } = props ?? {};
 
-    return postApiAdminBatchRunBatchId(batchId, fetchOptions);
+    return postApiAdminBatchBatchIdRun(batchId, fetchOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type PostApiAdminBatchRunBatchIdMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>
+export type PostApiAdminBatchBatchIdRunMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>
 >;
 
-export type PostApiAdminBatchRunBatchIdMutationError = unknown;
+export type PostApiAdminBatchBatchIdRunMutationError = unknown;
 
 /**
  * @summary Run Batch
  */
-export const usePostApiAdminBatchRunBatchId = <
+export const usePostApiAdminBatchBatchIdRun = <
   TError = unknown,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+      Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>,
       TError,
       { batchId: number },
       TContext
@@ -537,13 +781,13 @@ export const usePostApiAdminBatchRunBatchId = <
   },
   queryClient?: QueryClient,
 ): UseMutationReturnType<
-  Awaited<ReturnType<typeof postApiAdminBatchRunBatchId>>,
+  Awaited<ReturnType<typeof postApiAdminBatchBatchIdRun>>,
   TError,
   { batchId: number },
   TContext
 > => {
   const mutationOptions =
-    getPostApiAdminBatchRunBatchIdMutationOptions(options);
+    getPostApiAdminBatchBatchIdRunMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };

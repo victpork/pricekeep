@@ -2,10 +2,11 @@ package io.equalink.pricekeep.data;
 
 import io.equalink.pricekeep.batch.JobStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
+import org.quartz.JobKey;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseBatch {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,12 +30,16 @@ public abstract class BaseBatch {
     private boolean enabled;
 
     @Column(name = "job_type", length = 30)
-    protected String jobType;
+    private String jobType;
 
     @Column(name = "cron_trigger", length = 50)
-    protected String cronTrigger;
+    private String cronTrigger;
 
-    protected LocalDateTime lastRunTime;
+    private LocalDateTime lastRunTime;
 
-    protected JobStatus lastRunResult;
+    private JobStatus lastRunResult;
+
+    public JobKey getJobKey() {
+        return JobKey.jobKey(name + "-" + id, jobType);
+    }
 }

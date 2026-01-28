@@ -34,10 +34,12 @@
       },
       "JobInfo" : {
         "type" : "object",
+        "required" : [ "id", "type", "frequency", "status", "lastResult", "lastRunTime", "nextExecTime" ],
         "properties" : {
           "id" : {
             "type" : "integer",
-            "format" : "int64"
+            "format" : "int64",
+            "readOnly" : true
           },
           "enabled" : {
             "type" : "boolean"
@@ -49,21 +51,37 @@
             "type" : "string"
           },
           "type" : {
-            "type" : "string"
+            "type" : "string",
+            "readOnly" : true,
+            "minLength" : 1
           },
           "frequency" : {
-            "type" : "string"
+            "type" : "string",
+            "readOnly" : true,
+            "minLength" : 1
           },
           "status" : {
+            "readOnly" : true,
+            "type" : "string",
+            "minLength" : 1,
             "$ref" : "#/components/schemas/JobStatus"
           },
           "lastResult" : {
+            "readOnly" : true,
+            "type" : "string",
+            "minLength" : 1,
             "$ref" : "#/components/schemas/JobStatus"
           },
           "lastRunTime" : {
+            "readOnly" : true,
+            "type" : "string",
+            "minLength" : 1,
             "$ref" : "#/components/schemas/LocalDateTime"
           },
           "nextExecTime" : {
+            "readOnly" : true,
+            "type" : "string",
+            "minLength" : 1,
             "$ref" : "#/components/schemas/LocalDateTime"
           },
           "parameters" : {
@@ -390,6 +408,72 @@
         "tags" : [ "Admin Resource" ]
       }
     },
+    "/api/admin/batch/disable" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "summary" : "Disable Batch",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
+    "/api/admin/batch/enable" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
+          }
+        },
+        "summary" : "Enable Batch",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
     "/api/admin/batch/newProductQuoteImport" : {
       "post" : {
         "requestBody" : {
@@ -403,8 +487,13 @@
           "required" : true
         },
         "responses" : {
-          "201" : {
-            "description" : "Created"
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
           },
           "400" : {
             "description" : "Bad Request"
@@ -438,7 +527,7 @@
         "tags" : [ "Admin Resource" ]
       }
     },
-    "/api/admin/batch/run/{batchId}" : {
+    "/api/admin/batch/{batchId}/run" : {
       "post" : {
         "parameters" : [ {
           "name" : "batchId",

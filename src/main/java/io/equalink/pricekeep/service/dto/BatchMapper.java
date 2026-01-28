@@ -16,5 +16,10 @@ public interface BatchMapper {
     StoreImportBatch toStoreImportBatchEntity(StoreImportBatchDTO batch);
 
     @Mapping(target = "source", ignore = true)
+    @Mapping(target = "enabled", constant = "true")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "jobType", ignore = true)
+    @Mapping(target = "lastRunTime", ignore = true)
+    @Mapping(target = "lastRunResult", ignore = true)
     ProductQuoteImportBatch toProductQuoteImportBatchEntity(ProductQuoteImportBatchDTO batch);
 }

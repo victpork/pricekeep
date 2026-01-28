@@ -7,13 +7,11 @@ import io.quarkus.narayana.jta.QuarkusTransaction;
 import io.quarkus.narayana.jta.TransactionExceptionResult;
 import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.inject.Inject;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.*;
 
 import java.time.LocalDateTime;
 
+@DisallowConcurrentExecution
 abstract public class BaseJob implements Job {
 
     @Inject

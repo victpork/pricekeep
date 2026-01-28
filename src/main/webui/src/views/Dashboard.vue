@@ -28,7 +28,7 @@ const searchKey = ref<string>()
 const debouncedSearchKey = refDebounced(searchKey, 500)
 </script>
 <template>
-  <div class="col-span-3 lg:col-span-4 lg:border-l">
+  <div class="col-span-3 lg:col-span-4 lg:border-x-l">
     <div class="h-full px-4 py-6 lg:px-8">
       <Tabs default-value="at-a-glance" class="h-full space-y-6">
         <div class="space-between flex items-center">

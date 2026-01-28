@@ -26,10 +26,7 @@ export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    id: faker.helpers.arrayElement([
-      faker.number.int({ min: undefined, max: undefined }),
-      undefined,
-    ]),
+    id: faker.number.int({ min: undefined, max: undefined }),
     enabled: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]),
     name: faker.helpers.arrayElement([
       faker.string.alpha({ length: { min: 10, max: 20 } }),
@@ -39,30 +36,12 @@ export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
       faker.string.alpha({ length: { min: 10, max: 20 } }),
       undefined,
     ]),
-    type: faker.helpers.arrayElement([
-      faker.string.alpha({ length: { min: 10, max: 20 } }),
-      undefined,
-    ]),
-    frequency: faker.helpers.arrayElement([
-      faker.string.alpha({ length: { min: 10, max: 20 } }),
-      undefined,
-    ]),
-    status: faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(JobStatus)),
-      undefined,
-    ]),
-    lastResult: faker.helpers.arrayElement([
-      faker.helpers.arrayElement(Object.values(JobStatus)),
-      undefined,
-    ]),
-    lastRunTime: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      undefined,
-    ]),
-    nextExecTime: faker.helpers.arrayElement([
-      `${faker.date.past().toISOString().split(".")[0]}Z`,
-      undefined,
-    ]),
+    type: faker.string.alpha({ length: { min: 1, max: 20 } }),
+    frequency: faker.string.alpha({ length: { min: 1, max: 20 } }),
+    status: faker.helpers.arrayElement(Object.values(JobStatus)),
+    lastResult: faker.helpers.arrayElement(Object.values(JobStatus)),
+    lastRunTime: `${faker.date.past().toISOString().split(".")[0]}Z`,
+    nextExecTime: `${faker.date.past().toISOString().split(".")[0]}Z`,
     parameters: faker.helpers.arrayElement([
       {
         [faker.string.alphanumeric(5)]: faker.string.alpha({
@@ -1686,12 +1665,54 @@ export const getGetApiAdminBatchAllMockHandler = (
   );
 };
 
-export const getPostApiAdminBatchNewProductQuoteImportMockHandler = (
+export const getPostApiAdminBatchDisableMockHandler = (
   overrideResponse?:
-    | void
+    | unknown
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<void> | void),
+      ) => Promise<unknown> | unknown),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/batch/disable",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 200 });
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminBatchEnableMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<unknown> | unknown),
+  options?: RequestHandlerOptions,
+) => {
+  return http.post(
+    "*/api/admin/batch/enable",
+    async (info) => {
+      await delay(1000);
+      if (typeof overrideResponse === "function") {
+        await overrideResponse(info);
+      }
+      return new HttpResponse(null, { status: 200 });
+    },
+    options,
+  );
+};
+
+export const getPostApiAdminBatchNewProductQuoteImportMockHandler = (
+  overrideResponse?:
+    | unknown
+    | ((
+        info: Parameters<Parameters<typeof http.post>[1]>[0],
+      ) => Promise<unknown> | unknown),
   options?: RequestHandlerOptions,
 ) => {
   return http.post(
@@ -1701,7 +1722,7 @@ export const getPostApiAdminBatchNewProductQuoteImportMockHandler = (
       if (typeof overrideResponse === "function") {
         await overrideResponse(info);
       }
-      return new HttpResponse(null, { status: 201 });
+      return new HttpResponse(null, { status: 200 });
     },
     options,
   );
@@ -1728,7 +1749,7 @@ export const getPostApiAdminBatchNewStoreImportMockHandler = (
   );
 };
 
-export const getPostApiAdminBatchRunBatchIdMockHandler = (
+export const getPostApiAdminBatchBatchIdRunMockHandler = (
   overrideResponse?:
     | unknown
     | ((
@@ -1737,7 +1758,7 @@ export const getPostApiAdminBatchRunBatchIdMockHandler = (
   options?: RequestHandlerOptions,
 ) => {
   return http.post(
-    "*/api/admin/batch/run/:batchId",
+    "*/api/admin/batch/:batchId/run",
     async (info) => {
       await delay(1000);
       if (typeof overrideResponse === "function") {
@@ -2205,9 +2226,11 @@ export const getGetApiProductProductIdQuoteHistMockHandler = (
 };
 export const getPricekeepAPIMock = () => [
   getGetApiAdminBatchAllMockHandler(),
+  getPostApiAdminBatchDisableMockHandler(),
+  getPostApiAdminBatchEnableMockHandler(),
   getPostApiAdminBatchNewProductQuoteImportMockHandler(),
   getPostApiAdminBatchNewStoreImportMockHandler(),
-  getPostApiAdminBatchRunBatchIdMockHandler(),
+  getPostApiAdminBatchBatchIdRunMockHandler(),
   getPostApiAdminStoreNewMockHandler(),
   getGetApiAdminStoreSearchMockHandler(),
   getGetApiCommonLatestDealsMockHandler(),

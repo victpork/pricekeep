@@ -57,6 +57,9 @@ public interface BatchRepo {
     @Query("from StoreImportBatch sib left join fetch sib.storeGroup where sib.name = :name")
     Optional<StoreImportBatch> findStoreBatchByName(String name);
 
+    @Query("update BaseBatch b set b.enabled = :enable where b = :batch")
+    void setEnabled(BaseBatch batch, boolean enable);
+
     @Transactional
     default Optional<? extends BaseBatch> findByName(String name) {
         var pqBatch = findPQBatchByName(name);

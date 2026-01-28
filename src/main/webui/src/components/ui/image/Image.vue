@@ -17,8 +17,9 @@ const hasImageError = ref(false)
     <picture>
         <img v-if="!hasImageError && src" :src="src" :alt="alt" :width="width" :height="height" v-bind="$attrs"
             @error="hasImageError = true" />
-        <div v-else class="max-w-lg h-64 bg-muted flex items-center justify-center rounded-md border border-dashed">
-            <div class="flex flex-col items-center gap-2 text-muted-foreground">
+        <div v-else
+            class="max-w-lg max-h-lg bg-muted flex items-center justify-center rounded-md border border-dashed aspect-square">
+            <div class="flex flex-col items-center gap-2 text-muted-foreground ">
                 <ImageIcon :size="48" />
                 <span>No image available</span>
             </div>

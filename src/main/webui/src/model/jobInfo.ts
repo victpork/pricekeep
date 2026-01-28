@@ -9,15 +9,21 @@ import type { LocalDateTime } from "./localDateTime";
 import type { JobInfoParameters } from "./jobInfoParameters";
 
 export interface JobInfo {
-  id?: number;
+  readonly id: number;
   enabled?: boolean;
   name?: string;
   description?: string;
-  type?: string;
-  frequency?: string;
-  status?: JobStatus;
-  lastResult?: JobStatus;
-  lastRunTime?: LocalDateTime;
-  nextExecTime?: LocalDateTime;
+  /** @minLength 1 */
+  readonly type: string;
+  /** @minLength 1 */
+  readonly frequency: string;
+  /** @minLength 1 */
+  readonly status: JobStatus;
+  /** @minLength 1 */
+  readonly lastResult: JobStatus;
+  /** @minLength 1 */
+  readonly lastRunTime: LocalDateTime;
+  /** @minLength 1 */
+  readonly nextExecTime: LocalDateTime;
   parameters?: JobInfoParameters;
 }

@@ -53,7 +53,7 @@ public class AdminResource {
 
     @POST
     @Path("/batch/newProductQuoteImport")
-    public void createBatch(ProductQuoteImportBatchDTO batch) {
+    public Response createBatch(ProductQuoteImportBatchDTO batch) {
         var batchEntity = batchMapper.toProductQuoteImportBatchEntity(batch);
         batchRepo.persist(batchEntity);
         try {
@@ -61,12 +61,12 @@ public class AdminResource {
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-
+        return Response.accepted(new Result("OK")).build();
     }
 
 
     @POST
-    @Path("/batch/run/{batchId}")
+    @Path("/batch/{batchId}/run/")
     public Response runBatch(@PathParam("batchId") Long batchId) {
         var batch = batchRepo.findById(batchId);
         if (batch.isPresent()) {
@@ -92,5 +92,29 @@ public class AdminResource {
     public List<StoreInfo> getAllStores(@QueryParam("q") String storeName) {
         log.infov("Searching for stores: {0}", "%" + storeName.replaceAll("%", "").toLowerCase() + "%");
         return storeRepo.findStoreByName("%" + storeName.replaceAll("%", "").toLowerCase() + "%").stream().map(storeMapper::toDTO).toList();
+    }
+
+    @POST
+    @Path("/batch/enable")
+    public Response enableBatch(List<Long> batchId) {
+        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent( bb -> {
+            try {
+                batchController.enableBatch(bb);
+            } catch (SchedulerException _) {
+            }
+        }));
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/batch/disable")
+    public Response disableBatch(List<Long> batchId) {
+        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent( bb -> {
+            try {
+                batchController.disableBatch(bb);
+            } catch (SchedulerException _) {
+            }
+        }));
+        return Response.ok().build();
     }
 }
