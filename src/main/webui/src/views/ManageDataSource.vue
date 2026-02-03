@@ -3,12 +3,15 @@ import { ref, computed, watch } from 'vue';
 import { useGetApiAdminBatchAll, usePostApiAdminBatchBatchIdRun, usePostApiAdminBatchDisable, usePostApiAdminBatchEnable } from '@/apiClient';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
-import { Play, Trash2, Power, PowerOff, FilePlusCorner } from 'lucide-vue-next';
+import { Play, Trash2, Power, PowerOff, FilePlusCorner, Store, PackagePlus } from 'lucide-vue-next';
 import GenericDataTable from '@/components/GenericDataTable.vue';
 import { defaultColumns } from '@/components/QuoteImportBatchTable/column.ts';
 import { toast } from 'vue-sonner';
 import type { JobInfo } from '@/model';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import ProductQuoteBatchForm from './ProductQuoteBatchForm.vue';
+import DialogContent from '@/components/ui/dialog/DialogContent.vue';
 const { data, refetch: refetchBatches } = useGetApiAdminBatchAll()
 const { mutateAsync: runBatch } = usePostApiAdminBatchBatchIdRun()
 
@@ -46,6 +49,10 @@ const handleDisableBatch = () => {
         refetchBatches()
     }
 }
+const dialogForm = ref<("quote" | "store" | "")>("")
+const setDialog = (form: "quote" | "store" | "") => {
+    dialogForm.value = form
+}
 </script>
 
 <template>
@@ -77,18 +84,32 @@ const handleDisableBatch = () => {
                 </ButtonGroup>
 
                 <ButtonGroup>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger as-child>
-                            <Button variant="outline" size="sm">
-                                <FilePlusCorner /> Create
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuItem>
-                                <FilePlusCorner /> Create
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Dialog>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <Button variant="outline" size="sm">
+                                    <FilePlusCorner /> Create
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+
+                                <DialogTrigger as-child @click="setDialog('quote')">
+                                    <DropdownMenuItem>
+                                        <Package-Plus /> Quote Import Batch
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
+                                <DialogTrigger as-child @click="setDialog('store')">
+                                    <DropdownMenuItem>
+                                        <Store /> Store Import Batch
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
+                            </DropdownMenuContent>
+                            <DialogContent class="min-w-auto">
+                                <ProductQuoteBatchForm v-if="dialogForm == 'quote'" />
+                                <StoreImportBatchForm v-if="dialogForm == 'store'" />
+                            </DialogContent>
+                        </DropdownMenu>
+                    </Dialog>
                     <Button variant="outline" size="sm">
                         <Trash2 /> Remove
                     </Button>

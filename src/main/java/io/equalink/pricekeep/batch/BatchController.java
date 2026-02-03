@@ -54,10 +54,10 @@ public class BatchController {
     void onStart() throws SchedulerException {
         List<BaseBatch> batchList = batchRepo.getAllBatchesForExecution();
         log.infov("Batch count: {0}", batchList.size());
-        batchList.forEach(batch -> log.infov("Batch: {0}[{1}]", batch.getName(), batch.getId()));
+        batchList.forEach(batch -> log.infov("Batch: {0}[{1}]: {2}", batch.getName(), batch.getId(), batch.isEnabled()? "enabled" : "disabled"));
         quartzScheduler.clear();
         for (BaseBatch b : batchList) {
-            scheduleBatch(b);
+            if (b.isEnabled()) scheduleBatch(b);
         }
 
         quartzScheduler.start();

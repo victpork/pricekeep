@@ -17,6 +17,7 @@ import type {
   ProductResult,
   QuoteDTO,
   QuoteResult,
+  Result,
   SimpleQuoteDTO,
   StoreInfo,
 } from "./model";
@@ -51,6 +52,20 @@ export const getGetApiAdminBatchAllResponseMock = (): JobInfo[] =>
       undefined,
     ]),
   }));
+
+export const getPostApiAdminBatchNewProductQuoteImportResponseMock = (
+  overrideResponse: Partial<Result> = {},
+): Result => ({
+  result: faker.helpers.arrayElement([
+    faker.string.alpha({ length: { min: 10, max: 20 } }),
+    undefined,
+  ]),
+  msg: faker.helpers.arrayElement([
+    faker.string.alpha({ length: { min: 10, max: 20 } }),
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getGetApiAdminStoreSearchResponseMock = (): StoreInfo[] =>
   Array.from(
@@ -1709,20 +1724,27 @@ export const getPostApiAdminBatchEnableMockHandler = (
 
 export const getPostApiAdminBatchNewProductQuoteImportMockHandler = (
   overrideResponse?:
-    | unknown
+    | Result
     | ((
         info: Parameters<Parameters<typeof http.post>[1]>[0],
-      ) => Promise<unknown> | unknown),
+      ) => Promise<Result> | Result),
   options?: RequestHandlerOptions,
 ) => {
   return http.post(
     "*/api/admin/batch/newProductQuoteImport",
     async (info) => {
       await delay(1000);
-      if (typeof overrideResponse === "function") {
-        await overrideResponse(info);
-      }
-      return new HttpResponse(null, { status: 200 });
+
+      return new HttpResponse(
+        JSON.stringify(
+          overrideResponse !== undefined
+            ? typeof overrideResponse === "function"
+              ? await overrideResponse(info)
+              : overrideResponse
+            : getPostApiAdminBatchNewProductQuoteImportResponseMock(),
+        ),
+        { status: 202, headers: { "Content-Type": "application/json" } },
+      );
     },
     options,
   );

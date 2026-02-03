@@ -3,8 +3,6 @@ package io.equalink.pricekeep.data;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.EmbeddedColumnNaming;
-import org.locationtech.jts.geom.Point;
 
 @Setter
 @Getter

@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import type { ColumnDef } from '@tanstack/vue-table'
 import cronstrue from 'cronstrue';
+import { Spinner } from '@/components/ui/spinner'
 
 export const defaultColumns: ColumnDef<JobInfo>[] = [
   {
@@ -63,7 +64,7 @@ export const defaultColumns: ColumnDef<JobInfo>[] = [
         case 'ERROR':
           return h(Badge, { class: 'text-left font-medium', variant: 'destructive' }, () => 'Error')
         case 'RUNNING':
-          return h(Badge, { class: 'text-left font-medium bg-orange-500', variant: 'default' }, () => 'Running')
+          return h(Badge, { class: 'text-left font-medium bg-orange-500', variant: 'default' }, () => [h(Spinner), 'Running'])
         case 'PAUSED':
           return h(Badge, { class: 'text-left font-medium bg-gray-500', variant: 'default' }, () => 'Disabled')
         default:

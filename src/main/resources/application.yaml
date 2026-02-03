@@ -49,9 +49,9 @@ quarkus:
       dev-ui:
         allow-hql: true
       log:
-        sql: true
+        sql: false
       schema-management:
-        strategy: update
+        strategy: validate
 
 proxyAddr: localhost:3041
 

@@ -207,10 +207,14 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
             });
 
             page.navigate(CHANGE_ADDR_URL);
-            page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up")).check();
+            page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up").setExact(true)).check();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Change store")).click();
             page.getByLabel("Region").selectOption("494");
-            page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Woolworths Alexandra 106")).click();
+            Locator storeBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Woolworths Alexandra 106"));
+            if (storeBtn.isDisabled()) {
+                storeBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Woolworths Aotea"));
+            }
+            storeBtn.click();
         });
 
 

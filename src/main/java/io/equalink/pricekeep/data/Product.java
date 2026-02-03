@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -102,6 +100,7 @@ public class Product {
      * Price quote detail relation, cascade all operations
      */
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
+    @Builder.Default
     private List<Quote> priceQuotes = new ArrayList<>();
 
     /**
@@ -130,11 +129,12 @@ public class Product {
      */
     @JsonIgnore
     @OneToMany(mappedBy = "product")
+    @Builder.Default
     private Set<GroupProductCode> groupSKU = new HashSet<>();
 
-    @Column(name = "tags", columnDefinition = "text[]")
-    @Type(ListArrayType.class)
-    private Set<String> tags = new HashSet<>();
+    @Column(name = "tags")
+    @Builder.Default
+    private List<String> tags = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -147,6 +147,7 @@ public class Product {
     @MapKeyColumn(name = "statType")
     @Column(name = "value", nullable = false, length = 5)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @Builder.Default
     private Map<ProductStatType, BigDecimal> priceStats =  new HashMap<>();
 
 

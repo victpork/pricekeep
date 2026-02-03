@@ -62,13 +62,12 @@ public abstract class WoolworthsDataMapperDecorator implements WoolworthsDataMap
             if (m.find()) {
                 String unit = m.group("unit");
                 result.setUnit(switch (unit.toLowerCase()) {
-                    case "ea" -> Product.Unit.PER_ITEM;
                     case "kg" -> Product.Unit.PER_KG;
                     case "m" -> Product.Unit.PER_METRE;
                     case "ml" -> Product.Unit.PER_MILLILITRE;
                     case "l" -> Product.Unit.PER_LITRE;
                     case "g" -> Product.Unit.PER_G;
-                    default -> null;
+                    default -> Product.Unit.PER_ITEM;
                 });
                 result.setUnitScale(new BigDecimal(m.group("number")));
             }

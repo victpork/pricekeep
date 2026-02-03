@@ -13,6 +13,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Variant;
 import lombok.extern.jbosslog.JBossLog;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.hibernate.engine.jdbc.batch.spi.Batch;
 import org.quartz.SchedulerException;
 
@@ -53,6 +56,26 @@ public class AdminResource {
 
     @POST
     @Path("/batch/newProductQuoteImport")
+    @APIResponse(
+        responseCode = "202",
+        description = "Batch created",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = Result.class
+            )
+        )
+    )
+    @APIResponse(
+        responseCode = "400",
+        description = "Bad request",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(
+                implementation = Result.class
+            )
+        )
+    )
     public Response createBatch(ProductQuoteImportBatchDTO batch) {
         var batchEntity = batchMapper.toProductQuoteImportBatchEntity(batch);
         batchRepo.persist(batchEntity);
@@ -61,7 +84,7 @@ public class AdminResource {
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-        return Response.accepted(new Result("OK")).build();
+        return Response.accepted(new Result("OK", "Batch created")).build();
     }
 
 
@@ -97,7 +120,7 @@ public class AdminResource {
     @POST
     @Path("/batch/enable")
     public Response enableBatch(List<Long> batchId) {
-        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent( bb -> {
+        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent(bb -> {
             try {
                 batchController.enableBatch(bb);
             } catch (SchedulerException _) {
@@ -109,7 +132,7 @@ public class AdminResource {
     @POST
     @Path("/batch/disable")
     public Response disableBatch(List<Long> batchId) {
-        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent( bb -> {
+        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent(bb -> {
             try {
                 batchController.disableBatch(bb);
             } catch (SchedulerException _) {

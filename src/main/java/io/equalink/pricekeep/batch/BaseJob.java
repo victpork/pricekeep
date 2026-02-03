@@ -25,12 +25,12 @@ abstract public class BaseJob implements Job {
         Long batchId = contextDataMap.getLong(BatchController.JOB_ID);
         batchRepo.findById(batchId).ifPresentOrElse(
             batch -> {
+                QuarkusTransaction.requiringNew().run(() -> batchRepo.setBatchStatus(batch, JobStatus.RUNNING, LocalDateTime.now()));
                 int result = QuarkusTransaction.requiringNew().exceptionHandler((t) -> {
                     Log.error("Run batch error", t);
                     batchRepo.setBatchStatus(batch, JobStatus.ERROR, LocalDateTime.now());
                     return TransactionExceptionResult.COMMIT;
                 }).call(() -> {
-                    batchRepo.setBatchStatus(batch, JobStatus.RUNNING, LocalDateTime.now());
                     run(batch, contextDataMap);
                     return 0;
                 });

@@ -70,6 +70,7 @@ export * from "./quoteDTO";
 export * from "./quoteDTODiscountPrice";
 export * from "./quoteDTOStoreInfo";
 export * from "./quoteResult";
+export * from "./result";
 export * from "./resultSet";
 export * from "./resultSetMetaData";
 export * from "./rowIdLifetime";

@@ -49,7 +49,7 @@ public abstract class BaseScraper<T> implements ProductQuoteFetchService, StoreF
             if (prevCnt == 0) {
                 log.infov("Initialising routes setup");
                 if (storeInternalCode != null) {
-                    setStore(storeInternalCode).await().atMost(Duration.ofMinutes(1));
+                    setStore(storeInternalCode).await().atMost(Duration.ofMinutes(2));
                 }
                 initSearch(keyword, em);
             }

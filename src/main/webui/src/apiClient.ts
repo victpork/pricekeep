@@ -35,6 +35,7 @@ import type {
   ProductResult,
   QuoteDTO,
   QuoteResult,
+  Result,
   SetAlertMessage,
   SimpleQuoteDTO,
   StoreImportBatchDTO,
@@ -429,18 +430,18 @@ export const usePostApiAdminBatchEnable = <TError = void, TContext = unknown>(
 /**
  * @summary Create Batch
  */
-export type postApiAdminBatchNewProductQuoteImportResponse200 = {
-  data: unknown;
-  status: 200;
+export type postApiAdminBatchNewProductQuoteImportResponse202 = {
+  data: Result;
+  status: 202;
 };
 
 export type postApiAdminBatchNewProductQuoteImportResponse400 = {
-  data: void;
+  data: Result;
   status: 400;
 };
 
 export type postApiAdminBatchNewProductQuoteImportResponseSuccess =
-  postApiAdminBatchNewProductQuoteImportResponse200 & {
+  postApiAdminBatchNewProductQuoteImportResponse202 & {
     headers: Headers;
   };
 export type postApiAdminBatchNewProductQuoteImportResponseError =
@@ -480,7 +481,7 @@ export const postApiAdminBatchNewProductQuoteImport = async (
 };
 
 export const getPostApiAdminBatchNewProductQuoteImportMutationOptions = <
-  TError = void,
+  TError = Result,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -522,13 +523,13 @@ export type PostApiAdminBatchNewProductQuoteImportMutationResult = NonNullable<
 >;
 export type PostApiAdminBatchNewProductQuoteImportMutationBody =
   ProductQuoteImportBatchDTO;
-export type PostApiAdminBatchNewProductQuoteImportMutationError = void;
+export type PostApiAdminBatchNewProductQuoteImportMutationError = Result;
 
 /**
  * @summary Create Batch
  */
 export const usePostApiAdminBatchNewProductQuoteImport = <
-  TError = void,
+  TError = Result,
   TContext = unknown,
 >(
   options?: {

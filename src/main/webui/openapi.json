@@ -266,6 +266,18 @@
           }
         }
       },
+      "Result" : {
+        "description" : "Result message",
+        "type" : "object",
+        "properties" : {
+          "result" : {
+            "type" : "string"
+          },
+          "msg" : {
+            "type" : "string"
+          }
+        }
+      },
       "SetAlertMessage" : {
         "type" : "object",
         "properties" : {
@@ -487,16 +499,25 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK",
+          "202" : {
+            "description" : "Batch created",
             "content" : {
               "application/json" : {
-                "schema" : { }
+                "schema" : {
+                  "$ref" : "#/components/schemas/Result"
+                }
               }
             }
           },
           "400" : {
-            "description" : "Bad Request"
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Result"
+                }
+              }
+            }
           }
         },
         "summary" : "Create Batch",
