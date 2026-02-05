@@ -112,7 +112,7 @@ public class AdminResource {
 
     @GET
     @Path("/store/search")
-    public List<StoreInfo> getAllStores(@QueryParam("q") String storeName) {
+    public List<StoreInfo> getAllStores(@QueryParam("q") @DefaultValue("") String storeName) {
         log.infov("Searching for stores: {0}", "%" + storeName.replaceAll("%", "").toLowerCase() + "%");
         return storeRepo.findStoreByName("%" + storeName.replaceAll("%", "").toLowerCase() + "%").stream().map(storeMapper::toDTO).toList();
     }

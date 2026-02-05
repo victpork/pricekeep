@@ -33,6 +33,7 @@ public class BatchController {
     @Inject
     BatchRepo batchRepo;
 
+    @Transactional
     public void createBatch(BaseBatch batchEntity) throws SchedulerException {
         batchRepo.persist(batchEntity);
         scheduleBatch(batchEntity);

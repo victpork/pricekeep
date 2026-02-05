@@ -456,6 +456,7 @@ paths:
         in: query
         schema:
           type: string
+          default: ""
       responses:
         "200":
           description: OK

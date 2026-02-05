@@ -127,8 +127,13 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
                 route.fulfill(new Route.FulfillOptions().setResponse(response));
             }
         });
-
-        page.navigate(SEARCH_URL + keyword);
+        Locator searchBox = page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("search"));
+        if (searchBox.isVisible()) {
+            searchBox.fill(keyword);
+            searchBox.press("Enter");
+        } else {
+            page.navigate(SEARCH_URL + keyword);
+        }
         nextPageRef.set(page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Next")));
         page.waitForTimeout(300);
     }
@@ -196,24 +201,31 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
             page.route(IMAGE_FILTER, Route::abort);
             page.route(SET_STORE_URL, route -> {
                 LOG.infov("Postdata: {0}", route.request().postData());
-                String newPostBody = String.format("{\"addressId\": %s}", storeInternalCode);
+                String newPostBody = String.format("{\"addressId\":%s}", storeInternalCode);
                 LOG.infov("Replace with: {0}", newPostBody);
                 APIResponse rsp = route.fetch(new Route.FetchOptions().setPostData(newPostBody).setMethod("put"));
                 //LOG.infov("Response code: {0}, response body {1}", rsp.status(), rsp.text());
-                if (rsp.ok())
+                if (rsp.ok()) {
+                    try {
+                        var addrRspMsg = objMapper.readValue(rsp.body(), PickupAddressMessage.class);
+                        LOG.infov("Result: {0}, Msg: {1}", addrRspMsg.isSuccessful(),  addrRspMsg.getMessage());
+                    } catch (IOException e) {
+                        LOG.errorv("Error reading message: {0}", rsp.body());
+                    }
                     emitter.complete(null);
-                else
+                } else {
                     emitter.fail(new RuntimeException("Return error: " + rsp.status()));
+                }
             });
 
             page.navigate(CHANGE_ADDR_URL);
             page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up").setExact(true)).check();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Change store")).click();
+            // Select "all pickup locations"
             page.getByLabel("Region").selectOption("494");
-            Locator storeBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Woolworths Alexandra 106"));
-            if (storeBtn.isDisabled()) {
-                storeBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Woolworths Aotea"));
-            }
+
+            Locator storeBtn = page.locator("id=address-selection-button--" + storeInternalCode);
+
             storeBtn.click();
         });
 

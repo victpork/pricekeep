@@ -39,9 +39,9 @@ export const defaultColumns: ColumnDef<JobInfo>[] = [
   },
   {
     accessorKey: 'type',
-    header: () => h('div', { class: 'text-left' }, 'Type'),
+    header: () => h('div', { class: 'text-left' }, 'Batch Type'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-left font-medium min-w-[150px]' }, row.original.type)
+      return h('div', { class: 'text-left font-medium min-w-[150px]' }, row.original.parameters?.['keyword'] ? 'Product/Quote' : 'Branch')
     },
   },
   {
