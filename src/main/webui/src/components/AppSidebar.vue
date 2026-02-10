@@ -4,7 +4,6 @@ import {
   Settings,
   Store,
   Bell,
-  Package2,
   TableConfig,
   PanelLeftOpenIcon,
   PanelLeftCloseIcon,

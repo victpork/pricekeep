@@ -9,7 +9,7 @@ export default defineConfig({
       httpClient: 'fetch',
       client: 'vue-query',
       prettier: true,
-      mock: true,
+      mock: false,
       mode: 'split',
     },
   },

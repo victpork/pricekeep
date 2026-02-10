@@ -61,10 +61,10 @@ public class PlayWrightFactory {
     @Produces
     @Named("withProxy")
     public Page getBrowserPageInstanceWithProxy() {
-        Log.infov("Creating new instance with proxy @ {0}", proxyAddr);
-        Proxy proxy = new Proxy(proxyAddr);
-        NewPageOptions options = new NewPageOptions().setProxy(proxy).setIgnoreHTTPSErrors(true);
-        return browser.newPage(options);
+        //Log.infov("Creating new instance with proxy @ {0}", proxyAddr);
+        //Proxy proxy = new Proxy(proxyAddr);
+        //NewPageOptions options = new NewPageOptions().setProxy(proxy).setIgnoreHTTPSErrors(true);
+        return browser.newPage();
     }
 
     @Produces

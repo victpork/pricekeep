@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+
 
 import { useColorMode } from "@vueuse/core";
 const mode = useColorMode();
@@ -13,19 +13,11 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
-import { ChevronsDown, Menu } from "lucide-vue-next";
+import { ChevronsDown } from "lucide-vue-next";
 
 interface RouteProps {
   href: string;
@@ -76,22 +68,16 @@ const featureList: FeatureProps[] = [
 </script>
 
 <template>
-  <header
-    :class="{
-      'shadow-light': mode === 'light',
-      'shadow-dark': mode === 'dark',
-      'w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-7xl top-5 mx-auto sticky border z-40 rounded-2xl flex justify-between items-center p-2 bg-card shadow-md': true,
-    }"
-  >
-    <a
-      href="/"
-      class="font-bold text-lg flex items-center"
-    >
+  <header :class="{
+    'shadow-light': mode === 'light',
+    'shadow-dark': mode === 'dark',
+    'w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-7xl top-5 mx-auto sticky border z-40 rounded-2xl flex justify-between items-center p-2 bg-card shadow-md': true,
+  }">
+    <a href="/" class="font-bold text-lg flex items-center">
       <ChevronsDown
-        class="bg-linear-to-tr from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white"
-      />
-      ShadcnVue</a
-    >
+        class="bg-linear-to-tr from-primary via-primary/70 to-primary rounded-lg w-9 h-9 mr-2 border text-white" />
+      ShadcnVue
+    </a>
 
     <!-- Desktop -->
     <NavigationMenu class="hidden lg:block">
@@ -102,17 +88,10 @@ const featureList: FeatureProps[] = [
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <div class="grid w-[600px] grid-cols-2 gap-5 p-4">
-              <img
-                src="https://www.radix-vue.com/logo.svg"
-                alt="Beach"
-                class="h-full w-full rounded-md object-cover"
-              />
+              <img src="https://www.radix-vue.com/logo.svg" alt="Beach" class="h-full w-full rounded-md object-cover" />
               <ul class="flex flex-col gap-2">
-                <li
-                  v-for="{ title, description } in featureList"
-                  :key="title"
-                  class="rounded-md p-3 text-sm hover:bg-muted"
-                >
+                <li v-for="{ title, description } in featureList" :key="title"
+                  class="rounded-md p-3 text-sm hover:bg-muted">
                   <p class="mb-1 font-semibold leading-none text-foreground">
                     {{ title }}
                   </p>
@@ -127,13 +106,8 @@ const featureList: FeatureProps[] = [
 
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Button
-              v-for="{ href, label } in routeList"
-              :key="label"
-              as-child
-              variant="ghost"
-              class="justify-start text-base"
-            >
+            <Button v-for="{ href, label } in routeList" :key="label" as-child variant="ghost"
+              class="justify-start text-base">
               <a :href="href">
                 {{ label }}
               </a>

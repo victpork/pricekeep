@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const model = defineModel<string>()
 
-const suggestions = computed({ get: () => (props.suggest), set: (v) => { v = [] } })
+const suggestions = computed({ get: () => (props.suggest), set: (v) => { v = v; v = [] } })
 const selectedIndex = ref(-1)
 const isLoading = ref(false)
 const isFocused = ref(false)
@@ -83,13 +83,14 @@ watch(suggestions, (w) => {
         </div>
       </PopoverAnchor>
       <PopoverContent asChild>
-        <div aria-live="polite"
-          v-if="isLoading && isFocused">
+        <div aria-live="polite" v-if="isLoading && isFocused">
           Loading...
         </div>
         <!--  -->
-        <ul v-if="suggest.length > 0 && !isLoading && isFocused" id="suggestions-list" role="listbox" :class="cn('grid grid-cols-1 gap-1 px-1 py-1 rounded-sm', props.class)" >
-          <li v-for="(suggestion, index) in suggest" :key="suggestion" class="px-3 py-1 cursor-pointer hover:bg-muted rounded-sm"
+        <ul v-if="suggest.length > 0 && !isLoading && isFocused" id="suggestions-list" role="listbox"
+          :class="cn('grid grid-cols-1 gap-1 px-1 py-1 rounded-sm', props.class)">
+          <li v-for="(suggestion, index) in suggest" :key="suggestion"
+            class="px-3 py-1 cursor-pointer hover:bg-muted rounded-sm"
             :class="index === selectedIndex ? 'bg-muted' : ''" @click="handleSuggestionClick(suggestion)" role="option"
             :aria-selected="index === selectedIndex">
             {{ suggestion }}

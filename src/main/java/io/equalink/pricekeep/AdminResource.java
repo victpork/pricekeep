@@ -117,6 +117,13 @@ public class AdminResource {
         return storeRepo.findStoreByName("%" + storeName.replaceAll("%", "").toLowerCase() + "%").stream().map(storeMapper::toDTO).toList();
     }
 
+    @DELETE
+    @Path("/batch/delete")
+    public Response deleteBatch(List<Long> batchId) {
+        batchId.stream().map(batchRepo::findById).forEach(b -> b.ifPresent(batchRepo::delete));
+        return Response.ok(Result.builder().result("ok").msg("batch deleted")).build();
+    }
+
     @POST
     @Path("/batch/enable")
     public Response enableBatch(List<Long> batchId) {
@@ -126,7 +133,7 @@ public class AdminResource {
             } catch (SchedulerException _) {
             }
         }));
-        return Response.ok().build();
+        return Response.ok(Result.builder().result("ok").msg("batch enabled")).build();
     }
 
     @POST

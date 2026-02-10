@@ -4,7 +4,7 @@ import { ImageIcon } from "lucide-vue-next"
 defineOptions({
     inheritAttrs: false
 })
-const props = defineProps<{
+defineProps<{
     src?: string
     alt?: string
     width?: string

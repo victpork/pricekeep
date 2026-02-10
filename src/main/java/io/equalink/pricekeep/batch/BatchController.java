@@ -51,6 +51,12 @@ public class BatchController {
         batchRepo.setEnabled(batchEntity,false);
     }
 
+    @Transactional
+    public void deleteBatch(BaseBatch batchEntity) throws SchedulerException {
+        quartzScheduler.deleteJob(batchEntity.getJobKey());
+        batchRepo.delete(batchEntity);
+    }
+
     @Startup
     void onStart() throws SchedulerException {
         List<BaseBatch> batchList = batchRepo.getAllBatchesForExecution();

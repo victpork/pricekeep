@@ -53,6 +53,7 @@ const dialogForm = ref<("quote" | "store" | "")>("")
 const setDialog = (form: "quote" | "store" | "") => {
     dialogForm.value = form
 }
+const isDialogOpen = ref(false)
 </script>
 
 <template>
@@ -104,8 +105,9 @@ const setDialog = (form: "quote" | "store" | "") => {
                                     </DropdownMenuItem>
                                 </DialogTrigger>
                             </DropdownMenuContent>
-                            <DialogContent class="min-w-auto">
-                                <ProductQuoteBatchForm v-if="dialogForm == 'quote'" />
+                            <DialogContent class="min-w-auto" v-model:open="isDialogOpen">
+                                <ProductQuoteBatchForm v-if="dialogForm == 'quote'"
+                                    @success="() => { isDialogOpen = false; refetchBatches() }" />
                                 <StoreImportBatchForm v-if="dialogForm == 'store'" />
                             </DialogContent>
                         </DropdownMenu>

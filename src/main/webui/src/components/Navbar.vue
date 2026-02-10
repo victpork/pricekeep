@@ -58,7 +58,7 @@ const { data: alerts } = useGetApiProductAlerts<Prettify<GetApiProductAlertsQuer
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" v-if="alerts?.data.length">
-          <template v-for="(alert, index) in alerts?.data" :key="index">
+          <template v-for="alert in alerts?.data" :key="alert.productId">
             <DropdownMenuItem>
               <Item as-child>
                 <RouterLink :to="`/products/${alert.productId}`">

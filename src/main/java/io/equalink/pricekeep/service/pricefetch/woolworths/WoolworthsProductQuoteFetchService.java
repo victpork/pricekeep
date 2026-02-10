@@ -225,8 +225,15 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
             page.getByLabel("Region").selectOption("494");
 
             Locator storeBtn = page.locator("id=address-selection-button--" + storeInternalCode);
+            if (!storeBtn.isDisabled()) {
+                storeBtn.click();
+            } else {
+                // Store already selected, close the window and go
+                Locator dismissBtn = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Dismiss modal"));
+                if (!dismissBtn.isDisabled()) {dismissBtn.click();}
+                emitter.complete(null);
+            }
 
-            storeBtn.click();
         });
 
 

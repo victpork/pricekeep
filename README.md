@@ -39,7 +39,11 @@ The one single command would help you to start both frontend and backend.
 The application can be packaged using:
 
 ```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
+./gradlew build -x test
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+The application, packaged as jar, is located in `build/pricekeep-1.0.0-SNAPSHOT-runner.jar`. To run it, use the following command:
+```shell script
+java -jar pricekeep-1.0.0-SNAPSHOT-runner.jar
+```
+You may configure the database with 

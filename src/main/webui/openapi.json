@@ -420,6 +420,36 @@
         "tags" : [ "Admin Resource" ]
       }
     },
+    "/api/admin/batch/delete" : {
+      "delete" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          }
+        },
+        "summary" : "Delete Batch",
+        "tags" : [ "Admin Resource" ]
+      }
+    },
     "/api/admin/batch/disable" : {
       "post" : {
         "requestBody" : {
