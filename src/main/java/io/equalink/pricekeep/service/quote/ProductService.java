@@ -148,4 +148,8 @@ public class ProductService {
     public Optional<Alert> getAlert(Long productId) {
         return alertRepo.getAlert(productId);
     }
+
+    public List<Quote> getDiscountToday() {
+        return quoteRepo.findLatestQuoteWithDiscount();
+    }
 }

@@ -551,6 +551,20 @@ paths:
       summary: Get All Product
       tags:
       - Product Resource
+  /api/product/discounts:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SimpleQuoteDTO"
+      summary: Get Today Discount
+      tags:
+      - Product Resource
   /api/product/extSources:
     get:
       responses:

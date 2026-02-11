@@ -34,7 +34,7 @@ You can run your application in dev mode that enables live coding using:
 
 The one single command would help you to start both frontend and backend.
 
-## Packaging and running the application
+## Building a single package
 
 The application can be packaged using:
 
@@ -46,4 +46,28 @@ The application, packaged as jar, is located in `build/pricekeep-1.0.0-SNAPSHOT-
 ```shell script
 java -jar pricekeep-1.0.0-SNAPSHOT-runner.jar
 ```
-You may configure the database with 
+
+## Runtime Configuration
+You may configure the database with `application.yaml` in the `config/` directorty located at the same place as the runner jar.
+```
+exercise-data/
+├─ config
+│ └─ application.yaml
+└─ pricekeep-1.0.0-SNAPSHOT-runner.jar
+```
+Put the following in your application.yaml:
+```yaml
+quarkus:
+  profile: staging
+
+"%staging":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      jdbc:
+        url: jdbc:postgresql://[your_server_address]:5433/pricekeep
+      username: pricekeep
+      password: [mypassword]
+    flyway:
+      migrate-at-start: true
+```

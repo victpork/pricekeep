@@ -200,7 +200,7 @@ public interface ProductRepo {
                 avg(q.price) as avg_price
             from Quote q
             where q.product_id = :pid and q.quote_date >= current_date - interval '1 year'
-        ),
+        )
         update product_stats set month_min = mth_stat.min_price, month_avg = mth_stat.avg_price,
             quarter_min = quarter_stat.min_price, quarter_avg = quarter_stat.avg_price,
             year_min = year_stat.min_price, year_avg = year_stat.avg_price
@@ -220,11 +220,13 @@ public interface ProductRepo {
         """)
     Page<Quote> getLatestDeals(PageRequest pageRequest, LocalDate cutoffDate);
 
-    @Query("select q from Product p join fetch p.priceQuotes q where " +
-               "p.id = :productId and " +
-               "q.quoteDate >= :cutoffDate " +
-               "and (:includeDiscount = true or q.discount IS NULL) " +
-               "order by q.quoteDate desc")
+    @Query("""
+        select q from Product p join fetch p.priceQuotes q where
+        p.id = :productId and
+        q.quoteDate >= :cutoffDate
+        and (:includeDiscount = true or q.discount IS NULL)
+        order by q.quoteDate desc
+        """)
     List<Quote> getPriceHistory(Long productId, LocalDate cutoffDate, boolean includeDiscount);
 
 

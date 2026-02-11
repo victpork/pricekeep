@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { PlusCircleIcon, LayoutGridIcon, SheetIcon } from 'lucide-vue-next';
 import {
   useGetApiCommonLatestDeals,
+  useGetApiProductDiscounts,
 } from '@/apiClient';
 import ProductColleciton from './ProductColleciton.vue';
 import { computed, ref, useTemplateRef } from 'vue';
@@ -19,13 +20,17 @@ import { SearchIcon } from 'lucide-vue-next';
 import ProductForm from '@/views/ProductForm.vue'
 import ProductTable from '@/components/product/ProductTable.vue';
 import { refDebounced } from '@vueuse/core'
+import { shuffleArray } from '@/util/shuffle'
 const { data: latestDeals } = useGetApiCommonLatestDeals()
-const flatDeals = computed(() => (latestDeals.value?.data.results ?? []))
+const flatDeals = computed(() => (shuffleArray(latestDeals.value?.data.results ?? []).slice(0, 10)))
 const isProductDialogOpen = ref(false)
 const productTable = useTemplateRef<ComponentExposed<typeof ProductTable>>('productTable')
 const searchKey = ref<string>()
 
 const debouncedSearchKey = refDebounced(searchKey, 500)
+
+const { data: todayDiscount } = useGetApiProductDiscounts()
+const flatTodayDiscount = computed(() => (shuffleArray(todayDiscount.value?.data ?? []).slice(0, 10)))
 </script>
 <template>
   <div class="col-span-3 lg:col-span-4 lg:border-x-l">
@@ -67,7 +72,6 @@ const debouncedSearchKey = refDebounced(searchKey, 500)
           <div class="relative">
             <ScrollArea>
               <div class="flex space-x-4 pb-4">
-                <ProductColleciton v-model="flatDeals" />
               </div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
@@ -81,14 +85,11 @@ const debouncedSearchKey = refDebounced(searchKey, 500)
             </p>
           </div>
           <Separator class="my-4" />
-          <div class="relative">
-            <ScrollArea>
-              <div class="flex space-x-4 pb-4">
 
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+          <div class="flex space-x-4 overflow-x-auto py-8 gap-4 flex-wrap">
+            <ProductColleciton v-model="flatTodayDiscount" />
           </div>
+
         </TabsContent>
         <TabsContent value="products" class="h-full flex-col border-none p-0 data-[state=active]:flex">
           <div class="flex items-center justify-between w-full">

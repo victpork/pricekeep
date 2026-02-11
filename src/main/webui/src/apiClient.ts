@@ -184,6 +184,120 @@ export function useGetApiAdminBatchAll<
 }
 
 /**
+ * @summary Delete Batch
+ */
+export type deleteApiAdminBatchDeleteResponse200 = {
+  data: unknown;
+  status: 200;
+};
+
+export type deleteApiAdminBatchDeleteResponseSuccess =
+  deleteApiAdminBatchDeleteResponse200 & {
+    headers: Headers;
+  };
+export type deleteApiAdminBatchDeleteResponse =
+  deleteApiAdminBatchDeleteResponseSuccess;
+
+export const getDeleteApiAdminBatchDeleteUrl = () => {
+  return `/api/admin/batch/delete`;
+};
+
+export const deleteApiAdminBatchDelete = async (
+  deleteApiAdminBatchDeleteBody: number[],
+  options?: RequestInit,
+): Promise<deleteApiAdminBatchDeleteResponse> => {
+  const res = await fetch(getDeleteApiAdminBatchDeleteUrl(), {
+    ...options,
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(deleteApiAdminBatchDeleteBody),
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: deleteApiAdminBatchDeleteResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as deleteApiAdminBatchDeleteResponse;
+};
+
+export const getDeleteApiAdminBatchDeleteMutationOptions = <
+  TError = unknown,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>,
+    TError,
+    { data: number[] },
+    TContext
+  >;
+  fetch?: RequestInit;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationKey = ["deleteApiAdminBatchDelete"];
+  const { mutation: mutationOptions, fetch: fetchOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, fetch: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>,
+    { data: number[] }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return deleteApiAdminBatchDelete(data, fetchOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteApiAdminBatchDeleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>
+>;
+export type DeleteApiAdminBatchDeleteMutationBody = number[];
+export type DeleteApiAdminBatchDeleteMutationError = unknown;
+
+/**
+ * @summary Delete Batch
+ */
+export const useDeleteApiAdminBatchDelete = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>,
+      TError,
+      { data: number[] },
+      TContext
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseMutationReturnType<
+  Awaited<ReturnType<typeof deleteApiAdminBatchDelete>>,
+  TError,
+  { data: number[] },
+  TContext
+> => {
+  const mutationOptions = getDeleteApiAdminBatchDeleteMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+/**
  * @summary Disable Batch
  */
 export type postApiAdminBatchDisableResponse200 = {
@@ -1404,6 +1518,120 @@ export function useGetApiProductAll<
   queryKey: DataTag<QueryKey, TData, TError>;
 } {
   const queryOptions = getGetApiProductAllQueryOptions(params, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = unref(queryOptions).queryKey as DataTag<
+    QueryKey,
+    TData,
+    TError
+  >;
+
+  return query;
+}
+
+/**
+ * @summary Get Today Discount
+ */
+export type getApiProductDiscountsResponse200 = {
+  data: SimpleQuoteDTO[];
+  status: 200;
+};
+
+export type getApiProductDiscountsResponseSuccess =
+  getApiProductDiscountsResponse200 & {
+    headers: Headers;
+  };
+export type getApiProductDiscountsResponse =
+  getApiProductDiscountsResponseSuccess;
+
+export const getGetApiProductDiscountsUrl = () => {
+  return `/api/product/discounts`;
+};
+
+export const getApiProductDiscounts = async (
+  options?: RequestInit,
+): Promise<getApiProductDiscountsResponse> => {
+  const res = await fetch(getGetApiProductDiscountsUrl(), {
+    ...options,
+    method: "GET",
+  });
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiProductDiscountsResponse["data"] = body
+    ? JSON.parse(body)
+    : {};
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as getApiProductDiscountsResponse;
+};
+
+export const getGetApiProductDiscountsQueryKey = () => {
+  return ["api", "product", "discounts"] as const;
+};
+
+export const getGetApiProductDiscountsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiProductDiscounts>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getApiProductDiscounts>>,
+      TError,
+      TData
+    >
+  >;
+  fetch?: RequestInit;
+}) => {
+  const { query: queryOptions, fetch: fetchOptions } = options ?? {};
+
+  const queryKey = getGetApiProductDiscountsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getApiProductDiscounts>>
+  > = ({ signal }) => getApiProductDiscounts({ signal, ...fetchOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiProductDiscounts>>,
+    TError,
+    TData
+  >;
+};
+
+export type GetApiProductDiscountsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiProductDiscounts>>
+>;
+export type GetApiProductDiscountsQueryError = unknown;
+
+/**
+ * @summary Get Today Discount
+ */
+
+export function useGetApiProductDiscounts<
+  TData = Awaited<ReturnType<typeof getApiProductDiscounts>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getApiProductDiscounts>>,
+        TError,
+        TData
+      >
+    >;
+    fetch?: RequestInit;
+  },
+  queryClient?: QueryClient,
+): UseQueryReturnType<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiProductDiscountsQueryOptions(options);
 
   const query = useQuery(queryOptions, queryClient) as UseQueryReturnType<
     TData,

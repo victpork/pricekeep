@@ -58,10 +58,10 @@ public abstract class WoolworthsDataMapperDecorator implements WoolworthsDataMap
 
         String unitOfMeasureStr = pq.getSize().getCupMeasure();
         if (unitOfMeasureStr != null) {
-            Matcher m = unitNumberPattern.matcher(unitOfMeasureStr);
+            Matcher m = unitNumberPattern.matcher(unitOfMeasureStr.toLowerCase());
             if (m.find()) {
                 String unit = m.group("unit");
-                result.setUnit(switch (unit.toLowerCase()) {
+                result.setUnit(switch (unit) {
                     case "kg" -> Product.Unit.PER_KG;
                     case "m" -> Product.Unit.PER_METRE;
                     case "ml" -> Product.Unit.PER_MILLILITRE;

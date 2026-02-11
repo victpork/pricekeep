@@ -3,7 +3,7 @@ import { type ProductInfo } from '@/model'
 import { Badge } from '@/components/ui/badge'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { capitalise } from '@/util/capitalise'
-
+import { RouterLink } from 'vue-router'
 //const colHelper = createColumnHelper<ProductInfo>()
 
 export const defaultColumns: ColumnDef<ProductInfo>[] = [
@@ -12,7 +12,7 @@ export const defaultColumns: ColumnDef<ProductInfo>[] = [
     header: () => h('div', { class: 'text-left' }, 'Name'),
     size: 150,
     cell: ({ row }) => {
-      return h('a', { class: 'text-left font-medium max-w-[150px] overflow-hidden', href: `/products/${row.original.id}` }, capitalise(row.getValue('name')))
+      return h(RouterLink, { class: 'text-left font-medium max-w-[150px] overflow-hidden', to: { name: 'product', params: { id: row.original.id } } }, capitalise(row.getValue('name')))
     },
   },
   {

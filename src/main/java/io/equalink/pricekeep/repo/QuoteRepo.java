@@ -42,11 +42,11 @@ public interface QuoteRepo {
     List<CompactQuote> findLowestQuotePerDayHistByProduct(Long productId, LocalDate cutoffDate);
 
     @SQL("""
-        select * from quote q
+        select q.*, p.*, d.type, d.sale_price, d.save_value, d.multibuy_quantity from quote q
         left join store s on q.store_id = s.id
         left join product p on q.product_id = p.id
         left join quote_discount d on q.discount_id = d.discount_id
-        where q.quote_date = current_date and q.discount_id is not null
+        where q.quote_date >= current_date-2 and q.discount_id is not null
         """)
     List<Quote> findLatestQuoteWithDiscount();
 }

@@ -232,6 +232,13 @@ public class ProductResource {
         return productService.getAlert(productId).map(pMapper::toAlertDTO).orElseThrow();
     }
 
+
+    @GET
+    @Path("/discounts")
+    public List<SimpleQuoteDTO> getTodayDiscount() {
+        return productService.getDiscountToday().stream().map(pMapper::toSimpleQuoteDTO).toList();
+    }
+
     @ServerExceptionMapper
     public RestResponse<String> mapException(NoSuchElementException ex) {
         return RestResponse.status(Response.Status.NOT_FOUND, "Element not found: " + ex.getMessage());
