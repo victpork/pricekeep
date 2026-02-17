@@ -65,9 +65,10 @@ quarkus:
     datasource:
       db-kind: postgresql
       jdbc:
-        url: jdbc:postgresql://[your_server_address]:5433/pricekeep
-      username: pricekeep
-      password: [mypassword]
+        url: jdbc:postgresql://[postgre_server_address]:[postgre_server_port]/[pricekeep_db]
+      username: [pricekeep_db_user]
+      password: [pricekeep_db_pwd]
     flyway:
       migrate-at-start: true
+  fetchImgPath: [image_storeage_path]
 ```

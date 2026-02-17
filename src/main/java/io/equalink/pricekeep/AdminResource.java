@@ -1,9 +1,6 @@
 package io.equalink.pricekeep;
 
 import io.equalink.pricekeep.batch.BatchController;
-import io.equalink.pricekeep.data.BaseBatch;
-import io.equalink.pricekeep.data.ProductQuoteImportBatch;
-import io.equalink.pricekeep.data.StoreImportBatch;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.repo.StoreRepo;
 import io.equalink.pricekeep.service.dto.*;
@@ -11,16 +8,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Variant;
 import lombok.extern.jbosslog.JBossLog;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.hibernate.engine.jdbc.batch.spi.Batch;
 import org.quartz.SchedulerException;
 
 import java.util.List;
-import java.util.Optional;
 
 @JBossLog
 @Path("/admin")
@@ -84,7 +78,7 @@ public class AdminResource {
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-        return Response.accepted(new Result("OK", "Batch created")).build();
+        return Response.accepted(new Result("ok", "Batch created")).build();
     }
 
 
@@ -99,9 +93,9 @@ public class AdminResource {
                 log.errorv("Scheduler exception: {0}", e.getMessage());
                 return Response.serverError().build();
             }
-            return Response.ok().build();
+            return Response.ok(Result.builder().result("ok").msg("batch queued to run")).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.status(Response.Status.NOT_FOUND).entity(Result.builder().result("error").msg("batch not found")).build();
     }
 
     @GET
@@ -145,6 +139,6 @@ public class AdminResource {
             } catch (SchedulerException _) {
             }
         }));
-        return Response.ok().build();
+        return Response.ok(Result.builder().result("ok").msg("batch disabled")).build();
     }
 }

@@ -222,7 +222,7 @@ public class ProductResource {
         } else {
             productService.removeAlert(productId);
         }
-        return Response.ok().build();
+        return Response.ok(Result.builder().result("ok").msg("alert altered")).build();
     }
 
 
