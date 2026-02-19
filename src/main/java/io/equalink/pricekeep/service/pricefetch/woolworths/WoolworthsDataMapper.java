@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Mapper(componentModel = "cdi")
@@ -62,13 +61,16 @@ public interface WoolworthsDataMapper {
     }
 
     default Discount toDiscount(WoolworthsProductQuote pq) {
-        if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) == 0) return null;
         Discount res = new Discount();
+        Log.info("Running discount");
         if (pq.getMultibuy() != null) {
             res.setType(Discount.Type.BUNDLE);
             res.setMultiBuyQuantity(pq.getMultibuy().getQuantity().intValue());
+            Log.infov("intvalue: {0}, Type: {1}", pq.getMultibuy().getQuantity().intValue(), res.getType());
             res.setSaveValue(pq.getMultibuy().getValue());
             res.setSalePrice(pq.getMultibuy().getValue().divide(pq.getMultibuy().getQuantity(), 2, RoundingMode.HALF_EVEN));
+        } else if (BigDecimal.ZERO.compareTo(pq.getPrice().getSavePrice()) == 0) {
+            return null;
         } else {
             var priceStruct = pq.getPrice();
             if (BigDecimal.ZERO.compareTo(priceStruct.getSavePercentage()) < 0) {

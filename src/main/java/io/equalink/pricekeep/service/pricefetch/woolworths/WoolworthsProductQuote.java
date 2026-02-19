@@ -1,8 +1,8 @@
 package io.equalink.pricekeep.service.pricefetch.woolworths;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,20 +54,7 @@ public class WoolworthsProductQuote {
 
     private SizeInfo size;
 
+    @JsonProperty("productTag")  // maps from the "user" node
+    @JsonDeserialize(using = WoolworthsMultibuyDeserializer.class)
     private Multibuy multibuy;
-
-    @JsonSetter("productTag")
-    void extractMultibuy(JsonNode productTagNode) {
-        if (productTagNode != null && productTagNode.has("multiBuy") && productTagNode.get("multiBuy").isObject()) {
-            JsonNode multibuyNode = productTagNode.get("multiBuy");
-            Multibuy mb = new Multibuy();
-            if (multibuyNode.has("quantity")) {
-                mb.setQuantity(multibuyNode.get("quantity").decimalValue());
-            }
-            if (multibuyNode.has("value")) {
-                mb.setValue(multibuyNode.get("value").decimalValue());
-            }
-            this.multibuy = mb;
-        }
-    }
 }
