@@ -57,7 +57,8 @@ const formSchema = z.object({
         .optional(),
     itemPerBundle: z
         .number()
-        .min(1),
+        .min(1)
+        .optional(),
     tags: z.array(z.string()),
 })
 
@@ -67,7 +68,7 @@ const defaultValues: z.input<typeof formSchema> = {
     gtin: undefined,
     unit: Unit.EA,
     quantityPerItem: undefined,
-    itemPerBundle: 1,
+    itemPerBundle: undefined,
     tags: [],
 }
 

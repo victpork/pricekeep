@@ -81,18 +81,32 @@ public class Quote {
         if (useDiscount && discount != null) {
             basePrice = discount.applyDiscount(price);
         }
+        /*
+        +-------------+----------------+------------------------------------------------------------------------------+
+        | packageSize | itemPerPackage | Result                                                                       |
+        +-------------+----------------+------------------------------------------------------------------------------+
+        | null        | null           | Loose product, unitPrice = price                                             |
+        +-------------+----------------+------------------------------------------------------------------------------+
+        | not null    | null           | Single product that has volume,                                              |
+        |             |                | unitPrice = price / (packageSize / unitScale)                                |
+        +-------------+----------------+------------------------------------------------------------------------------+
+        | null        | not null       | Bundled product with discrete item, unitPrice = price / itemPerPackage       |
+        +-------------+----------------+------------------------------------------------------------------------------+
+        | not null    | not null       | Bundled product with volume,                                                 |
+        |             |                | unitPrice = price / (packageSize \*  itemPerPackage / unitScale)             |
+        +-------------+----------------+------------------------------------------------------------------------------+
+         */
+        // If item sold in loose
+        if (product.getPackageSize() == null && product.getItemPerPackage() == null) return basePrice;
         // Discrete item, unit price is $/ea
         if (product.getUnit() == Product.Unit.PER_ITEM) return basePrice.divide(BigDecimal.valueOf(product.getItemPerPackage()), RoundingMode.HALF_EVEN);
-        if (product.getPackageSize() == null) return basePrice;
-        // If item sold in loose
-        if (product.getItemPerPackage() == null || product.getItemPerPackage() == 0) return basePrice;
-
         // unit price = base price / (itemPerPackage * quantPerItem / unitScale)
         // e.g. a package of 6 cans of 330ml fizzy drinks sold at $ 12
         // unit price per 100ml = $12 / (330 * 6 / 100) = $0.60/100ml
         BigDecimal scale = product.getUnitScale() == null ? BigDecimal.ONE : product.getUnitScale();
+        BigDecimal packageSize = (product.getPackageSize() == null) ?  BigDecimal.ONE : product.getPackageSize();
         return basePrice.divide(
-            product.getPackageSize().multiply(BigDecimal.valueOf(product.getItemPerPackage())).multiply(scale), RoundingMode.HALF_EVEN
+            packageSize.multiply(BigDecimal.valueOf(product.getItemPerPackage())).multiply(scale), RoundingMode.HALF_EVEN
         );
     }
 }
