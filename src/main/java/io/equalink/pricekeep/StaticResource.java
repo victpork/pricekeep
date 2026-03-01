@@ -16,6 +16,8 @@ public class StaticResource {
 
     void installRoute(@Observes Router router) {
         // Configure the route to serve static files from a specific path
+        router.route("/static/assets/img/storegroup-icon/*")
+                  .handler(StaticHandler.create("META-INF/resources/groupicons").setCachingEnabled(true));
         router.route("/static/assets/img/*")
             .handler(StaticHandler.create(FileSystemAccess.ROOT, imgDir).setCachingEnabled(true)); // The absolute path to your external directory
     }
