@@ -15,7 +15,7 @@ dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-hibernate-validator'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
-    implementation 'io.quarkiverse.quinoa:quarkus-quinoa:2.7.1'
+    implementation 'io.quarkiverse.quinoa:quarkus-quinoa:2.7.2'
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-rest-jackson'
@@ -40,9 +40,9 @@ dependencies {
 	
 	testCompileOnly "org.projectlombok:lombok:1.18.40"
 	testAnnotationProcessor "org.projectlombok:lombok:1.18.40"
-    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.quarkus:quarkus-junit'
     testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'io.quarkus:quarkus-junit5-mockito'
+    testImplementation 'io.quarkus:quarkus-junit-mockito'
 }
 
 group = 'io.equalink'

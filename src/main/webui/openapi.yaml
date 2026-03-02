@@ -190,7 +190,6 @@ components:
         productInfo:
           $ref: "#/components/schemas/ProductInfo"
         storeInfo:
-          type: object
           anyOf:
           - $ref: "#/components/schemas/StoreInfo"
           - $ref: "#/components/schemas/WithId"
@@ -209,7 +208,6 @@ components:
           type: integer
           format: int32
       required:
-      - storeInfo
       - quoteDate
       - price
     QuoteResult:

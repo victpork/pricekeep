@@ -228,7 +228,6 @@
             "$ref" : "#/components/schemas/ProductInfo"
           },
           "storeInfo" : {
-            "type" : "object",
             "anyOf" : [ {
               "$ref" : "#/components/schemas/StoreInfo"
             }, {
@@ -253,7 +252,7 @@
             "format" : "int32"
           }
         },
-        "required" : [ "storeInfo", "quoteDate", "price" ]
+        "required" : [ "quoteDate", "price" ]
       },
       "QuoteResult" : {
         "type" : "object",
