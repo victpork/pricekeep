@@ -52,6 +52,7 @@ public interface WoolworthsDataMapper {
     @Mapping(target = "name", expression = "java(addr.getName().trim())")
     @Mapping(target = "address", expression = "java(addr.getAddress().trim())")
     @Mapping(target = "group", expression = "java(getWWStoreGroup())")
+    @Mapping(target = "geoLocation", ignore = true)
     Store toStore(WoolworthsStoreAddress addr);
 
     default String generateName(WoolworthsProductQuote pq) {

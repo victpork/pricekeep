@@ -274,7 +274,8 @@
           },
           "msg" : {
             "type" : "string"
-          }
+          },
+          "entity" : { }
         }
       },
       "SetAlertMessage" : {
@@ -604,9 +605,27 @@
     },
     "/api/admin/store/new" : {
       "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StoreInfo"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
-          "201" : {
-            "description" : "Created"
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request"
           }
         },
         "summary" : "Create Store",

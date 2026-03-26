@@ -1,6 +1,7 @@
 package io.equalink.pricekeep;
 
 import io.equalink.pricekeep.batch.BatchController;
+import io.equalink.pricekeep.data.Store;
 import io.equalink.pricekeep.repo.BatchRepo;
 import io.equalink.pricekeep.repo.StoreRepo;
 import io.equalink.pricekeep.service.dto.*;
@@ -14,6 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.quartz.SchedulerException;
 
+import java.net.URI;
 import java.util.List;
 
 @JBossLog
@@ -38,8 +40,10 @@ public class AdminResource {
 
     @POST
     @Path("/store/new")
-    public void createStore() {
-
+    public Response createStore(StoreInfo sInfo) {
+        Store s = storeMapper.toEntity(sInfo);
+        storeRepo.persist(s);
+        return Response.created(URI.create("/store/"+s.getId())).entity(new Result("ok", "Store created", s)).build();
     }
 
     @POST

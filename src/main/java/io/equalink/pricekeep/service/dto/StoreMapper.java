@@ -14,6 +14,7 @@ public interface StoreMapper {
     //@Mapping(target = "geoPoint", ignore = true)
     @Mapping(target = "internalId", ignore = true)
     @Mapping(target = "group", ignore = true)
+    @Mapping(target = "geoLocation", ignore = true)
     Store toEntity(StoreInfo sDTO);
 
     @Mapping(target = "id", source = "storeId")

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.locationtech.jts.geom.Point;
+
 @Setter
 @Getter
 @Entity
@@ -26,7 +28,8 @@ public class Store {
 
     private String url;
 
-    //private Point geoPoint;
+    @Column(name = "geo_loc", columnDefinition = "geography")
+    private Point geoLocation;
     private String address;
 
     @Column(name = "int_id")
