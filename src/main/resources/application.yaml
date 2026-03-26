@@ -23,7 +23,7 @@ quarkus:
   datasource:
     db-kind: postgresql
     devservices:
-      image-name: postgis/postgis:17-3.5
+      image-name: postgis/postgis:18-3.6-alpine
 
   http:
     filter:
@@ -54,8 +54,9 @@ quarkus:
         allow-hql: true
       log:
         sql: false
-      schema-management:
-        strategy: validate
+    flyway:
+      migrate-at-start: true
+      clean-at-start: true
 
 proxyAddr: localhost:3041
 

@@ -31,5 +31,8 @@ public class QuoteID implements Serializable {
         return super.equals(obj);
     }
 
-
+    @Override
+    public int hashCode() {
+        return (int) (29 * quoteStore.getId() + 37 * product.getId() + 53 * quoteDate.getDayOfYear() + 71L * quoteDate.getYear());
+    }
 }

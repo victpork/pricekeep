@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgis/postgis:17-3.5
+    image: postgis/postgis:18-3.6-alpine
     healthcheck:
       test: pg_isready -U pricekeep -d pricekeep
       interval: 5s
@@ -12,8 +12,6 @@ services:
       POSTGRES_USER: pricekeep
       POSTGRES_PASSWORD: pricekeep-1234
       POSTGRES_DB: pricekeep
-    volumes:
-      - '/mnt/d/pricekeepdata:/var/lib/postgresql/data:Z'
 volumes:
   pgdata:
     driver: local
