@@ -21,12 +21,13 @@ PriceKeep is an application that fetch products and prices from NZ-based superma
 
 ## Requirements for running dev environment locally
 You'll need the following items pre-installed before starting
-- Docker/Podman Desktop (For the devcontainers PostgreSQL)
-- NodeJS
+- JDK 25 ([Oracle](https://jdk.java.net/)/[Adoptium](https://adoptium.net/temurin/releases))
+- [Docker](https://www.docker.com/products/docker-desktop/)/[Podman](https://podman-desktop.io/) Desktop (For the devcontainers PostgreSQL)
+- [NodeJS](https://nodejs.org/en/download)
 
 ## Starting the dev environment
 
-You can run your application in dev mode that enables live coding using:
+Run PriceKeep in dev mode that enables live coding using:
 
 ```shell script
 ./gradlew quarkusDev
@@ -36,7 +37,7 @@ The one single command would help you to start both frontend and backend.
 
 ## Building a single package
 
-The application can be packaged using:
+PriceKeep can be packaged using:
 
 ```shell script
 ./gradlew build -x test
