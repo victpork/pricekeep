@@ -1,23 +1,14 @@
 package io.equalink.pricekeep.service.pricefetch;
 
 
-
 import com.microsoft.playwright.*;
-import io.quarkus.logging.Log;
-import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Named;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import com.microsoft.playwright.Browser.NewPageOptions;
-import com.microsoft.playwright.options.Proxy;
-
-import io.smallrye.common.annotation.Identifier;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Named;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -72,9 +63,17 @@ public class PlayWrightFactory {
     public BrowserContext getHeadedModeBrowserInstance() {
         return playwright.chromium().launchPersistentContext(Path.of("./userProfile"),
             new BrowserType.LaunchPersistentContextOptions()
-                .setHeadless(false)
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+                .setViewportSize(1920, 1080)
+                .setDeviceScaleFactor(1)
+                .setHasTouch(false)
+                .setLocale("en-NZ")
+                .setTimezoneId("Pacific/Auckland")
                 .setChannel("chrome")
-                .setViewportSize(null)
+                .setArgs(List.of("--disable-blink-features=AutomationControlled", // Removes 'navigator.webdriver'
+                    "--disable-infobars",
+                    "--no-sandbox"))
+
         );
     }
 
