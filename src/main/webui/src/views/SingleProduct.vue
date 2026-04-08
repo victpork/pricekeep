@@ -151,7 +151,7 @@ const updateAlert = async () => {
                 Quote
               </Button>
             </DialogTrigger>
-            <QuoteForm :product-id="id" :product-name="product.name"
+            <QuoteForm :product-id="id" :product-name="product.name" :price="lowestQuote.price"
               @success="() => { isQuoteDialogOpen = false; refetchQuoteData(); refetchProductData() }" />
           </Dialog>
           <Popover v-model:open="alertPopoverOpen">
