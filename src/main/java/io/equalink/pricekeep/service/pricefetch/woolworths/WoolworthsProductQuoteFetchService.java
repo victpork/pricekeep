@@ -188,7 +188,11 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
             page.screenshot(new Page.ScreenshotOptions()
                                 .setPath(Paths.get("D:\\screenshot-" + LocalDateTime.now().format(FORMATTER)+".png"))
                                 .setFullPage(true));
-            page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up")).check();
+            Locator pickUp = page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up"));
+            if (pickUp.count() > 1) {
+                pickUp = page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up").setExact(true));
+            }
+            pickUp.check();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Change store")).click();
             LOG.info("Triggering getStore API call now");
         });
@@ -219,7 +223,11 @@ public class WoolworthsProductQuoteFetchService extends BaseScraper<WoolworthsPr
             });
 
             page.navigate(CHANGE_ADDR_URL);
-            page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up").setExact(true)).check();
+            Locator pickUp = page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up"));
+            if (pickUp.count() > 1) {
+                pickUp = page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Pick up").setExact(true));
+            }
+            pickUp.check();
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Change store")).click();
             // Select "all pickup locations"
             page.getByLabel("Region").selectOption("494");
